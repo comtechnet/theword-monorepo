@@ -8,7 +8,7 @@ import WalletConnectModal from '../WalletConnectModal';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, Container } from 'react-bootstrap';
-import testnetNoun from '../../assets/testnet-noun.png';
+import testnetTheWord from '../../assets/testnet-theword.png';
 import clsx from 'clsx';
 import config, { CHAIN_ID } from '../../config';
 import { utils } from 'ethers';
@@ -72,7 +72,7 @@ const NavBar = () => {
 
   const useStateBg =
     history.location.pathname === '/' ||
-    history.location.pathname.includes('/noun') ||
+    history.location.pathname.includes('/theword') ||
     history.location.pathname.includes('/auction');
 
   return (
@@ -93,7 +93,7 @@ const NavBar = () => {
           </Navbar.Brand>
           {Number(CHAIN_ID) !== 1 && (
             <Nav.Item>
-              <img className={classes.testnetImg} src={testnetNoun} alt="testnet noun" />
+              <img className={classes.testnetImg} src={testnetTheWord} alt="testnet theword" />
               TESTNET
             </Nav.Item>
           )}

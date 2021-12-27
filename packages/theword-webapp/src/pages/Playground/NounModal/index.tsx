@@ -1,19 +1,19 @@
 import { Button } from 'react-bootstrap';
-import classes from './NounModal.module.css';
+import classes from './TheWordModal.module.css';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import Noun from '../../../components/Noun';
+import TheWord from '../../../components/TheWord';
 import { svg2png } from '../../../utils/svg2png';
 import { Backdrop } from '../../../components/Modal';
 
-const downloadNounPNG = (png: string) => {
+const downloadTheWordPNG = (png: string) => {
   const downloadEl = document.createElement('a');
   downloadEl.href = png;
-  downloadEl.download = 'noun.png';
+  downloadEl.download = 'theword.png';
   downloadEl.click();
 };
 
-const NounModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
+const TheWordModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
   const { onDismiss, svg } = props;
 
   const [width, setWidth] = useState<number>(window.innerWidth);
@@ -51,19 +51,19 @@ const NounModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
       {ReactDOM.createPortal(
         <div className={classes.modal}>
           {png && (
-            <Noun
+            <TheWord
               imgPath={png}
-              alt="noun"
-              className={classes.nounImg}
-              wrapperClassName={classes.nounWrapper}
+              alt="theword"
+              className={classes.thewordImg}
+              wrapperClassName={classes.thewordWrapper}
             />
           )}
-          <div className={classes.displayNounFooter}>
-            <span>Use this Noun as your profile picture!</span>
+          <div className={classes.displayTheWordFooter}>
+            <span>Use this TheWord as your profile picture!</span>
             {!isMobile && png && (
               <Button
                 onClick={() => {
-                  downloadNounPNG(png);
+                  downloadTheWordPNG(png);
                 }}
               >
                 Download
@@ -76,4 +76,4 @@ const NounModal: React.FC<{ onDismiss: () => void; svg: string }> = props => {
     </>
   );
 };
-export default NounModal;
+export default TheWordModal;

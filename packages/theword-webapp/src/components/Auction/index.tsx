@@ -1,21 +1,21 @@
 import { Col } from 'react-bootstrap';
-import { StandaloneNounWithSeed } from '../StandaloneNoun';
+import { StandaloneTheWordWithSeed } from '../StandaloneTheWord';
 import AuctionActivity from '../AuctionActivity';
 import { Row, Container } from 'react-bootstrap';
 import { setStateBackgroundColor } from '../../state/slices/application';
-import { LoadingNoun } from '../Noun';
+import { LoadingTheWord } from '../TheWord';
 import { Auction as IAuction } from '../../wrappers/thewordAuction';
 import classes from './Auction.module.css';
-import { Ithewordeed } from '../../wrappers/nounToken';
-import NounderNounContent from '../NounderNounContent';
+import { Ithewordeed } from '../../wrappers/thewordToken';
+import TheWordderTheWordContent from '../TheWordderTheWordContent';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { isNounderNoun } from '../../utils/nounderNoun';
+import { isTheWordderTheWord } from '../../utils/thewordderTheWord';
 import {
-  setNextOnDisplayAuctionNounId,
-  setPrevOnDisplayAuctionNounId,
+  setNextOnDisplayAuctionTheWordId,
+  setPrevOnDisplayAuctionTheWordId,
 } from '../../state/slices/onDisplayAuction';
-import { beige, grey } from '../../utils/nounBgColors';
+import { beige, grey } from '../../utils/thewordBgColors';
 
 interface AuctionProps {
   auction?: IAuction;
@@ -27,53 +27,53 @@ const Auction: React.FC<AuctionProps> = props => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   let stateBgColor = useAppSelector(state => state.application.stateBackgroundColor);
-  const lastNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const lastTheWordId = useAppSelector(state => state.onDisplayAuction.lastAuctionTheWordId);
 
-  const loadedNounHandler = (seed: Ithewordeed) => {
+  const loadedTheWordHandler = (seed: Ithewordeed) => {
     dispatch(setStateBackgroundColor(seed.background === 0 ? grey : beige));
   };
 
   const prevAuctionHandler = () => {
-    dispatch(setPrevOnDisplayAuctionNounId());
-    currentAuction && history.push(`/auction/${currentAuction.nounId.toNumber() - 1}`);
+    dispatch(setPrevOnDisplayAuctionTheWordId());
+    currentAuction && history.push(`/auction/${currentAuction.thewordId.toNumber() - 1}`);
   };
   const nextAuctionHandler = () => {
-    dispatch(setNextOnDisplayAuctionNounId());
-    currentAuction && history.push(`/auction/${currentAuction.nounId.toNumber() + 1}`);
+    dispatch(setNextOnDisplayAuctionTheWordId());
+    currentAuction && history.push(`/auction/${currentAuction.thewordId.toNumber() + 1}`);
   };
 
-  const nounContent = currentAuction && (
-    <div className={classes.nounWrapper}>
-      <StandaloneNounWithSeed
-        nounId={currentAuction.nounId}
-        onLoadSeed={loadedNounHandler}
+  const thewordContent = currentAuction && (
+    <div className={classes.thewordWrapper}>
+      <StandaloneTheWordWithSeed
+        thewordId={currentAuction.thewordId}
+        onLoadSeed={loadedTheWordHandler}
         shouldLinkToProfile={false}
       />
     </div>
   );
 
-  const loadingNoun = (
-    <div className={classes.nounWrapper}>
-      <LoadingNoun />
+  const loadingTheWord = (
+    <div className={classes.thewordWrapper}>
+      <LoadingTheWord />
     </div>
   );
 
-  const currentAuctionActivityContent = currentAuction && lastNounId && (
+  const currentAuctionActivityContent = currentAuction && lastTheWordId && (
     <AuctionActivity
       auction={currentAuction}
-      isFirstAuction={currentAuction.nounId.eq(0)}
-      isLastAuction={currentAuction.nounId.eq(lastNounId)}
+      isFirstAuction={currentAuction.thewordId.eq(0)}
+      isLastAuction={currentAuction.thewordId.eq(lastTheWordId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
       displayGraphDepComps={true}
     />
   );
-  const nounderNounContent = currentAuction && lastNounId && (
-    <NounderNounContent
+  const thewordderTheWordContent = currentAuction && lastTheWordId && (
+    <TheWordderTheWordContent
       mintTimestamp={currentAuction.startTime}
-      nounId={currentAuction.nounId}
-      isFirstAuction={currentAuction.nounId.eq(0)}
-      isLastAuction={currentAuction.nounId.eq(lastNounId)}
+      thewordId={currentAuction.thewordId}
+      isFirstAuction={currentAuction.thewordId.eq(0)}
+      isLastAuction={currentAuction.thewordId.eq(lastTheWordId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
     />
@@ -83,13 +83,13 @@ const Auction: React.FC<AuctionProps> = props => {
     <div style={{ backgroundColor: stateBgColor }}>
       <Container fluid="lg">
         <Row>
-          <Col lg={{ span: 6 }} className={classes.nounContentCol}>
-            {currentAuction ? nounContent : loadingNoun}
+          <Col lg={{ span: 6 }} className={classes.thewordContentCol}>
+            {currentAuction ? thewordContent : loadingTheWord}
           </Col>
           <Col lg={{ span: 6 }} className={classes.auctionActivityCol}>
             {currentAuction &&
-              (isNounderNoun(currentAuction.nounId)
-                ? nounderNounContent
+              (isTheWordderTheWord(currentAuction.thewordId)
+                ? thewordderTheWordContent
                 : currentAuctionActivityContent)}
           </Col>
         </Row>

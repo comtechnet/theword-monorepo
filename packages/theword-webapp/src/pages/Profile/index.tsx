@@ -1,42 +1,42 @@
 import { BigNumber } from 'ethers';
 import React from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
-import { StandaloneNounWithSeed } from '../../components/StandaloneNoun';
+import { StandaloneTheWordWithSeed } from '../../components/StandaloneTheWord';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setStateBackgroundColor } from '../../state/slices/application';
-import { grey, beige } from '../../utils/nounBgColors';
-import { Ithewordeed } from '../../wrappers/nounToken';
+import { grey, beige } from '../../utils/thewordBgColors';
+import { Ithewordeed } from '../../wrappers/thewordToken';
 
 import classes from './Profile.module.css';
 
-import NounInfoCard from '../../components/NounInfoCard';
+import TheWordInfoCard from '../../components/TheWordInfoCard';
 import ProfileActivityFeed from '../../components/ProfileActivityFeed';
 
 interface ProfilePageProps {
-  nounId: number;
+  thewordId: number;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = props => {
-  const { nounId } = props;
+  const { thewordId } = props;
 
   const dispatch = useAppDispatch();
-  const lastAuctionNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const lastAuctionTheWordId = useAppSelector(state => state.onDisplayAuction.lastAuctionTheWordId);
   let stateBgColor = useAppSelector(state => state.application.stateBackgroundColor);
 
-  const loadedNounHandler = (seed: Ithewordeed) => {
+  const loadedTheWordHandler = (seed: Ithewordeed) => {
     dispatch(setStateBackgroundColor(seed.background === 0 ? grey : beige));
   };
 
-  if (!lastAuctionNounId) {
+  if (!lastAuctionTheWordId) {
     return <></>;
   }
 
-  const nounIdForDisplay = Math.min(nounId, lastAuctionNounId);
+  const thewordIdForDisplay = Math.min(thewordId, lastAuctionTheWordId);
 
-  const nounContent = (
-    <StandaloneNounWithSeed
-      nounId={BigNumber.from(nounIdForDisplay)}
-      onLoadSeed={loadedNounHandler}
+  const thewordContent = (
+    <StandaloneTheWordWithSeed
+      thewordId={BigNumber.from(thewordIdForDisplay)}
+      onLoadSeed={loadedTheWordHandler}
       shouldLinkToProfile={false}
     />
   );
@@ -46,14 +46,14 @@ const ProfilePage: React.FC<ProfilePageProps> = props => {
       <div style={{ backgroundColor: stateBgColor }}>
         <Container>
           <Row>
-            <Col lg={6}>{nounContent}</Col>
-            <Col lg={6} className={classes.nounProfileInfo}>
-              <NounInfoCard nounId={nounIdForDisplay} />
+            <Col lg={6}>{thewordContent}</Col>
+            <Col lg={6} className={classes.thewordProfileInfo}>
+              <TheWordInfoCard thewordId={thewordIdForDisplay} />
             </Col>
           </Row>
         </Container>
       </div>
-      <ProfileActivityFeed nounId={nounIdForDisplay} />
+      <ProfileActivityFeed thewordId={thewordIdForDisplay} />
     </>
   );
 };

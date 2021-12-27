@@ -22,11 +22,11 @@ import { IthewordDescriptor } from './IthewordDescriptor.sol';
 import { IthewordSeeder } from './IthewordSeeder.sol';
 
 interface IthewordToken is IERC721 {
-    event NounCreated(uint256 indexed tokenId, IthewordSeeder.Seed seed);
+    event TheWordCreated(uint256 indexed tokenId, IthewordSeeder.Seed seed);
 
-    event NounBurned(uint256 indexed tokenId);
+    event TheWordBurned(uint256 indexed tokenId);
 
-    event NoundersDAOUpdated(address noundersDAO);
+    event TheWorddersDAOUpdated(address theworddersDAO);
 
     event MinterUpdated(address minter);
 
@@ -46,7 +46,7 @@ interface IthewordToken is IERC721 {
 
     function dataURI(uint256 tokenId) external returns (string memory);
 
-    function setNoundersDAO(address noundersDAO) external;
+    function setTheWorddersDAO(address theworddersDAO) external;
 
     function setMinter(address minter) external;
 

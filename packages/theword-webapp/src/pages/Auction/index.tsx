@@ -4,9 +4,9 @@ import Auction from '../../components/Auction';
 import Documentation from '../../components/Documentation';
 import HistoryCollection from '../../components/HistoryCollection';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setOnDisplayAuctionNounId } from '../../state/slices/onDisplayAuction';
+import { setOnDisplayAuctionTheWordId } from '../../state/slices/onDisplayAuction';
 import { push } from 'connected-react-router';
-import { nounPath } from '../../utils/history';
+import { thewordPath } from '../../utils/history';
 import useOnDisplayAuction from '../../wrappers/onDisplayAuction';
 import { useEffect } from 'react';
 
@@ -17,38 +17,38 @@ interface AuctionPageProps {
 const AuctionPage: React.FC<AuctionPageProps> = props => {
   const { initialAuctionId } = props;
   const onDisplayAuction = useOnDisplayAuction();
-  const lastAuctionNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const lastAuctionTheWordId = useAppSelector(state => state.onDisplayAuction.lastAuctionTheWordId);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!lastAuctionNounId) return;
+    if (!lastAuctionTheWordId) return;
 
     if (initialAuctionId !== undefined) {
-      // handle out of bounds noun path ids
-      if (initialAuctionId > lastAuctionNounId || initialAuctionId < 0) {
-        dispatch(setOnDisplayAuctionNounId(lastAuctionNounId));
-        dispatch(push(nounPath(lastAuctionNounId)));
+      // handle out of bounds theword path ids
+      if (initialAuctionId > lastAuctionTheWordId || initialAuctionId < 0) {
+        dispatch(setOnDisplayAuctionTheWordId(lastAuctionTheWordId));
+        dispatch(push(thewordPath(lastAuctionTheWordId)));
       } else {
         if (onDisplayAuction === undefined) {
-          // handle regular noun path ids on first load
-          dispatch(setOnDisplayAuctionNounId(initialAuctionId));
+          // handle regular theword path ids on first load
+          dispatch(setOnDisplayAuctionTheWordId(initialAuctionId));
         }
       }
     } else {
-      // no noun path id set
-      if (lastAuctionNounId) {
-        dispatch(setOnDisplayAuctionNounId(lastAuctionNounId));
+      // no theword path id set
+      if (lastAuctionTheWordId) {
+        dispatch(setOnDisplayAuctionTheWordId(lastAuctionTheWordId));
       }
     }
-  }, [lastAuctionNounId, dispatch, initialAuctionId, onDisplayAuction]);
+  }, [lastAuctionTheWordId, dispatch, initialAuctionId, onDisplayAuction]);
 
   return (
     <>
       <Auction auction={onDisplayAuction} />
       <Banner />
-      {lastAuctionNounId && (
-        <HistoryCollection latestNounId={BigNumber.from(lastAuctionNounId)} historyCount={10} />
+      {lastAuctionTheWordId && (
+        <HistoryCollection latestTheWordId={BigNumber.from(lastAuctionTheWordId)} historyCount={10} />
       )}
       <Documentation />
     </>

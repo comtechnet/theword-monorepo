@@ -20,7 +20,7 @@ describe('thewordAuctionHouse', () => {
   let thewordToken: thewordToken;
   let weth: Weth;
   let deployer: SignerWithAddress;
-  let noundersDAO: SignerWithAddress;
+  let theworddersDAO: SignerWithAddress;
   let bidderA: SignerWithAddress;
   let bidderB: SignerWithAddress;
   let snapshotId: number;
@@ -43,9 +43,9 @@ describe('thewordAuctionHouse', () => {
   }
 
   before(async () => {
-    [deployer, noundersDAO, bidderA, bidderB] = await ethers.getSigners();
+    [deployer, theworddersDAO, bidderA, bidderB] = await ethers.getSigners();
 
-    thewordToken = await deploythewordToken(deployer, noundersDAO.address, deployer.address);
+    thewordToken = await deploythewordToken(deployer, theworddersDAO.address, deployer.address);
     weth = await deployWeth(deployer);
     thewordAuctionHouse = await deploy(deployer);
 
@@ -76,7 +76,7 @@ describe('thewordAuctionHouse', () => {
     await expect(tx).to.be.revertedWith('Initializable: contract is already initialized');
   });
 
-  it('should allow the noundersDAO to unpause the contract and create the first auction', async () => {
+  it('should allow the theworddersDAO to unpause the contract and create the first auction', async () => {
     const tx = await thewordAuctionHouse.unpause();
     await tx.wait();
 
@@ -87,12 +87,12 @@ describe('thewordAuctionHouse', () => {
   it('should revert if a user creates a bid for an inactive auction', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(nounId.add(1), {
+    const { thewordId } = await thewordAuctionHouse.auction();
+    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId.add(1), {
       value: RESERVE_PRICE,
     });
 
-    await expect(tx).to.be.revertedWith('Noun not up for auction');
+    await expect(tx).to.be.revertedWith('TheWord not up for auction');
   });
 
   it('should revert if a user creates a bid for an expired auction', async () => {
@@ -100,8 +100,8 @@ describe('thewordAuctionHouse', () => {
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
-    const { nounId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    const { thewordId } = await thewordAuctionHouse.auction();
+    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
@@ -111,8 +111,8 @@ describe('thewordAuctionHouse', () => {
   it('should revert if a user creates a bid with an amount below the reserve price', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    const { thewordId } = await thewordAuctionHouse.auction();
+    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE - 1,
     });
 
@@ -122,11 +122,11 @@ describe('thewordAuctionHouse', () => {
   it('should revert if a user creates a bid less than the min bid increment percentage', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
-    await thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    const { thewordId } = await thewordAuctionHouse.auction();
+    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE * 50,
     });
-    const tx = thewordAuctionHouse.connect(bidderB).createBid(nounId, {
+    const tx = thewordAuctionHouse.connect(bidderB).createBid(thewordId, {
       value: RESERVE_PRICE * 51,
     });
 
@@ -138,13 +138,13 @@ describe('thewordAuctionHouse', () => {
   it('should refund the previous bidder when the following user creates a bid', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
-    await thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    const { thewordId } = await thewordAuctionHouse.auction();
+    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     const bidderAPostBidBalance = await bidderA.getBalance();
-    await thewordAuctionHouse.connect(bidderB).createBid(nounId, {
+    await thewordAuctionHouse.connect(bidderB).createBid(thewordId, {
       value: RESERVE_PRICE * 2,
     });
     const bidderAPostRefundBalance = await bidderA.getBalance();
@@ -155,19 +155,19 @@ describe('thewordAuctionHouse', () => {
   it('should cap the maximum bid griefing cost at 30K gas + the cost to wrap and transfer WETH', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordAuctionHouse.auction();
 
     const maliciousBidderFactory = new MaliciousBidderFactory(bidderA);
     const maliciousBidder = await maliciousBidderFactory.deploy();
 
     const maliciousBid = await maliciousBidder
       .connect(bidderA)
-      .bid(thewordAuctionHouse.address, nounId, {
+      .bid(thewordAuctionHouse.address, thewordId, {
         value: RESERVE_PRICE,
       });
     await maliciousBid.wait();
 
-    const tx = await thewordAuctionHouse.connect(bidderB).createBid(nounId, {
+    const tx = await thewordAuctionHouse.connect(bidderB).createBid(thewordId, {
       value: RESERVE_PRICE * 2,
       gasLimit: 1_000_000,
     });
@@ -180,38 +180,38 @@ describe('thewordAuctionHouse', () => {
   it('should emit an `AuctionBid` event on a successful bid', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    const { thewordId } = await thewordAuctionHouse.auction();
+    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     await expect(tx)
       .to.emit(thewordAuctionHouse, 'AuctionBid')
-      .withArgs(nounId, bidderA.address, RESERVE_PRICE, false);
+      .withArgs(thewordId, bidderA.address, RESERVE_PRICE, false);
   });
 
   it('should emit an `AuctionExtended` event if the auction end time is within the time buffer', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId, endTime } = await thewordAuctionHouse.auction();
+    const { thewordId, endTime } = await thewordAuctionHouse.auction();
 
     await ethers.provider.send('evm_setNextBlockTimestamp', [endTime.sub(60 * 5).toNumber()]); // Subtract 5 mins from current end time
 
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     await expect(tx)
       .to.emit(thewordAuctionHouse, 'AuctionExtended')
-      .withArgs(nounId, endTime.add(60 * 10));
+      .withArgs(thewordId, endTime.add(60 * 10));
   });
 
   it('should revert if auction settlement is attempted while the auction is still active', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordAuctionHouse.auction();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
     const tx = thewordAuctionHouse.connect(bidderA).settleCurrentAndCreateNewAuction();
@@ -222,9 +222,9 @@ describe('thewordAuctionHouse', () => {
   it('should emit `AuctionSettled` and `AuctionCreated` events if all conditions are met', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordAuctionHouse.auction();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
@@ -237,11 +237,11 @@ describe('thewordAuctionHouse', () => {
     const settledEvent = receipt.events?.find(e => e.event === 'AuctionSettled');
     const createdEvent = receipt.events?.find(e => e.event === 'AuctionCreated');
 
-    expect(settledEvent?.args?.nounId).to.equal(nounId);
+    expect(settledEvent?.args?.thewordId).to.equal(thewordId);
     expect(settledEvent?.args?.winner).to.equal(bidderA.address);
     expect(settledEvent?.args?.amount).to.equal(RESERVE_PRICE);
 
-    expect(createdEvent?.args?.nounId).to.equal(nounId.add(1));
+    expect(createdEvent?.args?.thewordId).to.equal(thewordId.add(1));
     expect(createdEvent?.args?.startTime).to.equal(timestamp);
     expect(createdEvent?.args?.endTime).to.equal(timestamp + DURATION);
   });
@@ -253,17 +253,17 @@ describe('thewordAuctionHouse', () => {
 
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordAuctionHouse.auction();
 
-    expect(nounId).to.equal(1);
+    expect(thewordId).to.equal(1);
   });
 
   it('should create a new auction if the auction house is paused and unpaused after an auction is settled', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordAuctionHouse.auction();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
@@ -275,7 +275,7 @@ describe('thewordAuctionHouse', () => {
 
     await expect(settleTx)
       .to.emit(thewordAuctionHouse, 'AuctionSettled')
-      .withArgs(nounId, bidderA.address, RESERVE_PRICE);
+      .withArgs(thewordId, bidderA.address, RESERVE_PRICE);
 
     const unpauseTx = await thewordAuctionHouse.unpause();
     const receipt = await unpauseTx.wait();
@@ -283,7 +283,7 @@ describe('thewordAuctionHouse', () => {
 
     const createdEvent = receipt.events?.find(e => e.event === 'AuctionCreated');
 
-    expect(createdEvent?.args?.nounId).to.equal(nounId.add(1));
+    expect(createdEvent?.args?.thewordId).to.equal(thewordId.add(1));
     expect(createdEvent?.args?.startTime).to.equal(timestamp);
     expect(createdEvent?.args?.endTime).to.equal(timestamp + DURATION);
   });
@@ -291,9 +291,9 @@ describe('thewordAuctionHouse', () => {
   it('should settle the current auction and pause the contract if the minter is updated while the auction house is unpaused', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordAuctionHouse.auction();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(nounId, {
+    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
@@ -305,17 +305,17 @@ describe('thewordAuctionHouse', () => {
 
     await expect(settleTx)
       .to.emit(thewordAuctionHouse, 'AuctionSettled')
-      .withArgs(nounId, bidderA.address, RESERVE_PRICE);
+      .withArgs(thewordId, bidderA.address, RESERVE_PRICE);
 
     const paused = await thewordAuctionHouse.paused();
 
     expect(paused).to.equal(true);
   });
 
-  it('should burn a Noun on auction settlement if no bids are received', async () => {
+  it('should burn a TheWord on auction settlement if no bids are received', async () => {
     await (await thewordAuctionHouse.unpause()).wait();
 
-    const { nounId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordAuctionHouse.auction();
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
@@ -323,6 +323,6 @@ describe('thewordAuctionHouse', () => {
 
     await expect(tx)
       .to.emit(thewordAuctionHouse, 'AuctionSettled')
-      .withArgs(nounId, '0x0000000000000000000000000000000000000000', 0);
+      .withArgs(thewordId, '0x0000000000000000000000000000000000000000', 0);
   });
 });

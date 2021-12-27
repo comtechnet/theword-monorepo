@@ -15,21 +15,21 @@ tags:
 - name: "Governance"
   description: "Functions for fetching governance data"
 - name: "theword"
-  description: "Information about Noun tokens"
+  description: "Information about TheWord tokens"
 - name: "Cryptography"
   description: "Functions for verifying identity"
 servers:
   - url: "https://theword.wtf/.netlify/functions/"
     description: Production Deployment
 paths:
-  /v0-is-noun-owner:
+  /v0-is-theword-owner:
     post:
       tags:
         - "Address Data"
-      summary: "Check if an Ethereum address owns a Noun"
-      operationId: "isNounOwner"
+      summary: "Check if an Ethereum address owns a TheWord"
+      operationId: "isTheWordOwner"
       requestBody:
-        description: The Ethereum address to check for Noun ownership
+        description: The Ethereum address to check for TheWord ownership
         content:
           "text/plain":
             schema:
@@ -37,20 +37,20 @@ paths:
             example: "0x2536c09e5f5691498805884fa37811be3b2bddb4"
       responses:
         "200":
-          description: "Does address own a Noun"
+          description: "Does address own a TheWord"
           content:
             application/json:
               schema:
                 type: boolean
               example: true
-  /v0-is-noun-delegate:
+  /v0-is-theword-delegate:
     post:
       tags:
         - "Address Data"
-      summary: "Check if an Ethereum is delegated the voting power of a Noun"
-      operationId: "isNounDelegate"
+      summary: "Check if an Ethereum is delegated the voting power of a TheWord"
+      operationId: "isTheWordDelegate"
       requestBody:
-        description: The Ethereum address to check for Noun delegation
+        description: The Ethereum address to check for TheWord delegation
         content:
           "text/plain":
             schema:
@@ -58,33 +58,33 @@ paths:
             example: "0x75ee6eb3d8dacf41ee2e5307090b197d3e1cca6e"
       responses:
         "200":
-          description: "Is address delegated the voting power of a Noun"
+          description: "Is address delegated the voting power of a TheWord"
           content:
             application/json:
               schema:
                 type: boolean
               example: true
-  /v0-noun-owners:
+  /v0-theword-owners:
     get:
       summary: "Ethereum addresses that own theword or are delegated voting power"
       tags:
         - "Address Data"
-      operationId: "getNounOwners"
+      operationId: "getTheWordOwners"
       responses:
         "200":
-          description: "Lite Noun information including owners and delegates"
+          description: "Lite TheWord information including owners and delegates"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/LiteNoun"
-  /v0-noun-votes:
+                  $ref: "#/components/schemas/LiteTheWord"
+  /v0-theword-votes:
     get:
       summary: "All theword and their votes"
       tags:
         - "Governance"
-      operationId: "getNounVotes"
+      operationId: "getTheWordVotes"
       responses:
         "200":
           description: "All theword and how the votes they cast in theword governance proposals"
@@ -93,7 +93,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/NounWithVotes"
+                  $ref: "#/components/schemas/TheWordWithVotes"
   /v0-proposal-votes:
     get:
       summary: "All governance proposals and their votes"
@@ -107,7 +107,7 @@ paths:
             application/json:
               schema:
                 type: object
-  /v0-noun-seeds:
+  /v0-theword-seeds:
     get:
       summary: "All theword and their seeds"
       tags:
@@ -121,7 +121,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/NounWithSeeds"
+                  $ref: "#/components/schemas/TheWordWithSeeds"
   /v0-verify-signature:
     post:
       summary: "Verify an ethereum signed message"
@@ -131,7 +131,7 @@ paths:
       parameters:
         - name: fetchParticipation
           in: "query"
-          description: If set to true and the signature is valid, fetch to see if the signer owns or is delegated a Noun
+          description: If set to true and the signature is valid, fetch to see if the signer owns or is delegated a TheWord
           schema:
             type: boolean
           example: false
@@ -167,7 +167,7 @@ components:
           description: "The integer support value: against (0), for (1), or abstain (2)"
     Seed:
       type: object
-      description: The attributes that make up a Noun's seed
+      description: The attributes that make up a TheWord's seed
       properties:
         head:
           type: integer
@@ -179,9 +179,9 @@ components:
           type: integer
         glasses:
           type: integer
-    NormalizedNoun:
+    NormalizedTheWord:
       type: object
-      description: A Noun record
+      description: A TheWord record
       properties:
         id:
           type: integer
@@ -190,7 +190,7 @@ components:
           type: string
         delegatedTo:
           type: string
-          description: The address that the Noun's voting power is delegated to
+          description: The address that the TheWord's voting power is delegated to
         votes:
           type: array
           items:
@@ -199,25 +199,25 @@ components:
           $ref: "#/components/schemas/Seed"
     ProposalVote:
       type: object
-      description: How a Noun voted on a governance proposal
+      description: How a TheWord voted on a governance proposal
       properties:
-        nounId:
+        thewordId:
           type: integer
         owner:
           type: string
-          description: The owner of the Noun
+          description: The owner of the TheWord
         delegatedTo:
           type: string
-          description: The Ethereum address the Noun's voting power is delegated
+          description: The Ethereum address the TheWord's voting power is delegated
         supportDetailed:
           type: integer
           description: "The integer support value: against (0), for (1), or abstain (2)"
     ProposalVotes:
       type: object
-      description: A map of Noun governance proposal ID to an array of votes
-    NounWithSeeds:
+      description: A map of TheWord governance proposal ID to an array of votes
+    TheWordWithSeeds:
       type: object
-      description: A Noun and its seed attributes
+      description: A TheWord and its seed attributes
       properties:
         id:
           type: integer
@@ -225,24 +225,24 @@ components:
         seed:
           type: object
           $ref: "#/components/schemas/Seed"
-    NounWithVotes:
+    TheWordWithVotes:
       type: object
-      description: How a Noun has voted on theword governance proposals
+      description: How a TheWord has voted on theword governance proposals
       properties:
         id:
           type: integer
           format: uint256
         owner:
           type: string
-          description: The owner of the Noun
+          description: The owner of the TheWord
         delegatedTo:
           type: string
-          description: The Ethereum address a Noun's voting power has been delegated to
+          description: The Ethereum address a TheWord's voting power has been delegated to
         votes:
           type: array
           items:
             $ref: "#/components/schemas/NormalizedVote"
-    LiteNoun:
+    LiteTheWord:
       type: object
       properties:
         id:
@@ -250,10 +250,10 @@ components:
           format: uint256
         owner:
           type: string
-          description: The owner of the Noun
+          description: The owner of the TheWord
         delegatedTo:
           type: string
-          description: The Ethereum address a Noun's voting power has been delegated to
+          description: The Ethereum address a TheWord's voting power has been delegated to
     VerifySignatureRequest:
       type: object
       required:
@@ -294,9 +294,9 @@ components:
         validSignature:
           type: boolean
           description: If the supplied signature is valid
-        isNounOwner:
+        isTheWordOwner:
           type: boolean
-          description: If the signature is valid and the address owns a Noun
-        isNounDelegate:
+          description: If the signature is valid and the address owns a TheWord
+        isTheWordDelegate:
           type: boolean
-          description: If the signature is valid and the address is delegated a Noun
+          description: If the signature is valid and the address is delegated a TheWord

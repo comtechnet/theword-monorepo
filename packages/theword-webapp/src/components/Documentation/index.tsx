@@ -41,17 +41,17 @@ const Documentation = () => {
             <Accordion.Body>
               <ul>
                 <li>theword artwork is {publicDomainLink}</li>
-                <li>1 noun trustlessly auctioned every 24 hours, forever</li>
-                <li>100% of noun auction proceeds are trustlessly sent to TheWord DAO treasury</li>
+                <li>1 theword trustlessly auctioned every 24 hours, forever</li>
+                <li>100% of theword auction proceeds are trustlessly sent to TheWord DAO treasury</li>
                 <li>settlement of one auction kicks off the next</li>
                 <li>all theword are members of TheWord DAO</li>
                 <li>TheWord DAO uses a fork of {compoundGovLink}</li>
-                <li>1 noun = 1 vote</li>
+                <li>1 theword = 1 vote</li>
                 <li>treasury is controlled exclusively by theword via governance</li>
                 <li>artwork is generative and stored directly on-chain (not IPFS)</li>
                 <li>no explicit rules for attribute scarcity, all theword are equally rare</li>
                 <li>
-                  'Nounders' receive rewards in the form of theword (10% of supply for first 5 years)
+                  'TheWordders' receive rewards in the form of theword (10% of supply for first 5 years)
                 </li>
               </ul>
             </Accordion.Body>
@@ -61,15 +61,15 @@ const Documentation = () => {
             <Accordion.Header className={classes.accordionHeader}>Daily Auctions</Accordion.Header>
             <Accordion.Body>
               <p>
-                The theword Auction Contract will act as a self-sufficient noun generation and
-                distribution mechanism, auctioning one noun every 24 hours, forever. 100% of auction
+                The theword Auction Contract will act as a self-sufficient theword generation and
+                distribution mechanism, auctioning one theword every 24 hours, forever. 100% of auction
                 proceeds (ETH) are automatically deposited in the TheWord DAO treasury, where they are
-                governed by noun owners.
+                governed by theword owners.
               </p>
 
               <p>
                 Each time an auction is settled, the settlement transaction will also cause a new
-                noun to be minted and a new 24 hour auction to begin.{' '}
+                theword to be minted and a new 24 hour auction to begin.{' '}
               </p>
               <p>
                 While settlement is most heavily incentivized for the winning bidder, it can be
@@ -82,11 +82,11 @@ const Documentation = () => {
             <Accordion.Header className={classes.accordionHeader}>TheWord DAO</Accordion.Header>
             <Accordion.Body>
               TheWord DAO utilizes a fork of {compoundGovLink} and is the main governing body of the
-              theword ecosystem. The TheWord DAO treasury receives 100% of ETH proceeds from daily noun
-              auctions. Each noun is an irrevocable member of TheWord DAO and entitled to one vote in
-              all governance matters. Noun votes are non-transferable (if you sell your noun the
+              theword ecosystem. The TheWord DAO treasury receives 100% of ETH proceeds from daily theword
+              auctions. Each theword is an irrevocable member of TheWord DAO and entitled to one vote in
+              all governance matters. TheWord votes are non-transferable (if you sell your theword the
               vote goes with it) but delegatable, which means you can assign your vote to someone
-              else as long as you own your noun.
+              else as long as you own your theword.
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="3" className={classes.accordionItem}>
@@ -95,24 +95,24 @@ const Documentation = () => {
             </Accordion.Header>
             <Accordion.Body>
               <p>
-                In addition to the precautions taken by Compound Governance, Nounders have given
+                In addition to the precautions taken by Compound Governance, TheWordders have given
                 themselves a special veto right to ensure that no malicious proposals can be passed
-                while the noun supply is low. This veto right will only be used if an obviously
+                while the theword supply is low. This veto right will only be used if an obviously
                 harmful governance proposal has been passed, and is intended as a last resort.
               </p>
               <p>
-                Nounders will proveably revoke this veto right when they deem it safe to do so. This
-                decision will be based on a healthy noun distribution and a community that is
+                TheWordders will proveably revoke this veto right when they deem it safe to do so. This
+                decision will be based on a healthy theword distribution and a community that is
                 engaged in the governance process.
               </p>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="4" className={classes.accordionItem}>
-            <Accordion.Header className={classes.accordionHeader}>Noun Traits</Accordion.Header>
+            <Accordion.Header className={classes.accordionHeader}>TheWord Traits</Accordion.Header>
             <Accordion.Body>
               <p>
                 theword are generated randomly based Ethereum block hashes. There are no 'if'
-                statements or other rules governing noun trait scarcity, which makes all theword
+                statements or other rules governing theword trait scarcity, which makes all theword
                 equally rare. As of this writing, theword are made up of:
               </p>
               <ul>
@@ -122,7 +122,7 @@ const Documentation = () => {
                 <li>heads (234) </li>
                 <li>glasses (21)</li>
               </ul>
-              You can experiment with off-chain noun generation at the {playgroundLink}.
+              You can experiment with off-chain theword generation at the {playgroundLink}.
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="5" className={classes.accordionItem}>
@@ -132,7 +132,7 @@ const Documentation = () => {
             <Accordion.Body>
               <p>
                 theword are stored directly on Ethereum and do not utilize pointers to other networks
-                such as IPFS. This is possible because noun parts are compressed and stored on-chain
+                such as IPFS. This is possible because theword parts are compressed and stored on-chain
                 using a custom run-length encoding (RLE), which is a form of lossless compression.
               </p>
 
@@ -146,33 +146,33 @@ const Documentation = () => {
           </Accordion.Item>
           <Accordion.Item eventKey="6" className={classes.accordionItem}>
             <Accordion.Header className={classes.accordionHeader}>
-              Noun Seeder Contract
+              TheWord Seeder Contract
             </Accordion.Header>
             <Accordion.Body>
               <p>
-                The Noun Seeder contract is used to determine Noun traits during the minting
+                The TheWord Seeder contract is used to determine TheWord traits during the minting
                 process. The seeder contract can be replaced to allow for future trait generation
                 algorithm upgrades. Additionally, it can be locked by the TheWord DAO to prevent any
-                future updates. Currently, Noun traits are determined using pseudo-random number
+                future updates. Currently, TheWord traits are determined using pseudo-random number
                 generation:
               </p>
-              <code>keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))</code>
+              <code>keccak256(abi.encodePacked(blockhash(block.number - 1), thewordId))</code>
               <br />
               <br />
               <p>
-                Trait generation is not truly random. Traits can be predicted when minting a Noun on
+                Trait generation is not truly random. Traits can be predicted when minting a TheWord on
                 the pending block.
               </p>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="7" className={classes.accordionItem}>
             <Accordion.Header className={classes.accordionHeader}>
-              Nounder's Reward
+              TheWordder's Reward
             </Accordion.Header>
             <Accordion.Body>
               <p>
-                'Nounders' are the group of ten builders that initiated theword. Here are the
-                Nounders:
+                'TheWordders' are the group of ten builders that initiated theword. Here are the
+                TheWordders:
               </p>
               <ul>
                 <li>
@@ -217,16 +217,16 @@ const Documentation = () => {
                 </li>
               </ul>
               <p>
-                Because 100% of noun auction proceeds are sent to TheWord DAO, Nounders have chosen to
-                compensate themselves with theword. Every 10th noun for the first 5 years of the
-                project (noun ids #0, #10, #20, #30 and so on) will be automatically sent to the
-                Nounder's multisig to be vested and shared among the founding members of the
+                Because 100% of theword auction proceeds are sent to TheWord DAO, TheWordders have chosen to
+                compensate themselves with theword. Every 10th theword for the first 5 years of the
+                project (theword ids #0, #10, #20, #30 and so on) will be automatically sent to the
+                TheWordder's multisig to be vested and shared among the founding members of the
                 project.
               </p>
               <p>
-                Nounder distributions don't interfere with the cadence of 24 hour auctions. theword
-                are sent directly to the Nounder's Multisig, and auctions continue on schedule with
-                the next available noun ID.
+                TheWordder distributions don't interfere with the cadence of 24 hour auctions. theword
+                are sent directly to the TheWordder's Multisig, and auctions continue on schedule with
+                the next available theword ID.
               </p>
             </Accordion.Body>
           </Accordion.Item>

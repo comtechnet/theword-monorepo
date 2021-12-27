@@ -27,7 +27,7 @@ interface Contract {
 }
 
 task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and thewordToken')
-  .addParam('noundersdao', 'The nounders DAO contract address', undefined, types.string)
+  .addParam('theworddersdao', 'The thewordders DAO contract address', undefined, types.string)
   .addParam('weth', 'The WETH contract address', undefined, types.string)
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 5 * 60, types.int)
   .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int)
@@ -73,7 +73,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
       thewordSeeder: {},
       thewordToken: {
         args: [
-          args.noundersdao,
+          args.theworddersdao,
           expectedAuctionHouseProxyAddress,
           () => contracts['thewordDescriptor'].address,
           () => contracts['thewordSeeder'].address,
@@ -109,7 +109,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
         args: [
           () => contracts['thewordDAOExecutor'].address,
           () => contracts['thewordToken'].address,
-          args.noundersdao,
+          args.theworddersdao,
           () => contracts['thewordDAOExecutor'].address,
           () => contracts['thewordDAOLogicV1'].address,
           args.votingPeriod,

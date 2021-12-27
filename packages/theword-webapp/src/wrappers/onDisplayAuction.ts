@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { useAppSelector } from '../hooks';
-import { generateEmptyNounderAuction, isNounderNoun } from '../utils/nounderNoun';
+import { generateEmptyTheWordderAuction, isTheWordderTheWord } from '../utils/thewordderTheWord';
 import { Bid, BidEvent } from '../utils/types';
 import { Auction } from './thewordAuction';
 
@@ -10,14 +10,14 @@ const deserializeAuction = (reduxSafeAuction: Auction): Auction => {
     bidder: reduxSafeAuction.bidder,
     startTime: BigNumber.from(reduxSafeAuction.startTime),
     endTime: BigNumber.from(reduxSafeAuction.endTime),
-    nounId: BigNumber.from(reduxSafeAuction.nounId),
+    thewordId: BigNumber.from(reduxSafeAuction.thewordId),
     settled: false,
   };
 };
 
 const deserializeBid = (reduxSafeBid: BidEvent): Bid => {
   return {
-    nounId: BigNumber.from(reduxSafeBid.nounId),
+    thewordId: BigNumber.from(reduxSafeBid.thewordId),
     sender: reduxSafeBid.sender,
     value: BigNumber.from(reduxSafeBid.value),
     extended: reduxSafeBid.extended,
@@ -34,38 +34,38 @@ const deserializeBids = (reduxSafeBids: BidEvent[]): Bid[] => {
 };
 
 const useOnDisplayAuction = (): Auction | undefined => {
-  const lastAuctionNounId = useAppSelector(state => state.auction.activeAuction?.nounId);
-  const onDisplayAuctionNounId = useAppSelector(
-    state => state.onDisplayAuction.onDisplayAuctionNounId,
+  const lastAuctionTheWordId = useAppSelector(state => state.auction.activeAuction?.thewordId);
+  const onDisplayAuctionTheWordId = useAppSelector(
+    state => state.onDisplayAuction.onDisplayAuctionTheWordId,
   );
   const currentAuction = useAppSelector(state => state.auction.activeAuction);
   const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
 
   if (
-    onDisplayAuctionNounId === undefined ||
-    lastAuctionNounId === undefined ||
+    onDisplayAuctionTheWordId === undefined ||
+    lastAuctionTheWordId === undefined ||
     currentAuction === undefined ||
     !pastAuctions
   )
     return undefined;
 
   // current auction
-  if (BigNumber.from(onDisplayAuctionNounId).eq(lastAuctionNounId)) {
+  if (BigNumber.from(onDisplayAuctionTheWordId).eq(lastAuctionTheWordId)) {
     return deserializeAuction(currentAuction);
   } else {
-    // nounder auction
-    if (isNounderNoun(BigNumber.from(onDisplayAuctionNounId))) {
-      const emptyNounderAuction = generateEmptyNounderAuction(
-        BigNumber.from(onDisplayAuctionNounId),
+    // thewordder auction
+    if (isTheWordderTheWord(BigNumber.from(onDisplayAuctionTheWordId))) {
+      const emptyTheWordderAuction = generateEmptyTheWordderAuction(
+        BigNumber.from(onDisplayAuctionTheWordId),
         pastAuctions,
       );
 
-      return deserializeAuction(emptyNounderAuction);
+      return deserializeAuction(emptyTheWordderAuction);
     } else {
       // past auction
       const reduxSafeAuction: Auction | undefined = pastAuctions.find(auction => {
-        const nounId = auction.activeAuction && BigNumber.from(auction.activeAuction.nounId);
-        return nounId && nounId.toNumber() === onDisplayAuctionNounId;
+        const thewordId = auction.activeAuction && BigNumber.from(auction.activeAuction.thewordId);
+        return thewordId && thewordId.toNumber() === onDisplayAuctionTheWordId;
       })?.activeAuction;
 
       return reduxSafeAuction ? deserializeAuction(reduxSafeAuction) : undefined;
@@ -73,19 +73,19 @@ const useOnDisplayAuction = (): Auction | undefined => {
   }
 };
 
-export const useAuctionBids = (auctionNounId: BigNumber): Bid[] | undefined => {
-  const lastAuctionNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+export const useAuctionBids = (auctionTheWordId: BigNumber): Bid[] | undefined => {
+  const lastAuctionTheWordId = useAppSelector(state => state.onDisplayAuction.lastAuctionTheWordId);
   const lastAuctionBids = useAppSelector(state => state.auction.bids);
   const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
 
   // auction requested is active auction
-  if (lastAuctionNounId === auctionNounId.toNumber()) {
+  if (lastAuctionTheWordId === auctionTheWordId.toNumber()) {
     return deserializeBids(lastAuctionBids);
   } else {
     // find bids for past auction requested
     const bidEvents: BidEvent[] | undefined = pastAuctions.find(auction => {
-      const nounId = auction.activeAuction && BigNumber.from(auction.activeAuction.nounId);
-      return nounId && nounId.eq(auctionNounId);
+      const thewordId = auction.activeAuction && BigNumber.from(auction.activeAuction.thewordId);
+      return thewordId && thewordId.eq(auctionTheWordId);
     })?.bids;
 
     return bidEvents && deserializeBids(bidEvents);

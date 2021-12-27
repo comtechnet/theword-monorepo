@@ -2,7 +2,7 @@
   "name": "@theword/subgraph",
   "version": "0.1.0",
   "description": "A subgraph that indexes theword events",
-  "author": "Nounders",
+  "author": "TheWordders",
   "homepage": "https://theword.wtf",
   "license": "GPL-3.0",
   "main": "build/index.js",

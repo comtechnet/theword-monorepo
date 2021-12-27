@@ -56,16 +56,16 @@
   font-size: 15px;
   color: #8c8d92;
 }
-.nounYearsFooter {
+.thewordYearsFooter {
   font-style: italic;
 }
-.nounImg {
+.thewordImg {
   border-radius: 16px;
 }
-.nounImg:hover {
+.thewordImg:hover {
   cursor: pointer;
   transform: scale(1.01);
 }
-.nounWrapper {
+.thewordWrapper {
   margin-bottom: 1rem;
 }

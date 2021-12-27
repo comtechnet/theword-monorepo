@@ -1,4 +1,4 @@
-.nounButton {
+.thewordButton {
   height: 40px;
   background-color: #e9ebf3;
   border-radius: 10px;
@@ -17,16 +17,16 @@
   padding: 0px 10px;
 }
 
-.nounButton:hover {
+.thewordButton:hover {
   text-decoration: none;
   background-color: white;
 }
 
-.nounButton:active {
+.thewordButton:active {
   color: black;
 }
 
-.nounButtonContents {
+.thewordButtonContents {
   display: flex;
   flex-direction: row;
   justify-content: space-between;

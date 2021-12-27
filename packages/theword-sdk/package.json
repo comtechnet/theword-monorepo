@@ -2,7 +2,7 @@
   "name": "@theword/sdk",
   "version": "0.1.4",
   "description": "Useful tooling for interacting with the theword protocol",
-  "author": "Nounders",
+  "author": "TheWordders",
   "homepage": "https://theword.wtf",
   "license": "GPL-3.0",
   "main": "dist/index.js",

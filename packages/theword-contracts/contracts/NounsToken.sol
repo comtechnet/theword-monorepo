@@ -27,8 +27,8 @@ import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 
 contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
-    // The nounders DAO address (creators org)
-    address public noundersDAO;
+    // The thewordders DAO address (creators org)
+    address public theworddersDAO;
 
     // An address who has permissions to mint theword
     address public minter;
@@ -48,11 +48,11 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     // Whether the seeder can be updated
     bool public isSeederLocked;
 
-    // The noun seeds
+    // The theword seeds
     mapping(uint256 => IthewordSeeder.Seed) public seeds;
 
-    // The internal noun ID tracker
-    uint256 private _currentNounId;
+    // The internal theword ID tracker
+    uint256 private _currentTheWordId;
 
     // IPFS content hash of contract-level metadata
     string private _contractURIHash = 'QmZi1n79FqWt2tTLwCqiy6nLM6xLGRsEPQ5JmReJQKNNzX';
@@ -85,10 +85,10 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Require that the sender is the nounders DAO.
+     * @notice Require that the sender is the thewordders DAO.
      */
-    modifier onlyNoundersDAO() {
-        require(msg.sender == noundersDAO, 'Sender is not the nounders DAO');
+    modifier onlyTheWorddersDAO() {
+        require(msg.sender == theworddersDAO, 'Sender is not the thewordders DAO');
         _;
     }
 
@@ -101,13 +101,13 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     }
 
     constructor(
-        address _noundersDAO,
+        address _theworddersDAO,
         address _minter,
         IthewordDescriptor _descriptor,
         IthewordSeeder _seeder,
         IProxyRegistry _proxyRegistry
-    ) ERC721('theword', 'NOUN') {
-        noundersDAO = _noundersDAO;
+    ) ERC721('theword', 'THEWORD') {
+        theworddersDAO = _theworddersDAO;
         minter = _minter;
         descriptor = _descriptor;
         seeder = _seeder;
@@ -141,24 +141,24 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Mint a Noun to the minter, along with a possible nounders reward
-     * Noun. Nounders reward theword are minted every 10 theword, starting at 0,
-     * until 183 nounder theword have been minted (5 years w/ 24 hour auctions).
+     * @notice Mint a TheWord to the minter, along with a possible thewordders reward
+     * TheWord. TheWordders reward theword are minted every 10 theword, starting at 0,
+     * until 183 thewordder theword have been minted (5 years w/ 24 hour auctions).
      * @dev Call _mintTo with the to address(es).
      */
     function mint() public override onlyMinter returns (uint256) {
-        if (_currentNounId <= 1820 && _currentNounId % 10 == 0) {
-            _mintTo(noundersDAO, _currentNounId++);
+        if (_currentTheWordId <= 1820 && _currentTheWordId % 10 == 0) {
+            _mintTo(theworddersDAO, _currentTheWordId++);
         }
-        return _mintTo(minter, _currentNounId++);
+        return _mintTo(minter, _currentTheWordId++);
     }
 
     /**
-     * @notice Burn a noun.
+     * @notice Burn a theword.
      */
-    function burn(uint256 nounId) public override onlyMinter {
-        _burn(nounId);
-        emit NounBurned(nounId);
+    function burn(uint256 thewordId) public override onlyMinter {
+        _burn(thewordId);
+        emit TheWordBurned(thewordId);
     }
 
     /**
@@ -180,13 +180,13 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Set the nounders DAO.
-     * @dev Only callable by the nounders DAO when not locked.
+     * @notice Set the thewordders DAO.
+     * @dev Only callable by the thewordders DAO when not locked.
      */
-    function setNoundersDAO(address _noundersDAO) external override onlyNoundersDAO {
-        noundersDAO = _noundersDAO;
+    function setTheWorddersDAO(address _theworddersDAO) external override onlyTheWorddersDAO {
+        theworddersDAO = _theworddersDAO;
 
-        emit NoundersDAOUpdated(_noundersDAO);
+        emit TheWorddersDAOUpdated(_theworddersDAO);
     }
 
     /**
@@ -250,14 +250,14 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Mint a Noun with `nounId` to the provided `to` address.
+     * @notice Mint a TheWord with `thewordId` to the provided `to` address.
      */
-    function _mintTo(address to, uint256 nounId) internal returns (uint256) {
-        IthewordSeeder.Seed memory seed = seeds[nounId] = seeder.generateSeed(nounId, descriptor);
+    function _mintTo(address to, uint256 thewordId) internal returns (uint256) {
+        IthewordSeeder.Seed memory seed = seeds[thewordId] = seeder.generateSeed(thewordId, descriptor);
 
-        _mint(owner(), to, nounId);
-        emit NounCreated(nounId, seed);
+        _mint(owner(), to, thewordId);
+        emit TheWordCreated(thewordId, seed);
 
-        return nounId;
+        return thewordId;
     }
 }

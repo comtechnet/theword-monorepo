@@ -18,7 +18,7 @@ export interface Auction {
   bidder: string;
   endTime: EthersBN;
   startTime: EthersBN;
-  nounId: EthersBN;
+  thewordId: EthersBN;
   settled: boolean;
 }
 

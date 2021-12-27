@@ -1,43 +1,43 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface OnDisplayAuctionState {
-  lastAuctionNounId: number | undefined;
-  onDisplayAuctionNounId: number | undefined;
+  lastAuctionTheWordId: number | undefined;
+  onDisplayAuctionTheWordId: number | undefined;
 }
 
 const initialState: OnDisplayAuctionState = {
-  lastAuctionNounId: undefined,
-  onDisplayAuctionNounId: undefined,
+  lastAuctionTheWordId: undefined,
+  onDisplayAuctionTheWordId: undefined,
 };
 
 const onDisplayAuction = createSlice({
   name: 'onDisplayAuction',
   initialState: initialState,
   reducers: {
-    setLastAuctionNounId: (state, action: PayloadAction<number>) => {
-      state.lastAuctionNounId = action.payload;
+    setLastAuctionTheWordId: (state, action: PayloadAction<number>) => {
+      state.lastAuctionTheWordId = action.payload;
     },
-    setOnDisplayAuctionNounId: (state, action: PayloadAction<number>) => {
-      state.onDisplayAuctionNounId = action.payload;
+    setOnDisplayAuctionTheWordId: (state, action: PayloadAction<number>) => {
+      state.onDisplayAuctionTheWordId = action.payload;
     },
-    setPrevOnDisplayAuctionNounId: state => {
-      if (!state.onDisplayAuctionNounId) return;
-      if (state.onDisplayAuctionNounId === 0) return;
-      state.onDisplayAuctionNounId = state.onDisplayAuctionNounId - 1;
+    setPrevOnDisplayAuctionTheWordId: state => {
+      if (!state.onDisplayAuctionTheWordId) return;
+      if (state.onDisplayAuctionTheWordId === 0) return;
+      state.onDisplayAuctionTheWordId = state.onDisplayAuctionTheWordId - 1;
     },
-    setNextOnDisplayAuctionNounId: state => {
-      if (state.onDisplayAuctionNounId === undefined) return;
-      if (state.lastAuctionNounId === state.onDisplayAuctionNounId) return;
-      state.onDisplayAuctionNounId = state.onDisplayAuctionNounId + 1;
+    setNextOnDisplayAuctionTheWordId: state => {
+      if (state.onDisplayAuctionTheWordId === undefined) return;
+      if (state.lastAuctionTheWordId === state.onDisplayAuctionTheWordId) return;
+      state.onDisplayAuctionTheWordId = state.onDisplayAuctionTheWordId + 1;
     },
   },
 });
 
 export const {
-  setLastAuctionNounId,
-  setOnDisplayAuctionNounId,
-  setPrevOnDisplayAuctionNounId,
-  setNextOnDisplayAuctionNounId,
+  setLastAuctionTheWordId,
+  setOnDisplayAuctionTheWordId,
+  setPrevOnDisplayAuctionTheWordId,
+  setNextOnDisplayAuctionTheWordId,
 } = onDisplayAuction.actions;
 
 export default onDisplayAuction.reducer;

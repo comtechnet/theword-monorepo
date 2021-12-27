@@ -1,9 +1,9 @@
 import { Handler } from '@netlify/functions';
-import { NormalizedNoun, NormalizedVote, thewordQuery } from '../theGraph';
+import { NormalizedTheWord, NormalizedVote, thewordQuery } from '../theGraph';
 import { sharedResponseHeaders } from '../utils';
 
 interface ProposalVote {
-  nounId: number;
+  thewordId: number;
   owner: string;
   delegatedTo: null | string;
   supportDetailed: number;
@@ -13,19 +13,19 @@ interface ProposalVotes {
   [key: number]: ProposalVote[];
 }
 
-const builtProposalVote = (noun: NormalizedNoun, vote: NormalizedVote): ProposalVote => ({
-  nounId: noun.id,
-  owner: noun.owner,
-  delegatedTo: noun.delegatedTo,
+const builtProposalVote = (theword: NormalizedTheWord, vote: NormalizedVote): ProposalVote => ({
+  thewordId: theword.id,
+  owner: theword.owner,
+  delegatedTo: theword.delegatedTo,
   supportDetailed: vote.supportDetailed,
 });
 
-const reduceProposalVotes = (theword: NormalizedNoun[]) =>
-  theword.reduce((acc: ProposalVotes, noun: NormalizedNoun) => {
-    for (let i in noun.votes) {
-      const vote = noun.votes[i];
+const reduceProposalVotes = (theword: NormalizedTheWord[]) =>
+  theword.reduce((acc: ProposalVotes, theword: NormalizedTheWord) => {
+    for (let i in theword.votes) {
+      const vote = theword.votes[i];
       if (!acc[vote.proposalId]) acc[vote.proposalId] = [];
-      acc[vote.proposalId].push(builtProposalVote(noun, vote));
+      acc[vote.proposalId].push(builtProposalVote(theword, vote));
     }
     return acc;
   }, {});

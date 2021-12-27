@@ -22,12 +22,12 @@ import { IthewordDescriptor } from './interfaces/IthewordDescriptor.sol';
 
 contract thewordSeeder is IthewordSeeder {
     /**
-     * @notice Generate a pseudo-random Noun seed using the previous blockhash and noun ID.
+     * @notice Generate a pseudo-random TheWord seed using the previous blockhash and theword ID.
      */
     // prettier-ignore
-    function generateSeed(uint256 nounId, IthewordDescriptor descriptor) external view override returns (Seed memory) {
+    function generateSeed(uint256 thewordId, IthewordDescriptor descriptor) external view override returns (Seed memory) {
         uint256 pseudorandomness = uint256(
-            keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))
+            keccak256(abi.encodePacked(blockhash(block.number - 1), thewordId))
         );
 
         uint256 backgroundCount = descriptor.backgroundCount();

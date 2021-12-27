@@ -1,5 +1,5 @@
 type Seed @entity {
-  "The Noun's ERC721 token id"
+  "The TheWord's ERC721 token id"
   id: ID!
 
   "The background index"
@@ -18,17 +18,17 @@ type Seed @entity {
   glasses: BigInt!
 }
 
-type Noun @entity {
-  "The Noun's ERC721 token id"
+type TheWord @entity {
+  "The TheWord's ERC721 token id"
   id: ID!
 
-  "The seed used to determine the Noun's traits"
+  "The seed used to determine the TheWord's traits"
   seed: Seed
 
-  "The owner of the Noun"
+  "The owner of the TheWord"
   owner: Account!
 
-  "Historical votes for the Noun"
+  "Historical votes for the TheWord"
   votes: [Vote!]! @derivedFrom(field: "theword")
 }
 
@@ -36,8 +36,8 @@ type Bid @entity {
   "Bid transaction hash"
   id: ID!
 
-  "The Noun being bid on"
-  noun: Noun!
+  "The TheWord being bid on"
+  theword: TheWord!
 
   "Bid amount"
   amount: BigInt!
@@ -59,11 +59,11 @@ type Bid @entity {
 }
 
 type Auction @entity {
-  "The Noun's ERC721 token id"
+  "The TheWord's ERC721 token id"
   id: ID!
 
-  "The Noun"
-  noun: Noun!
+  "The TheWord"
+  theword: TheWord!
 
   "The current highest bid amount"
   amount: BigInt!
@@ -100,10 +100,10 @@ type Account @entity {
   "Delegate address of the token holder which will participate in votings. Delegates don't need to hold any tokens and can even be the token holder itself."
   delegate: Delegate
 
-  "Noun balance of this address expressed in the smallest unit of the theword ERC721 Token"
+  "TheWord balance of this address expressed in the smallest unit of the theword ERC721 Token"
   tokenBalanceRaw: BigInt!
 
-  "Noun balance of this address expressed as a BigInt normalized value for the theword ERC721 Token"
+  "TheWord balance of this address expressed as a BigInt normalized value for the theword ERC721 Token"
   tokenBalance: BigInt!
 
   "Total amount of theword ever held by this address expressed in the smallest unit of the theword ERC721 Token"
@@ -113,7 +113,7 @@ type Account @entity {
   totalTokensHeld: BigInt!
 
   "The theword owned by this account"
-  theword: [Noun!]!
+  theword: [TheWord!]!
 }
 
 type Delegate @entity {
@@ -132,7 +132,7 @@ type Delegate @entity {
   tokenHoldersRepresented: [Account!]! @derivedFrom(field: "delegate")
 
   "theword that this delegate represents"
-  thewordRepresented: [Noun!]!
+  thewordRepresented: [TheWord!]!
 
   "Votes that a delegate has made in different proposals"
   votes: [Vote!]! @derivedFrom(field: "voter")
@@ -208,7 +208,7 @@ type Vote @entity {
   voter: Delegate!
 
   "The theword used to vote"
-  theword: [Noun!]
+  theword: [TheWord!]
 
   "Proposal that is being voted on"
   proposal: Proposal!

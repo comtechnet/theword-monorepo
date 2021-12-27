@@ -3,19 +3,19 @@ import { thewordQuery } from '../theGraph';
 import * as R from 'ramda';
 import { sharedResponseHeaders } from '../utils';
 
-export interface LiteNoun {
+export interface LiteTheWord {
   id: number;
   owner: string;
   delegatedTo: null | string;
 }
 
-const lightenNoun = R.pick(['id', 'owner', 'delegatedTo']);
+const lightenTheWord = R.pick(['id', 'owner', 'delegatedTo']);
 
-const lightentheword = R.map(lightenNoun);
+const lightentheword = R.map(lightenTheWord);
 
 const handler: Handler = async (event, context) => {
   const theword = await thewordQuery();
-  const litetheword: LiteNoun[] = lightentheword(theword);
+  const litetheword: LiteTheWord[] = lightentheword(theword);
   return {
     statusCode: 200,
     headers: {

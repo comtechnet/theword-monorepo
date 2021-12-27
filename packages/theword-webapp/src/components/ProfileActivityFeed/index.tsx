@@ -5,39 +5,39 @@ import classes from './ProfileActivityFeed.module.css';
 
 import { useQuery } from '@apollo/client';
 import { Proposal, useAllProposals } from '../../wrappers/thewordDao';
-import { nounVotingHistoryQuery } from '../../wrappers/subgraph';
-import NounProfileVoteRow from '../NounProfileVoteRow';
-import { LoadingNoun } from '../Noun';
+import { thewordVotingHistoryQuery } from '../../wrappers/subgraph';
+import TheWordProfileVoteRow from '../TheWordProfileVoteRow';
+import { LoadingTheWord } from '../TheWord';
 
 interface ProfileActivityFeedProps {
-  nounId: number;
+  thewordId: number;
 }
 
 interface ProposalInfo {
   id: number;
 }
 
-export interface NounVoteHistory {
+export interface TheWordVoteHistory {
   proposal: ProposalInfo;
   support: boolean;
   supportDetailed: number;
 }
 
 const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
-  const { nounId } = props;
+  const { thewordId } = props;
 
-  const { loading, error, data } = useQuery(nounVotingHistoryQuery(nounId));
+  const { loading, error, data } = useQuery(thewordVotingHistoryQuery(thewordId));
   const { data: proposals } = useAllProposals();
 
   if (loading) {
     return <></>;
   } else if (error) {
-    return <div>Failed to fetch noun activity history</div>;
+    return <div>Failed to fetch theword activity history</div>;
   }
 
-  const nounVotes: { [key: string]: NounVoteHistory } = data.noun.votes
+  const thewordVotes: { [key: string]: TheWordVoteHistory } = data.theword.votes
     .slice(0)
-    .reduce((acc: any, h: NounVoteHistory, i: number) => {
+    .reduce((acc: any, h: TheWordVoteHistory, i: number) => {
       acc[h.proposal.id] = h;
       return acc;
     }, {});
@@ -52,25 +52,25 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
         </div>
 
         <Table responsive hover>
-          <tbody className={classes.nounInfoPadding}>
+          <tbody className={classes.thewordInfoPadding}>
             {proposals?.length ? (
               proposals
                 .slice(0)
                 .reverse()
                 .map((p: Proposal, i: number) => {
-                  const vote = p.id ? nounVotes[p.id] : undefined;
+                  const vote = p.id ? thewordVotes[p.id] : undefined;
                   return (
-                    <NounProfileVoteRow
+                    <TheWordProfileVoteRow
                       proposal={p}
                       vote={vote}
                       latestProposalId={latestProposalId}
-                      nounId={nounId}
+                      thewordId={thewordId}
                       key={i}
                     />
                   );
                 })
             ) : (
-              <LoadingNoun />
+              <LoadingTheWord />
             )}
           </tbody>
         </Table>

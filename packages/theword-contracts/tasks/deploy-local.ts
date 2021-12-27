@@ -24,7 +24,7 @@ interface Contract {
 }
 
 task('deploy-local', 'Deploy contracts to hardhat')
-  .addOptionalParam('noundersdao', 'The nounders DAO contract address')
+  .addOptionalParam('theworddersdao', 'The thewordders DAO contract address')
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 30, types.int) // Default: 30 seconds
   .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int) // Default: 1 wei
   .addOptionalParam(
@@ -72,7 +72,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
       thewordSeeder: {},
       thewordToken: {
         args: [
-          args.noundersdao || deployer.address,
+          args.theworddersdao || deployer.address,
           expectedAuctionHouseProxyAddress,
           () => contracts['thewordDescriptor'].instance?.address,
           () => contracts['thewordSeeder'].instance?.address,
@@ -108,7 +108,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
         args: [
           () => contracts['thewordDAOExecutor'].instance?.address,
           () => contracts['thewordToken'].instance?.address,
-          args.noundersdao || deployer.address,
+          args.theworddersdao || deployer.address,
           () => contracts['thewordDAOExecutor'].instance?.address,
           () => contracts['thewordDAOLogicV1'].instance?.address,
           args.votingPeriod,

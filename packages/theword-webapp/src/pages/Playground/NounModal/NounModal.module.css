@@ -9,33 +9,33 @@
   width: 25rem;
 }
 
-.displayNounFooter {
+.displayTheWordFooter {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.displayNounFooter span {
+.displayTheWordFooter span {
   color: white;
   font-weight: bold;
   margin-bottom: 1rem;
 }
-.displayNounFooter button {
+.displayTheWordFooter button {
   width: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: none;
 }
 
-.displayNounFooter button:hover,
-.displayNounFooter button:active,
-.displayNounFooter button:focus {
+.displayTheWordFooter button:hover,
+.displayTheWordFooter button:active,
+.displayTheWordFooter button:focus {
   background: rgba(255, 255, 255, 0.4) !important;
   box-shadow: none !important;
 }
 
-.nounImg {
+.thewordImg {
   border-radius: 16px;
 }
-.nounWrapper {
+.thewordWrapper {
   margin-bottom: 1rem;
 }
 

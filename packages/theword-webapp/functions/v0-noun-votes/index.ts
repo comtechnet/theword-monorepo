@@ -3,27 +3,27 @@ import { NormalizedVote, thewordQuery } from '../theGraph';
 import * as R from 'ramda';
 import { sharedResponseHeaders } from '../utils';
 
-interface NounVote {
+interface TheWordVote {
   id: number;
   owner: string;
   delegatedTo: null | string;
   votes: NormalizedVote[];
 }
 
-const buildNounVote = R.pick(['id', 'owner', 'delegatedTo', 'votes']);
+const buildTheWordVote = R.pick(['id', 'owner', 'delegatedTo', 'votes']);
 
-const buildNounVotes = R.map(buildNounVote);
+const buildTheWordVotes = R.map(buildTheWordVote);
 
 const handler: Handler = async (event, context) => {
   const theword = await thewordQuery();
-  const nounVotes: NounVote[] = buildNounVotes(theword);
+  const thewordVotes: TheWordVote[] = buildTheWordVotes(theword);
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(nounVotes),
+    body: JSON.stringify(thewordVotes),
   };
 };
 

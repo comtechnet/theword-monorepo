@@ -2,7 +2,7 @@ import { Handler } from '@netlify/functions';
 import { verifyMessage } from '@ethersproject/wallet';
 import { has } from 'ramda';
 import { bigNumbersEqual, sharedResponseHeaders } from '../utils';
-import { isNounDelegate, isNounOwner, thewordQuery } from '../theGraph';
+import { isTheWordDelegate, isTheWordOwner, thewordQuery } from '../theGraph';
 
 interface ErrorReason {
   error: string;
@@ -40,8 +40,8 @@ const handler: Handler = async (event, context) => {
   if (event.queryStringParameters.fetchParticipation && validSignature) {
     const normalizedtheword = await thewordQuery();
     participantData = {
-      isNounDelegate: isNounDelegate(signer, normalizedtheword),
-      isNounOwner: isNounOwner(signer, normalizedtheword),
+      isTheWordDelegate: isTheWordDelegate(signer, normalizedtheword),
+      isTheWordOwner: isTheWordOwner(signer, normalizedtheword),
     };
   }
 

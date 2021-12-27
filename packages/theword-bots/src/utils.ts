@@ -26,19 +26,19 @@ export async function resolveEnsOrFormatAddress(address: string) {
 export function formatAuctionStartedTweetText(auctionId: number) {
   return `＊Bleep Bloop Blop＊
         
- An auction has started for Noun #${auctionId}
+ An auction has started for TheWord #${auctionId}
  Learn more at https://theword.wtf`;
 }
 
 /**
  * Get the formatted text for a new bid.
- * @param id The auction/noun id
+ * @param id The auction/theword id
  * @param bid The amount of the current bid
  * @returns The bid update tweet text
  */
 export async function formatBidMessageText(id: number, bid: Bid) {
   const bidder = await resolveEnsOrFormatAddress(bid.bidder.id);
-  return `Noun ${id} has received a bid of Ξ${ethers.utils.formatEther(bid.amount)} from ${bidder}`;
+  return `TheWord ${id} has received a bid of Ξ${ethers.utils.formatEther(bid.amount)} from ${bidder}`;
 }
 
 /**
@@ -50,11 +50,11 @@ export function getAuctionEndingSoonTweetText() {
 }
 
 /**
- * Get the PNG buffer data of a Noun
+ * Get the PNG buffer data of a TheWord
  * @param tokenId The ERC721 token id
- * @returns The png buffer of the Noun or undefined
+ * @returns The png buffer of the TheWord or undefined
  */
-export async function getNounPngBuffer(tokenId: string): Promise<Buffer | undefined> {
+export async function getTheWordPngBuffer(tokenId: string): Promise<Buffer | undefined> {
   const dataURI = await tryF(() => thewordTokenContract.dataURI(tokenId));
   if (isError(dataURI)) {
     console.error(`Error fetching dataURI for token ID ${tokenId}: ${dataURI.message}`);

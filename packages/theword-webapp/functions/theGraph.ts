@@ -16,7 +16,7 @@ export interface Seed {
   glasses: number;
 }
 
-export interface NormalizedNoun {
+export interface NormalizedTheWord {
   id: number;
   owner: string;
   delegatedTo: null | string;
@@ -64,28 +64,28 @@ export const normalizeSeed = (seed: any): Seed => ({
   head: Number(seed.head),
 });
 
-export const normalizeNoun = (noun: any): NormalizedNoun => ({
-  id: Number(noun.id),
-  owner: noun.owner.id,
-  delegatedTo: noun.owner.delegate?.id,
-  votes: normalizeVotes(noun.votes),
-  seed: normalizeSeed(noun.seed),
+export const normalizeTheWord = (theword: any): NormalizedTheWord => ({
+  id: Number(theword.id),
+  owner: theword.owner.id,
+  delegatedTo: theword.owner.delegate?.id,
+  votes: normalizeVotes(theword.votes),
+  seed: normalizeSeed(theword.seed),
 });
 
-export const normalizetheword = R.map(normalizeNoun);
+export const normalizetheword = R.map(normalizeTheWord);
 
 export const normalizeVotes = R.map(normalizeVote);
 
 export const ownerFilterFactory = (address: string) =>
-  R.filter((noun: any) => bigNumbersEqual(address, noun.owner));
+  R.filter((theword: any) => bigNumbersEqual(address, theword.owner));
 
-export const isNounOwner = (address: string, theword: NormalizedNoun[]) =>
+export const isTheWordOwner = (address: string, theword: NormalizedTheWord[]) =>
   ownerFilterFactory(address)(theword).length > 0;
 
 export const delegateFilterFactory = (address: string) =>
-  R.filter((noun: any) => noun.delegatedTo && bigNumbersEqual(address, noun.delegatedTo));
+  R.filter((theword: any) => theword.delegatedTo && bigNumbersEqual(address, theword.delegatedTo));
 
-export const isNounDelegate = (address: string, theword: NormalizedNoun[]) =>
+export const isTheWordDelegate = (address: string, theword: NormalizedTheWord[]) =>
   delegateFilterFactory(address)(theword).length > 0;
 
 export const thewordQuery = async () =>

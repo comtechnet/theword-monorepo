@@ -9,7 +9,7 @@ import {
   useQueueProposal,
   Vote,
 } from '../../wrappers/thewordDao';
-import { useUserVotesAsOfBlock } from '../../wrappers/nounToken';
+import { useUserVotesAsOfBlock } from '../../wrappers/thewordToken';
 import classes from './Vote.module.css';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { TransactionStatus, useBlockNumber } from '@usedapp/core';
@@ -268,7 +268,7 @@ const VotePage = ({
           <>
             {showBlockRestriction && !hasVoted && (
               <Alert variant="secondary" className={classes.blockRestrictionAlert}>
-                Only NOUN votes that were self delegated or delegated to another address before
+                Only THEWORD votes that were self delegated or delegated to another address before
                 block {proposal.createdBlock} are eligible for voting.
               </Alert>
             )}

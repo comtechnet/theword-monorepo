@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions';
-import { isNounOwner, thewordQuery } from '../theGraph';
+import { isTheWordOwner, thewordQuery } from '../theGraph';
 import { sharedResponseHeaders } from '../utils';
 
 const handler: Handler = async (event, context) => {
@@ -10,7 +10,7 @@ const handler: Handler = async (event, context) => {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(isNounOwner(event.body, theword)),
+    body: JSON.stringify(isTheWordOwner(event.body, theword)),
   };
 };
 

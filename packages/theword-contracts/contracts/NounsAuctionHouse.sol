@@ -20,7 +20,7 @@
 // https://github.com/ourzora/auction-house/blob/54a12ec1a6cf562e49f0a4917990474b11350a2d/contracts/AuctionHouse.sol
 //
 // AuctionHouse.sol source code Copyright Zora licensed under the GPL-3.0 license.
-// With modifications by Nounders DAO.
+// With modifications by TheWordders DAO.
 
 pragma solidity ^0.8.6;
 
@@ -82,7 +82,7 @@ contract thewordAuctionHouse is IthewordAuctionHouse, PausableUpgradeable, Reent
     }
 
     /**
-     * @notice Settle the current auction, mint a new Noun, and put it up for auction.
+     * @notice Settle the current auction, mint a new TheWord, and put it up for auction.
      */
     function settleCurrentAndCreateNewAuction() external override nonReentrant whenNotPaused {
         _settleAuction();
@@ -98,13 +98,13 @@ contract thewordAuctionHouse is IthewordAuctionHouse, PausableUpgradeable, Reent
     }
 
     /**
-     * @notice Create a bid for a Noun, with a given amount.
+     * @notice Create a bid for a TheWord, with a given amount.
      * @dev This contract only accepts payment in ETH.
      */
-    function createBid(uint256 nounId) external payable override nonReentrant {
+    function createBid(uint256 thewordId) external payable override nonReentrant {
         IthewordAuctionHouse.Auction memory _auction = auction;
 
-        require(_auction.nounId == nounId, 'Noun not up for auction');
+        require(_auction.thewordId == thewordId, 'TheWord not up for auction');
         require(block.timestamp < _auction.endTime, 'Auction expired');
         require(msg.value >= reservePrice, 'Must send at least reservePrice');
         require(
@@ -128,10 +128,10 @@ contract thewordAuctionHouse is IthewordAuctionHouse, PausableUpgradeable, Reent
             auction.endTime = _auction.endTime = block.timestamp + timeBuffer;
         }
 
-        emit AuctionBid(_auction.nounId, msg.sender, msg.value, extended);
+        emit AuctionBid(_auction.thewordId, msg.sender, msg.value, extended);
 
         if (extended) {
-            emit AuctionExtended(_auction.nounId, _auction.endTime);
+            emit AuctionExtended(_auction.thewordId, _auction.endTime);
         }
     }
 
@@ -195,12 +195,12 @@ contract thewordAuctionHouse is IthewordAuctionHouse, PausableUpgradeable, Reent
      * catch the revert and pause this contract.
      */
     function _createAuction() internal {
-        try theword.mint() returns (uint256 nounId) {
+        try theword.mint() returns (uint256 thewordId) {
             uint256 startTime = block.timestamp;
             uint256 endTime = startTime + duration;
 
             auction = Auction({
-                nounId: nounId,
+                thewordId: thewordId,
                 amount: 0,
                 startTime: startTime,
                 endTime: endTime,
@@ -208,7 +208,7 @@ contract thewordAuctionHouse is IthewordAuctionHouse, PausableUpgradeable, Reent
                 settled: false
             });
 
-            emit AuctionCreated(nounId, startTime, endTime);
+            emit AuctionCreated(thewordId, startTime, endTime);
         } catch Error(string memory) {
             _pause();
         }
@@ -216,7 +216,7 @@ contract thewordAuctionHouse is IthewordAuctionHouse, PausableUpgradeable, Reent
 
     /**
      * @notice Settle an auction, finalizing the bid and paying out to the owner.
-     * @dev If there are no bids, the Noun is burned.
+     * @dev If there are no bids, the TheWord is burned.
      */
     function _settleAuction() internal {
         IthewordAuctionHouse.Auction memory _auction = auction;
@@ -228,16 +228,16 @@ contract thewordAuctionHouse is IthewordAuctionHouse, PausableUpgradeable, Reent
         auction.settled = true;
 
         if (_auction.bidder == address(0)) {
-            theword.burn(_auction.nounId);
+            theword.burn(_auction.thewordId);
         } else {
-            theword.transferFrom(address(this), _auction.bidder, _auction.nounId);
+            theword.transferFrom(address(this), _auction.bidder, _auction.thewordId);
         }
 
         if (_auction.amount > 0) {
             _safeTransferETHWithFallback(owner(), _auction.amount);
         }
 
-        emit AuctionSettled(_auction.nounId, _auction.bidder, _auction.amount);
+        emit AuctionSettled(_auction.thewordId, _auction.bidder, _auction.amount);
     }
 
     /**

@@ -10,7 +10,7 @@ yarn
 
 ## Usage
 
-**Access Noun RLE Image Data**
+**Access TheWord RLE Image Data**
 
 ```ts
 import { ImageData } from '@theword/assets';
@@ -19,10 +19,10 @@ const { bgcolors, palette, images } = ImageData;
 const { bodies, accessories, heads, glasses } = images;
 ```
 
-**Get Noun Part & Background Data**
+**Get TheWord Part & Background Data**
 
 ```ts
-import { getNounData } from '@theword/assets';
+import { getTheWordData } from '@theword/assets';
 
 const seed = {
   background: 0,
@@ -31,7 +31,7 @@ const seed = {
   head: 71,
   glasses: 2,
 };
-const { parts, background } = getNounData(seed);
+const { parts, background } = getTheWordData(seed);
 ```
 
 **Emulate `thewordeeder.sol` Pseudorandom seed generation**
@@ -40,7 +40,7 @@ const { parts, background } = getNounData(seed);
 import { getthewordeedFromBlockHash } from '@theword/assets';
 
 const blockHash = '0x5014101691e81d79a2eba711e698118e1a90c9be7acb2f40d7f200134ee53e01';
-const nounId = 116;
+const thewordId = 116;
 
 /**
  {
@@ -51,24 +51,24 @@ const nounId = 116;
     glasses: 15
   }
 */
-const seed = getthewordeedFromBlockHash(nounId, blockHash);
+const seed = getthewordeedFromBlockHash(thewordId, blockHash);
 ```
 
 ## Examples
 
-**Almost off-chain Noun Crystal Ball**
-Generate a Noun using only a block hash, which saves calls to `thewordeeder` and `NounDescriptor` contracts. This can be used for a faster crystal ball.
+**Almost off-chain TheWord Crystal Ball**
+Generate a TheWord using only a block hash, which saves calls to `thewordeeder` and `TheWordDescriptor` contracts. This can be used for a faster crystal ball.
 
 ```ts
 /**
  * For you to implement:
    - hook up providers with ether/web3.js
-   - get currently auctioned Noun Id from the thewordAuctionHouse contract
-   - add 1 to the current Noun Id to get the next Noun Id (named `nextNounId` below)
+   - get currently auctioned TheWord Id from the thewordAuctionHouse contract
+   - add 1 to the current TheWord Id to get the next TheWord Id (named `nextTheWordId` below)
    - get the latest block hash from your provider (named `latestBlockHash` below)
 */
 
-import { ImageData, getthewordeedFromBlockHash, getNounData } from '@theword/assets';
+import { ImageData, getthewordeedFromBlockHash, getTheWordData } from '@theword/assets';
 import { buildSVG } from '@theword/sdk';
 const { palette } = ImageData; // Used with `buildSVG``
 
@@ -82,7 +82,7 @@ const { palette } = ImageData; // Used with `buildSVG``
       glasses: 15
     }
 */
-const seed = getthewordeedFromBlockHash(nextNounId, latestBlockHash);
+const seed = getthewordeedFromBlockHash(nextTheWordId, latestBlockHash);
 
 /** 
  * OUTPUT:
@@ -93,7 +93,7 @@ const seed = getthewordeedFromBlockHash(nextNounId, latestBlockHash);
          data: '...'
        },
        {
-         filename: 'accessory-txt-noun-multicolor',
+         filename: 'accessory-txt-theword-multicolor',
          data: '...'
        },
        {
@@ -108,13 +108,13 @@ const seed = getthewordeedFromBlockHash(nextNounId, latestBlockHash);
      background: 'e1d7d5'
    }
 */
-const { parts, background } = getNounData(seed);
+const { parts, background } = getTheWordData(seed);
 
 const svgBinary = buildSVG(parts, palette, background);
 const svgBase64 = btoa(svgBinary);
 ```
 
-The Noun SVG can then be displayed. Here's a dummy example using React
+The TheWord SVG can then be displayed. Here's a dummy example using React
 
 ```ts
 function SVG({ svgBase64 }) {

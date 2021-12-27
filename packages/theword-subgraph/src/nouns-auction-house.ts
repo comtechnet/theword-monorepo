@@ -5,23 +5,23 @@ import {
   AuctionExtended,
   AuctionSettled,
 } from './types/thewordAuctionHouse/thewordAuctionHouse';
-import { Auction, Noun, Bid } from './types/schema';
+import { Auction, TheWord, Bid } from './types/schema';
 import { getOrCreateAccount } from './utils/helpers';
 
 export function handleAuctionCreated(event: AuctionCreated): void {
-  const nounId = event.params.nounId.toString();
+  const thewordId = event.params.thewordId.toString();
 
-  const noun = Noun.load(nounId);
-  if (noun == null) {
-    log.error('[handleAuctionCreated] Noun #{} not found. Hash: {}', [
-      nounId,
+  const theword = TheWord.load(thewordId);
+  if (theword == null) {
+    log.error('[handleAuctionCreated] TheWord #{} not found. Hash: {}', [
+      thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
   }
 
-  const auction = new Auction(nounId);
-  auction.noun = noun.id;
+  const auction = new Auction(thewordId);
+  auction.theword = theword.id;
   auction.amount = BigInt.fromI32(0);
   auction.startTime = event.params.startTime;
   auction.endTime = event.params.endTime;
@@ -30,15 +30,15 @@ export function handleAuctionCreated(event: AuctionCreated): void {
 }
 
 export function handleAuctionBid(event: AuctionBid): void {
-  const nounId = event.params.nounId.toString();
+  const thewordId = event.params.thewordId.toString();
   const bidderAddress = event.params.sender.toHex();
 
   const bidder = getOrCreateAccount(bidderAddress);
 
-  const auction = Auction.load(nounId);
+  const auction = Auction.load(thewordId);
   if (auction == null) {
-    log.error('[handleAuctionBid] Auction not found for Noun #{}. Hash: {}', [
-      nounId,
+    log.error('[handleAuctionBid] Auction not found for TheWord #{}. Hash: {}', [
+      thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
@@ -52,7 +52,7 @@ export function handleAuctionBid(event: AuctionBid): void {
   const bid = new Bid(event.transaction.hash.toHex());
   bid.bidder = bidder.id;
   bid.amount = auction.amount;
-  bid.noun = auction.noun;
+  bid.theword = auction.theword;
   bid.txIndex = event.transaction.index;
   bid.blockNumber = event.block.number;
   bid.blockTimestamp = event.block.timestamp;
@@ -61,12 +61,12 @@ export function handleAuctionBid(event: AuctionBid): void {
 }
 
 export function handleAuctionExtended(event: AuctionExtended): void {
-  const nounId = event.params.nounId.toString();
+  const thewordId = event.params.thewordId.toString();
 
-  const auction = Auction.load(nounId);
+  const auction = Auction.load(thewordId);
   if (auction == null) {
-    log.error('[handleAuctionExtended] Auction not found for Noun #{}. Hash: {}', [
-      nounId,
+    log.error('[handleAuctionExtended] Auction not found for TheWord #{}. Hash: {}', [
+      thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
@@ -77,12 +77,12 @@ export function handleAuctionExtended(event: AuctionExtended): void {
 }
 
 export function handleAuctionSettled(event: AuctionSettled): void {
-  const nounId = event.params.nounId.toString();
+  const thewordId = event.params.thewordId.toString();
 
-  const auction = Auction.load(nounId);
+  const auction = Auction.load(thewordId);
   if (auction == null) {
-    log.error('[handleAuctionSettled] Auction not found for Noun #{}. Hash: {}', [
-      nounId,
+    log.error('[handleAuctionSettled] Auction not found for TheWord #{}. Hash: {}', [
+      thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;

@@ -1,6 +1,6 @@
 import { task, types } from 'hardhat/config';
 
-task('mint-noun', 'Mints a Noun')
+task('mint-theword', 'Mints a TheWord')
   .addOptionalParam(
     'thewordToken',
     'The `thewordToken` contract address',
@@ -12,8 +12,8 @@ task('mint-noun', 'Mints a Noun')
     const nftContract = nftFactory.attach(thewordToken);
 
     const receipt = await (await nftContract.mint()).wait();
-    const nounCreated = receipt.events?.[1];
-    const { tokenId } = nounCreated?.args;
+    const thewordCreated = receipt.events?.[1];
+    const { tokenId } = thewordCreated?.args;
 
-    console.log(`Noun minted with ID: ${tokenId.toString()}.`);
+    console.log(`TheWord minted with ID: ${tokenId.toString()}.`);
   });

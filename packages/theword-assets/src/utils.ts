@@ -1,15 +1,15 @@
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
-import { thewordeed, NounData } from './types';
+import { thewordeed, TheWordData } from './types';
 import { images, bgcolors } from './image-data.json';
 
 const { bodies, accessories, heads, glasses } = images;
 
 /**
- * Get encoded part and background information using a Noun seed
- * @param seed The Noun seed
+ * Get encoded part and background information using a TheWord seed
+ * @param seed The TheWord seed
  */
-export const getNounData = (seed: thewordeed): NounData => {
+export const getTheWordData = (seed: thewordeed): TheWordData => {
   return {
     parts: [
       bodies[seed.body],
@@ -22,8 +22,8 @@ export const getNounData = (seed: thewordeed): NounData => {
 };
 
 /**
- * Generate a random Noun seed
- * @param seed The Noun seed
+ * Generate a random TheWord seed
+ * @param seed The TheWord seed
  */
 export const getRandomthewordeed = (): thewordeed => {
   return {
@@ -68,12 +68,12 @@ export const getPseudorandomPart = (
 };
 
 /**
- * Emulates the thewordSeeder.sol methodology for generating a Noun seed
- * @param nounId The Noun tokenId used to create pseudorandomness
+ * Emulates the thewordSeeder.sol methodology for generating a TheWord seed
+ * @param thewordId The TheWord tokenId used to create pseudorandomness
  * @param blockHash The block hash use to create pseudorandomness
  */
-export const getthewordeedFromBlockHash = (nounId: BigNumberish, blockHash: string): thewordeed => {
-  const pseudorandomness = solidityKeccak256(['bytes32', 'uint256'], [blockHash, nounId]);
+export const getthewordeedFromBlockHash = (thewordId: BigNumberish, blockHash: string): thewordeed => {
+  const pseudorandomness = solidityKeccak256(['bytes32', 'uint256'], [blockHash, thewordId]);
   return {
     background: getPseudorandomPart(pseudorandomness, bgcolors.length, 0),
     body: getPseudorandomPart(pseudorandomness, bodies.length, 48),

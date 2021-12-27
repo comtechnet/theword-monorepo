@@ -1,25 +1,25 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import React from 'react';
-import { isNounderNoun } from '../../utils/nounderNoun';
+import { isTheWordderTheWord } from '../../utils/thewordderTheWord';
 
-import classes from './NounInfoRowBirthday.module.css';
+import classes from './TheWordInfoRowBirthday.module.css';
 import _BirthdayIcon from '../../assets/icons/Birthday.svg';
 
 import { Image } from 'react-bootstrap';
 import { useAppSelector } from '../../hooks';
 import { AuctionState } from '../../state/slices/auction';
 
-interface NounInfoRowBirthdayProps {
-  nounId: number;
+interface TheWordInfoRowBirthdayProps {
+  thewordId: number;
 }
 
-const NounInfoRowBirthday: React.FC<NounInfoRowBirthdayProps> = props => {
-  const { nounId } = props;
+const TheWordInfoRowBirthday: React.FC<TheWordInfoRowBirthdayProps> = props => {
+  const { thewordId } = props;
 
-  // If the noun is a nounder noun, use the next noun to get the mint date.
+  // If the theword is a thewordder theword, use the next theword to get the mint date.
   // We do this because we use the auction start time to get the mint date and
-  // nounder theword do not have an auction start time.
-  const nounIdForQuery = isNounderNoun(BigNumber.from(nounId)) ? nounId + 1 : nounId;
+  // thewordder theword do not have an auction start time.
+  const thewordIdForQuery = isTheWordderTheWord(BigNumber.from(thewordId)) ? thewordId + 1 : thewordId;
 
   const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
   if (!pastAuctions || !pastAuctions.length) {
@@ -28,13 +28,13 @@ const NounInfoRowBirthday: React.FC<NounInfoRowBirthdayProps> = props => {
 
   const startTime = BigNumber.from(
     pastAuctions.find((auction: AuctionState, i: number) => {
-      const maybeNounId = auction.activeAuction?.nounId;
-      return maybeNounId ? BigNumber.from(maybeNounId).eq(BigNumber.from(nounIdForQuery)) : false;
+      const maybeTheWordId = auction.activeAuction?.thewordId;
+      return maybeTheWordId ? BigNumber.from(maybeTheWordId).eq(BigNumber.from(thewordIdForQuery)) : false;
     })?.activeAuction?.startTime,
   );
 
   if (!startTime) {
-    return <>Error fetching noun birthday</>;
+    return <>Error fetching theword birthday</>;
   }
 
   const monthNames = [
@@ -59,11 +59,11 @@ const NounInfoRowBirthday: React.FC<NounInfoRowBirthdayProps> = props => {
         <Image src={_BirthdayIcon} className={classes.birthdayIcon} />
       </span>
       Born
-      <span className={classes.nounInfoRowBirthday}>
+      <span className={classes.thewordInfoRowBirthday}>
         {monthNames[birthday.getUTCMonth()]} {birthday.getUTCDate()}, {birthday.getUTCFullYear()}
       </span>
     </div>
   );
 };
 
-export default NounInfoRowBirthday;
+export default TheWordInfoRowBirthday;

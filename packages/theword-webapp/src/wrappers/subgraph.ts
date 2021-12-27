@@ -11,7 +11,7 @@ export interface IBid {
   blockNumber: number;
   blockTimestamp: number;
   txIndex?: number;
-  noun: {
+  theword: {
     id: number;
     startTime?: BigNumberish;
     endTime?: BigNumberish;
@@ -30,7 +30,7 @@ export const auctionQuery = (auctionId: number) => gql`
 	  }
 	  startTime
 	  endTime
-	  noun {
+	  theword {
 		id
 		seed {
 		  id
@@ -65,16 +65,16 @@ export const bidsByAuctionQuery = (auctionId: string) => gql`
 	  bidder {
 	  	id
 	  }
-	  noun {
+	  theword {
 		id
 	  }
 	}
   }
  `;
 
-export const nounQuery = (id: string) => gql`
+export const thewordQuery = (id: string) => gql`
  {
-	noun(id:"${id}") {
+	theword(id:"${id}") {
 	  id
 	  seed {
 	  background
@@ -112,7 +112,7 @@ export const latestAuctionsQuery = () => gql`
       }
       startTime
       endTime
-      noun {
+      theword {
         id
         owner {
           id
@@ -157,9 +157,9 @@ export const latestBidsQuery = (first: number = 10) => gql`
   }  
 `;
 
-export const nounVotingHistoryQuery = (nounId: number) => gql`
+export const thewordVotingHistoryQuery = (thewordId: number) => gql`
 {
-	noun(id: ${nounId}) {
+	theword(id: ${thewordId}) {
 		id
 		votes {
 		proposal {
@@ -172,7 +172,7 @@ export const nounVotingHistoryQuery = (nounId: number) => gql`
 }
 `;
 
-export const highestNounIdMintedAtProposalTime = (proposalStartBlock: number) => gql`
+export const highestTheWordIdMintedAtProposalTime = (proposalStartBlock: number) => gql`
 {
 	auctions(orderBy: endTime orderDirection: desc first: 1 block: { number: ${proposalStartBlock} }) {
 		id

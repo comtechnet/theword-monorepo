@@ -10,21 +10,21 @@ const VoteStatusPill: React.FC<VoteStatusPillProps> = props => {
   switch (status) {
     case 'success':
       return (
-        <div className={`${classes.pass} ${classes.nounButton}`}>
+        <div className={`${classes.pass} ${classes.thewordButton}`}>
           {' '}
-          <div className={classes.nounButtonContents}>{text}</div>
+          <div className={classes.thewordButtonContents}>{text}</div>
         </div>
       );
     case 'failure':
       return (
-        <div className={`${classes.fail} ${classes.nounButton}`}>
-          <div className={classes.nounButtonContents}>{text}</div>
+        <div className={`${classes.fail} ${classes.thewordButton}`}>
+          <div className={classes.thewordButtonContents}>{text}</div>
         </div>
       );
     default:
       return (
-        <div className={`${classes.pending} ${classes.nounButton}`}>
-          <div className={classes.nounButtonContents}>{text}</div>
+        <div className={`${classes.pending} ${classes.thewordButton}`}>
+          <div className={classes.thewordButtonContents}>{text}</div>
         </div>
       );
   }

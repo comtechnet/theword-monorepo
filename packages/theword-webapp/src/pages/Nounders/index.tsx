@@ -1,17 +1,17 @@
 import React from 'react';
-import classes from './NoundersPage.module.css';
+import classes from './TheWorddersPage.module.css';
 import Section from '../../layout/Section';
 import { Col, Row, Card } from 'react-bootstrap';
-import pfp4156 from '../../assets/nounder-pfps/4156.png';
-import pfp9999 from '../../assets/nounder-pfps/9999.png';
-import pfpCryptoseneca from '../../assets/nounder-pfps/cryptoseneca.png';
-import pfpDevcarrot from '../../assets/nounder-pfps/devcarrot.png';
-import pfpDom from '../../assets/nounder-pfps/dom.png';
-import pfpKai from '../../assets/nounder-pfps/kai.png';
-import pfpSolimander from '../../assets/nounder-pfps/solimander.png';
-import pfpGremplin from '../../assets/nounder-pfps/gremplin.png';
-import pfpTimpers from '../../assets/nounder-pfps/timpers.png';
-import pfpVapeape from '../../assets/nounder-pfps/vapeape.png';
+import pfp4156 from '../../assets/thewordder-pfps/4156.png';
+import pfp9999 from '../../assets/thewordder-pfps/9999.png';
+import pfpCryptoseneca from '../../assets/thewordder-pfps/cryptoseneca.png';
+import pfpDevcarrot from '../../assets/thewordder-pfps/devcarrot.png';
+import pfpDom from '../../assets/thewordder-pfps/dom.png';
+import pfpKai from '../../assets/thewordder-pfps/kai.png';
+import pfpSolimander from '../../assets/thewordder-pfps/solimander.png';
+import pfpGremplin from '../../assets/thewordder-pfps/gremplin.png';
+import pfpTimpers from '../../assets/thewordder-pfps/timpers.png';
+import pfpVapeape from '../../assets/thewordder-pfps/vapeape.png';
 
 const bios = [
   {
@@ -125,32 +125,32 @@ const BioCards: React.FC<{ min: number; max: number }> = props => {
   );
 };
 
-const NoundersPage = () => {
+const TheWorddersPage = () => {
   return (
-    <Section fullWidth={true} className={classes.noundersPage}>
+    <Section fullWidth={true} className={classes.theworddersPage}>
       <Col lg={{ span: 6, offset: 3 }}>
-        <h2 style={{ marginBottom: '2rem' }}>The Nounders</h2>
+        <h2 style={{ marginBottom: '2rem' }}>The TheWordders</h2>
         <h3 style={{ marginBottom: '2rem' }}>3.5 artists, 6.5 technologists</h3>
         <Row style={{ marginBottom: '0rem' }}>
           <BioCards min={0} max={5} />
           <BioCards min={5} max={10} />
         </Row>
-        <h3>Nounders' Reward</h3>
+        <h3>TheWordders' Reward</h3>
         <p style={{ textAlign: 'justify' }}>
-          All Noun auction proceeds are sent to the TheWord DAO. For this reason, we, the project's
-          founders (‘Nounders’) have chosen to compensate ourselves with theword. Every 10th noun for
+          All TheWord auction proceeds are sent to the TheWord DAO. For this reason, we, the project's
+          founders (‘TheWordders’) have chosen to compensate ourselves with theword. Every 10th theword for
           the first 5 years of the project will be sent to our multisig (5/10), where it will be
-          vested and distributed to individual Nounders.
+          vested and distributed to individual TheWordders.
         </p>
         <p style={{ textAlign: 'justify' }}>
-          The Nounders reward is intended as compensation for our pre and post-launch contributions
+          The TheWordders reward is intended as compensation for our pre and post-launch contributions
           to the project, and to help us participate meaningfully in governance as the project
-          matures. Since there are 10 Nounders, after 5 years each Nounder could receive up to 1% of
-          the Noun supply.
+          matures. Since there are 10 TheWordders, after 5 years each TheWordder could receive up to 1% of
+          the TheWord supply.
         </p>
       </Col>
     </Section>
   );
 };
 
-export default NoundersPage;
+export default TheWorddersPage;

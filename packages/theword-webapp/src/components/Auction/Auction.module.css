@@ -1,8 +1,8 @@
-.nounWrapper {
+.thewordWrapper {
   align-self: flex-end;
   width: 100%;
 }
-.nounContentCol {
+.thewordContentCol {
   display: flex;
 }
 

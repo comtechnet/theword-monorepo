@@ -8,7 +8,7 @@ TheWord incorporates several major NFT innovations and brings them to the market
     3)  Guaranteed unique art metadata even for 1 thru N qty/volume of an NFT Instance
 
 TheWord builds on the NFT innovations of:
-    1)  Nouns
+    1)  TheWords
     2)  Loot
 
 ## Contributing
@@ -27,7 +27,7 @@ The [theword assets](packages/theword-assets) package holds any/all TheWord PNG 
 
 ### theword-bots
 
-The [theword bots](packages/theword-bots) package contains a bot that monitors for changes in Noun auction state and notifies everyone via Twitter and Discord.
+The [theword bots](packages/theword-bots) package contains a bot that monitors for changes in TheWord auction state and notifies everyone via Twitter and Discord.
 
 ### theword-contracts
 

@@ -20,20 +20,20 @@
 // https://github.com/compound-finance/compound-protocol/blob/b9b14038612d846b83f8a009a82c38974ff2dcfe/contracts/Governance/GovernorBravoDelegate.sol
 //
 // GovernorBravoDelegate.sol source code Copyright 2020 Compound Labs, Inc. licensed under the BSD-3-Clause license.
-// With modifications by Nounders DAO.
+// With modifications by TheWordders DAO.
 //
 // Additional conditions of BSD-3-Clause can be found here: https://opensource.org/licenses/BSD-3-Clause
 //
 // MODIFICATIONS
 // thewordDAOLogicV1 adds:
 // - Proposal Threshold basis points instead of fixed number
-//   due to the Noun token's increasing supply
+//   due to the TheWord token's increasing supply
 //
 // - Quorum Votes basis points instead of fixed number
-//   due to the Noun token's increasing supply
+//   due to the TheWord token's increasing supply
 //
 // - Per proposal storing of fixed `proposalThreshold`
-//   and `quorumVotes` calculated using the Noun token's total supply
+//   and `quorumVotes` calculated using the TheWord token's total supply
 //   at the block the proposal was created and the basis point parameters
 //
 // - `ProposalCreatedWithRequirements` event that emits `ProposalCreated` parameters with
@@ -103,7 +103,7 @@ contract thewordDAOLogicV1 is thewordDAOStorageV1, thewordDAOEvents {
     /**
      * @notice Used to initialize the contract during delegator contructor
      * @param timelock_ The address of the thewordDAOExecutor
-     * @param theword_ The address of the NOUN tokens
+     * @param theword_ The address of the THEWORD tokens
      * @param vetoer_ The address allowed to unilaterally veto proposals
      * @param votingPeriod_ The initial voting period
      * @param votingDelay_ The initial voting delay
@@ -654,7 +654,7 @@ contract thewordDAOLogicV1 is thewordDAOStorageV1, thewordDAOEvents {
     }
 
     /**
-     * @notice Current proposal threshold using Noun Total Supply
+     * @notice Current proposal threshold using TheWord Total Supply
      * Differs from `GovernerBravo` which uses fixed amount
      */
     function proposalThreshold() public view returns (uint256) {
@@ -662,7 +662,7 @@ contract thewordDAOLogicV1 is thewordDAOStorageV1, thewordDAOEvents {
     }
 
     /**
-     * @notice Current quorum votes using Noun Total Supply
+     * @notice Current quorum votes using TheWord Total Supply
      * Differs from `GovernerBravo` which uses fixed amount
      */
     function quorumVotes() public view returns (uint256) {

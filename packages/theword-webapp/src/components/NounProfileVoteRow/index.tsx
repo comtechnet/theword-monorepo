@@ -6,25 +6,25 @@ import _AbsentVoteIcon from '../../assets/icons/AbsentVote.svg';
 import _AbstainVoteIcon from '../../assets/icons/Abstain.svg';
 import { ProposalState } from '../../wrappers/thewordDao';
 
-import classes from './NounProfileVoteRow.module.css';
+import classes from './TheWordProfileVoteRow.module.css';
 
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { highestNounIdMintedAtProposalTime } from '../../wrappers/subgraph';
+import { highestTheWordIdMintedAtProposalTime } from '../../wrappers/subgraph';
 import VoteStatusPill from '../VoteStatusPill';
 
 import _PendingVoteIcon from '../../assets/icons/PendingVote.svg';
 import { Vote } from '../../utils/vote';
-import { NounVoteHistory } from '../ProfileActivityFeed';
+import { TheWordVoteHistory } from '../ProfileActivityFeed';
 
-interface NounProfileVoteRowProps {
+interface TheWordProfileVoteRowProps {
   proposal: Proposal;
-  nounId: number;
+  thewordId: number;
   latestProposalId: number;
-  vote?: NounVoteHistory;
+  vote?: TheWordVoteHistory;
 }
 
-const selectIconForNounVoteActivityRow = (proposal: Proposal, vote?: NounVoteHistory) => {
+const selectIconForTheWordVoteActivityRow = (proposal: Proposal, vote?: TheWordVoteHistory) => {
   if (!vote) {
     if (proposal.status === ProposalState.PENDING || proposal.status === ProposalState.ACTIVE) {
       return <Image src={_PendingVoteIcon} className={classes.voteIcon} />;
@@ -43,7 +43,7 @@ const selectIconForNounVoteActivityRow = (proposal: Proposal, vote?: NounVoteHis
   }
 };
 
-const selectVotingInfoText = (proposal: Proposal, vote?: NounVoteHistory) => {
+const selectVotingInfoText = (proposal: Proposal, vote?: TheWordVoteHistory) => {
   if (!vote) {
     if (proposal.status === ProposalState.PENDING || proposal.status === ProposalState.ACTIVE) {
       return 'Waiting for';
@@ -107,22 +107,22 @@ const selectProposalText = (proposal: Proposal) => {
   }
 };
 
-const NounProfileVoteRow: React.FC<NounProfileVoteRowProps> = props => {
-  const { proposal, vote, nounId, latestProposalId } = props;
+const TheWordProfileVoteRow: React.FC<TheWordProfileVoteRowProps> = props => {
+  const { proposal, vote, thewordId, latestProposalId } = props;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { loading, error, data } = useQuery(highestNounIdMintedAtProposalTime(proposal.startBlock));
+  const { loading, error, data } = useQuery(highestTheWordIdMintedAtProposalTime(proposal.startBlock));
   const history = useHistory();
 
   if (loading) {
     return <></>;
   }
 
-  // In this case, noun was not yet minted at time of proposal
-  if (data && data.auctions.length > 0 && nounId > data.auctions[0].id) {
+  // In this case, theword was not yet minted at time of proposal
+  if (data && data.auctions.length > 0 && thewordId > data.auctions[0].id) {
     if (proposal.id === latestProposalId.toString()) {
       return (
-        <tr className={classes.nullStateCopy}>This Noun has no activity yet. Check back soon!</tr>
+        <tr className={classes.nullStateCopy}>This TheWord has no activity yet. Check back soon!</tr>
       );
     }
     return <></>;
@@ -132,7 +132,7 @@ const NounProfileVoteRow: React.FC<NounProfileVoteRowProps> = props => {
 
   return (
     <tr onClick={proposalOnClickHandler} className={classes.voteInfoRow}>
-      <td className={classes.voteIcon}>{selectIconForNounVoteActivityRow(proposal, vote)}</td>
+      <td className={classes.voteIcon}>{selectIconForTheWordVoteActivityRow(proposal, vote)}</td>
       <td>
         <div className={classes.voteInfoContainer}>
           {selectVotingInfoText(proposal, vote)}
@@ -146,4 +146,4 @@ const NounProfileVoteRow: React.FC<NounProfileVoteRowProps> = props => {
   );
 };
 
-export default NounProfileVoteRow;
+export default TheWordProfileVoteRow;

@@ -11,7 +11,7 @@ export interface EncodedImage {
   data: string;
 }
 
-export interface NounData {
+export interface TheWordData {
   parts: EncodedImage[];
   background: string;
 }

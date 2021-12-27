@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_noundersDAO",
+        "name": "_theworddersDAO",
         "type": "address"
       },
       {
@@ -178,7 +178,7 @@
         "type": "uint256"
       }
     ],
-    "name": "NounBurned",
+    "name": "TheWordBurned",
     "type": "event"
   },
   {
@@ -224,7 +224,7 @@
         "type": "tuple"
       }
     ],
-    "name": "NounCreated",
+    "name": "TheWordCreated",
     "type": "event"
   },
   {
@@ -233,11 +233,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "noundersDAO",
+        "name": "theworddersDAO",
         "type": "address"
       }
     ],
-    "name": "NoundersDAOUpdated",
+    "name": "TheWorddersDAOUpdated",
     "type": "event"
   },
   {
@@ -370,7 +370,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "thewordId",
         "type": "uint256"
       }
     ],
@@ -742,7 +742,7 @@
   },
   {
     "inputs": [],
-    "name": "noundersDAO",
+    "name": "theworddersDAO",
     "outputs": [
       {
         "internalType": "address",
@@ -819,7 +819,7 @@
   },
   {
     "inputs": [],
-    "name": "renounceOwnership",
+    "name": "rethewordceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -988,11 +988,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_noundersDAO",
+        "name": "_theworddersDAO",
         "type": "address"
       }
     ],
-    "name": "setNoundersDAO",
+    "name": "setTheWorddersDAO",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

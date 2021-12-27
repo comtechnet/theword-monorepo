@@ -31,7 +31,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     // https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
     bytes32 constant COPYRIGHT_CC0_1_0_UNIVERSAL_LICENSE = 0xa2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499;
 
-    // Whether or not new Noun parts can be added
+    // Whether or not new TheWord parts can be added
     bool public override arePartsLocked;
 
     // Whether or not `tokenURI` should be returned as a data URI (Default: true)
@@ -40,22 +40,22 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     // Base URI
     string public override baseURI;
 
-    // Noun Color Palettes (Index => Hex Colors)
+    // TheWord Color Palettes (Index => Hex Colors)
     mapping(uint8 => string[]) public override palettes;
 
-    // Noun Backgrounds (Hex Colors)
+    // TheWord Backgrounds (Hex Colors)
     string[] public override backgrounds;
 
-    // Noun Bodies (Custom RLE)
+    // TheWord Bodies (Custom RLE)
     bytes[] public override bodies;
 
-    // Noun Accessories (Custom RLE)
+    // TheWord Accessories (Custom RLE)
     bytes[] public override accessories;
 
-    // Noun Heads (Custom RLE)
+    // TheWord Heads (Custom RLE)
     bytes[] public override heads;
 
-    // Noun Glasses (Custom RLE)
+    // TheWord Glasses (Custom RLE)
     bytes[] public override glasses;
 
     /**
@@ -67,35 +67,35 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Get the number of available Noun `backgrounds`.
+     * @notice Get the number of available TheWord `backgrounds`.
      */
     function backgroundCount() external view override returns (uint256) {
         return backgrounds.length;
     }
 
     /**
-     * @notice Get the number of available Noun `bodies`.
+     * @notice Get the number of available TheWord `bodies`.
      */
     function bodyCount() external view override returns (uint256) {
         return bodies.length;
     }
 
     /**
-     * @notice Get the number of available Noun `accessories`.
+     * @notice Get the number of available TheWord `accessories`.
      */
     function accessoryCount() external view override returns (uint256) {
         return accessories.length;
     }
 
     /**
-     * @notice Get the number of available Noun `heads`.
+     * @notice Get the number of available TheWord `heads`.
      */
     function headCount() external view override returns (uint256) {
         return heads.length;
     }
 
     /**
-     * @notice Get the number of available Noun `glasses`.
+     * @notice Get the number of available TheWord `glasses`.
      */
     function glassesCount() external view override returns (uint256) {
         return glasses.length;
@@ -113,7 +113,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Noun backgrounds.
+     * @notice Batch add TheWord backgrounds.
      * @dev This function can only be called by the owner when not locked.
      */
     function addManyBackgrounds(string[] calldata _backgrounds) external override onlyOwner whenPartsNotLocked {
@@ -123,7 +123,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Noun bodies.
+     * @notice Batch add TheWord bodies.
      * @dev This function can only be called by the owner when not locked.
      */
     function addManyBodies(bytes[] calldata _bodies) external override onlyOwner whenPartsNotLocked {
@@ -133,7 +133,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Noun accessories.
+     * @notice Batch add TheWord accessories.
      * @dev This function can only be called by the owner when not locked.
      */
     function addManyAccessories(bytes[] calldata _accessories) external override onlyOwner whenPartsNotLocked {
@@ -143,7 +143,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Noun heads.
+     * @notice Batch add TheWord heads.
      * @dev This function can only be called by the owner when not locked.
      */
     function addManyHeads(bytes[] calldata _heads) external override onlyOwner whenPartsNotLocked {
@@ -153,7 +153,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Noun glasses.
+     * @notice Batch add TheWord glasses.
      * @dev This function can only be called by the owner when not locked.
      */
     function addManyGlasses(bytes[] calldata _glasses) external override onlyOwner whenPartsNotLocked {
@@ -172,7 +172,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Noun background.
+     * @notice Add a TheWord background.
      * @dev This function can only be called by the owner when not locked.
      */
     function addBackground(string calldata _background) external override onlyOwner whenPartsNotLocked {
@@ -180,7 +180,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Noun body.
+     * @notice Add a TheWord body.
      * @dev This function can only be called by the owner when not locked.
      */
     function addBody(bytes calldata _body) external override onlyOwner whenPartsNotLocked {
@@ -188,7 +188,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Noun accessory.
+     * @notice Add a TheWord accessory.
      * @dev This function can only be called by the owner when not locked.
      */
     function addAccessory(bytes calldata _accessory) external override onlyOwner whenPartsNotLocked {
@@ -196,7 +196,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Noun head.
+     * @notice Add a TheWord head.
      * @dev This function can only be called by the owner when not locked.
      */
     function addHead(bytes calldata _head) external override onlyOwner whenPartsNotLocked {
@@ -204,7 +204,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Add Noun glasses.
+     * @notice Add TheWord glasses.
      * @dev This function can only be called by the owner when not locked.
      */
     function addGlasses(bytes calldata _glasses) external override onlyOwner whenPartsNotLocked {
@@ -212,7 +212,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Lock all Noun parts.
+     * @notice Lock all TheWord parts.
      * @dev This cannot be reversed and can only be called by the owner when not locked.
      */
     function lockParts() external override onlyOwner whenPartsNotLocked {
@@ -246,7 +246,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Given a token ID and seed, construct a token URI for an official TheWord DAO noun.
+     * @notice Given a token ID and seed, construct a token URI for an official TheWord DAO theword.
      * @dev The returned value may be a base64 encoded data URI or an API URL.
      */
     function tokenURI(uint256 tokenId, IthewordSeeder.Seed memory seed) external view override returns (string memory) {
@@ -257,12 +257,12 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Given a token ID and seed, construct a base64 encoded data URI for an official TheWord DAO noun.
+     * @notice Given a token ID and seed, construct a base64 encoded data URI for an official TheWord DAO theword.
      */
     function dataURI(uint256 tokenId, IthewordSeeder.Seed memory seed) public view override returns (string memory) {
-        string memory nounId = tokenId.toString();
-        string memory name = string(abi.encodePacked('Noun ', nounId));
-        string memory description = string(abi.encodePacked('Noun ', nounId, ' is a member of the TheWord DAO'));
+        string memory thewordId = tokenId.toString();
+        string memory name = string(abi.encodePacked('TheWord ', thewordId));
+        string memory description = string(abi.encodePacked('TheWord ', thewordId, ' is a member of the TheWord DAO'));
 
         return genericDataURI(name, description, seed);
     }
@@ -303,42 +303,42 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Noun background.
+     * @notice Add a TheWord background.
      */
     function _addBackground(string calldata _background) internal {
         backgrounds.push(_background);
     }
 
     /**
-     * @notice Add a Noun body.
+     * @notice Add a TheWord body.
      */
     function _addBody(bytes calldata _body) internal {
         bodies.push(_body);
     }
 
     /**
-     * @notice Add a Noun accessory.
+     * @notice Add a TheWord accessory.
      */
     function _addAccessory(bytes calldata _accessory) internal {
         accessories.push(_accessory);
     }
 
     /**
-     * @notice Add a Noun head.
+     * @notice Add a TheWord head.
      */
     function _addHead(bytes calldata _head) internal {
         heads.push(_head);
     }
 
     /**
-     * @notice Add Noun glasses.
+     * @notice Add TheWord glasses.
      */
     function _addGlasses(bytes calldata _glasses) internal {
         glasses.push(_glasses);
     }
 
     /**
-     * @notice Get all Noun parts for the passed `seed`.
+     * @notice Get all TheWord parts for the passed `seed`.
      */
     function _getPartsForSeed(IthewordSeeder.Seed memory seed) internal view returns (bytes[] memory) {
         bytes[] memory _parts = new bytes[](4);

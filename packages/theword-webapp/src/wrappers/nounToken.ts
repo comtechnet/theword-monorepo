@@ -3,7 +3,7 @@ import { BigNumber as EthersBN, utils } from 'ethers';
 import { thewordTokenABI } from '@theword/contracts';
 import config from '../config';
 
-interface NounToken {
+interface TheWordToken {
   name: string;
   description: string;
   image: string;
@@ -19,31 +19,31 @@ export interface Ithewordeed {
 
 const abi = new utils.Interface(thewordTokenABI);
 
-export const useNounToken = (nounId: EthersBN) => {
-  const [noun] =
+export const useTheWordToken = (thewordId: EthersBN) => {
+  const [theword] =
     useContractCall<[string]>({
       abi,
       address: config.addresses.thewordToken,
       method: 'dataURI',
-      args: [nounId],
+      args: [thewordId],
     }) || [];
 
-  if (!noun) {
+  if (!theword) {
     return;
   }
 
-  const nounImgData = noun.split(';base64,').pop() as string;
-  const json: NounToken = JSON.parse(atob(nounImgData));
+  const thewordImgData = theword.split(';base64,').pop() as string;
+  const json: TheWordToken = JSON.parse(atob(thewordImgData));
 
   return json;
 };
 
-export const usethewordeed = (nounId: EthersBN) => {
+export const usethewordeed = (thewordId: EthersBN) => {
   const seed = useContractCall<Ithewordeed>({
     abi,
     address: config.addresses.thewordToken,
     method: 'seeds',
-    args: [nounId],
+    args: [thewordId],
   });
   return seed;
 };

@@ -1,13 +1,13 @@
 import { BigNumber } from 'ethers';
-import classes from './AuctionActivityNounTitle.module.css';
+import classes from './AuctionActivityTheWordTitle.module.css';
 
-const AuctionActivityNounTitle: React.FC<{ nounId: BigNumber }> = props => {
-  const { nounId } = props;
-  const nounIdContent = `Noun ${nounId.toString()}`;
+const AuctionActivityTheWordTitle: React.FC<{ thewordId: BigNumber }> = props => {
+  const { thewordId } = props;
+  const thewordIdContent = `TheWord ${thewordId.toString()}`;
   return (
     <div className={classes.wrapper}>
-      <h1>{nounIdContent}</h1>
+      <h1>{thewordIdContent}</h1>
     </div>
   );
 };
-export default AuctionActivityNounTitle;
+export default AuctionActivityTheWordTitle;

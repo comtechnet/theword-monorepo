@@ -43,7 +43,7 @@ let timelock: thewordDaoExecutor;
 let deployer: SignerWithAddress;
 let wethDeployer: SignerWithAddress;
 let bidderA: SignerWithAddress;
-let noundersDAO: SignerWithAddress;
+let theworddersDAO: SignerWithAddress;
 
 // Governance Config
 const TIME_LOCK_DELAY = 172_800; // 2 days
@@ -67,7 +67,7 @@ const MIN_INCREMENT_BID_PERCENTAGE = 5;
 const DURATION = 60 * 60 * 24;
 
 async function deploy() {
-  [deployer, bidderA, wethDeployer, noundersDAO] = await ethers.getSigners();
+  [deployer, bidderA, wethDeployer, theworddersDAO] = await ethers.getSigners();
 
   // Deployed by another account to simulate real network
 
@@ -87,7 +87,7 @@ async function deploy() {
   // 1. DEPLOY theword token
   thewordToken = await deploythewordToken(
     deployer,
-    noundersDAO.address,
+    theworddersDAO.address,
     deployer.address, // do not know minter/auction house yet
   );
 
@@ -132,7 +132,7 @@ async function deploy() {
   const thewordDAOProxy = await new thewordDaoProxyFactory(deployer).deploy(
     timelock.address,
     thewordToken.address,
-    noundersDAO.address, // NoundersDAO is vetoer
+    theworddersDAO.address, // TheWorddersDAO is vetoer
     timelock.address,
     govDelegate.address,
     VOTING_PERIOD,
@@ -167,20 +167,20 @@ describe('End to End test with deployment, auction, proposing, voting, executing
     expect(await thewordAuctionHouse.owner()).to.equal(timelock.address);
 
     expect(await thewordToken.minter()).to.equal(thewordAuctionHouse.address);
-    expect(await thewordToken.noundersDAO()).to.equal(noundersDAO.address);
+    expect(await thewordToken.theworddersDAO()).to.equal(theworddersDAO.address);
 
     expect(await gov.admin()).to.equal(timelock.address);
     expect(await timelock.admin()).to.equal(gov.address);
     expect(await gov.timelock()).to.equal(timelock.address);
 
-    expect(await gov.vetoer()).to.equal(noundersDAO.address);
+    expect(await gov.vetoer()).to.equal(theworddersDAO.address);
 
     expect(await thewordToken.totalSupply()).to.equal(EthersBN.from('2'));
 
-    expect(await thewordToken.ownerOf(0)).to.equal(noundersDAO.address);
+    expect(await thewordToken.ownerOf(0)).to.equal(theworddersDAO.address);
     expect(await thewordToken.ownerOf(1)).to.equal(thewordAuctionHouse.address);
 
-    expect((await thewordAuctionHouse.auction()).nounId).to.equal(EthersBN.from('1'));
+    expect((await thewordAuctionHouse.auction()).thewordId).to.equal(EthersBN.from('1'));
   });
 
   it('allows bidding, settling, and transferring ETH correctly', async () => {

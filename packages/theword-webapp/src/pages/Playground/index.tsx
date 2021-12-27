@@ -2,10 +2,10 @@ import { Container, Col, Button, Row, FloatingLabel, Form } from 'react-bootstra
 import classes from './Playground.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from '../../components/Link';
-import { ImageData, getNounData, getRandomthewordeed } from '@theword/assets';
+import { ImageData, getTheWordData, getRandomthewordeed } from '@theword/assets';
 import { buildSVG } from '@theword/sdk';
-import Noun from '../../components/Noun';
-import NounModal from './NounModal';
+import TheWord from '../../components/TheWord';
+import TheWordModal from './TheWordModal';
 
 interface Trait {
   title: string;
@@ -15,7 +15,7 @@ interface Trait {
 const thewordProtocolLink = (
   <Link
     text="theword Protocol"
-    url="https://www.notion.so/Noun-Protocol-32e4f0bf74fe433e927e2ea35e52a507"
+    url="https://www.notion.so/TheWord-Protocol-32e4f0bf74fe433e927e2ea35e52a507"
     leavesPage={true}
   />
 );
@@ -46,14 +46,14 @@ const Playground: React.FC = () => {
   const [traits, setTraits] = useState<Trait[]>();
   const [modSeed, setModSeed] = useState<{ [key: string]: number }>();
   const [initLoad, setInitLoad] = useState<boolean>(true);
-  const [displayNoun, setDisplayNoun] = useState<boolean>(false);
-  const [indexOfNounToDisplay, setIndexOfNounToDisplay] = useState<number>();
+  const [displayTheWord, setDisplayTheWord] = useState<boolean>(false);
+  const [indexOfTheWordToDisplay, setIndexOfTheWordToDisplay] = useState<number>();
 
   const generatethewordvg = React.useCallback(
     (amount: number = 1) => {
       for (let i = 0; i < amount; i++) {
         const seed = { ...getRandomthewordeed(), ...modSeed };
-        const { parts, background } = getNounData(seed);
+        const { parts, background } = getTheWordData(seed);
         const svg = buildSVG(parts, ImageData.palette, background);
         setthewordvgs(prev => {
           return prev ? [svg, ...prev] : [svg];
@@ -110,12 +110,12 @@ const Playground: React.FC = () => {
 
   return (
     <>
-      {displayNoun && indexOfNounToDisplay !== undefined && thewordvgs && (
-        <NounModal
+      {displayTheWord && indexOfTheWordToDisplay !== undefined && thewordvgs && (
+        <TheWordModal
           onDismiss={() => {
-            setDisplayNoun(false);
+            setDisplayTheWord(false);
           }}
-          svg={thewordvgs[indexOfNounToDisplay]}
+          svg={thewordvgs[indexOfTheWordToDisplay]}
         />
       )}
 
@@ -125,8 +125,8 @@ const Playground: React.FC = () => {
             <span>Explore</span>
             <h1>Playground</h1>
             <p>
-              The playground was built using the {thewordProtocolLink}. Noun's traits are determined
-              by the Noun Seed. The seed was generated using {thewordAssetsLink} and rendered using
+              The playground was built using the {thewordProtocolLink}. TheWord's traits are determined
+              by the TheWord Seed. The seed was generated using {thewordAssetsLink} and rendered using
               the {thewordSDKLink}.
             </p>
           </Col>
@@ -165,7 +165,7 @@ const Playground: React.FC = () => {
                   </Form>
                 );
               })}
-            <p className={classes.nounYearsFooter}>
+            <p className={classes.thewordYearsFooter}>
               You've generated {thewordvgs ? (thewordvgs.length / 365).toFixed(2) : '0'} years worth of
               theword
             </p>
@@ -178,15 +178,15 @@ const Playground: React.FC = () => {
                     <Col xs={4} lg={3} key={i}>
                       <div
                         onClick={() => {
-                          setIndexOfNounToDisplay(i);
-                          setDisplayNoun(true);
+                          setIndexOfTheWordToDisplay(i);
+                          setDisplayTheWord(true);
                         }}
                       >
-                        <Noun
+                        <TheWord
                           imgPath={`data:image/svg+xml;base64,${btoa(svg)}`}
-                          alt="noun"
-                          className={classes.nounImg}
-                          wrapperClassName={classes.nounWrapper}
+                          alt="theword"
+                          className={classes.thewordImg}
+                          wrapperClassName={classes.thewordWrapper}
                         />
                       </div>
                     </Col>

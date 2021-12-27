@@ -2,37 +2,37 @@ import { BigNumber, BigNumberish } from 'ethers';
 import Section from '../../layout/Section';
 import classes from './HistoryCollection.module.css';
 import clsx from 'clsx';
-import StandaloneNoun from '../StandaloneNoun';
-import { LoadingNoun } from '../Noun';
+import StandaloneTheWord from '../StandaloneTheWord';
+import { LoadingTheWord } from '../TheWord';
 import config from '../../config';
 import { Container, Row } from 'react-bootstrap';
 
 interface HistoryCollectionProps {
   historyCount: number;
-  latestNounId: BigNumberish;
+  latestTheWordId: BigNumberish;
 }
 
 const HistoryCollection: React.FC<HistoryCollectionProps> = (props: HistoryCollectionProps) => {
-  const { historyCount, latestNounId } = props;
+  const { historyCount, latestTheWordId } = props;
 
-  if (!latestNounId) return null;
+  if (!latestTheWordId) return null;
 
-  const startAtZero = BigNumber.from(latestNounId).sub(historyCount).lt(0);
+  const startAtZero = BigNumber.from(latestTheWordId).sub(historyCount).lt(0);
 
-  let nounIds: Array<BigNumber | null> = new Array(historyCount);
-  nounIds = nounIds.fill(null).map((_, i) => {
-    if (BigNumber.from(i).lt(latestNounId)) {
+  let thewordIds: Array<BigNumber | null> = new Array(historyCount);
+  thewordIds = thewordIds.fill(null).map((_, i) => {
+    if (BigNumber.from(i).lt(latestTheWordId)) {
       const index = startAtZero
         ? BigNumber.from(0)
-        : BigNumber.from(Number(latestNounId) - historyCount);
+        : BigNumber.from(Number(latestTheWordId) - historyCount);
       return index.add(i);
     } else {
       return null;
     }
   });
 
-  const thewordContent = nounIds.map((nounId, i) => {
-    return !nounId ? <LoadingNoun key={i} /> : <StandaloneNoun key={i} nounId={nounId} />;
+  const thewordContent = thewordIds.map((thewordId, i) => {
+    return !thewordId ? <LoadingTheWord key={i} /> : <StandaloneTheWord key={i} thewordId={thewordId} />;
   });
 
   return (

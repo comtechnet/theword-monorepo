@@ -13,10 +13,10 @@ import { Modal } from 'react-bootstrap';
 import AuctionNavigation from '../AuctionNavigation';
 import AuctionActivityWrapper from '../AuctionActivityWrapper';
 import AuctionTitleAndNavWrapper from '../AuctionTitleAndNavWrapper';
-import AuctionActivityNounTitle from '../AuctionActivityNounTitle';
+import AuctionActivityTheWordTitle from '../AuctionActivityTheWordTitle';
 import AuctionActivityDateHeadline from '../AuctionActivityDateHeadline';
 import BidHistoryBtn from '../BidHistoryBtn';
-import StandaloneNoun from '../StandaloneNoun';
+import StandaloneTheWord from '../StandaloneTheWord';
 import config from '../../config';
 import { buildEtherscanAddressLink } from '../../utils/etherscan';
 
@@ -57,7 +57,7 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
 
   const bidHistoryTitle = (
     <h1>
-      Noun {auction && auction.nounId.toString()}
+      TheWord {auction && auction.thewordId.toString()}
       <br /> Bid History
     </h1>
   );
@@ -96,13 +96,13 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
           dialogClassName="modal-90w"
         >
           <Modal.Header closeButton className={classes.modalHeader}>
-            <div className={classes.modalHeaderNounImgWrapper}>
-              <StandaloneNoun nounId={auction && auction.nounId} />
+            <div className={classes.modalHeaderTheWordImgWrapper}>
+              <StandaloneTheWord thewordId={auction && auction.thewordId} />
             </div>
             <Modal.Title className={classes.modalTitleWrapper}>{bidHistoryTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <BidHistory auctionId={auction.nounId.toString()} max={9999} />
+            <BidHistory auctionId={auction.thewordId.toString()} max={9999} />
           </Modal.Body>
         </Modal>
       )}
@@ -114,7 +114,7 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
               <AuctionActivityDateHeadline startTime={auction.startTime} />
             </Col>
             <AuctionTitleAndNavWrapper>
-              <AuctionActivityNounTitle nounId={auction.nounId} />
+              <AuctionActivityTheWordTitle thewordId={auction.thewordId} />
               {displayGraphDepComps && (
                 <AuctionNavigation
                   isFirstAuction={isFirstAuction}
@@ -152,7 +152,7 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
           <Col lg={12}>
             {displayGraphDepComps && (
               <BidHistory
-                auctionId={auction.nounId.toString()}
+                auctionId={auction.thewordId.toString()}
                 max={3}
                 classes={bidHistoryClasses}
               />

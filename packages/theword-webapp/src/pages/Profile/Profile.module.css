@@ -1,8 +1,8 @@
-.nounProfileInfo {
+.thewordProfileInfo {
   margin-top: 10rem;
 }
 
-.nounProfileWrapper {
+.thewordProfileWrapper {
   font-family: 'PT Root UI Medium';
   font-style: normal;
   font-feature-settings: 'tnum' on, 'lnum' on, 'ss01' on, 'liga' off;
@@ -11,7 +11,7 @@
 }
 
 @media (max-width: 992px) {
-  .nounProfileInfo {
+  .thewordProfileInfo {
     background-color: white;
     padding-bottom: 2rem;
     padding-top: 2rem;

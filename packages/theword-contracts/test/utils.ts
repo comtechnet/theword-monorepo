@@ -55,7 +55,7 @@ export const deploythewordSeeder = async (deployer?: SignerWithAddress): Promise
 
 export const deploythewordToken = async (
   deployer?: SignerWithAddress,
-  noundersDAO?: string,
+  theworddersDAO?: string,
   minter?: string,
   descriptor?: string,
   seeder?: string,
@@ -65,7 +65,7 @@ export const deploythewordToken = async (
   const factory = new thewordTokenFactory(signer);
 
   return factory.deploy(
-    noundersDAO || signer.address,
+    theworddersDAO || signer.address,
     minter || signer.address,
     descriptor || (await deploythewordDescriptor(signer)).address,
     seeder || (await deploythewordSeeder(signer)).address,
@@ -103,20 +103,20 @@ export const populateDescriptor = async (thewordDescriptor: thewordDescriptor): 
  */
 export const Minttheword = (
   token: thewordToken,
-  burnNoundersTokens = true,
+  burnTheWorddersTokens = true,
 ): ((amount: number) => Promise<void>) => {
   return async (amount: number): Promise<void> => {
     for (let i = 0; i < amount; i++) {
       await token.mint();
     }
-    if (!burnNoundersTokens) return;
+    if (!burnTheWorddersTokens) return;
 
     await setTotalSupply(token, amount);
   };
 };
 
 /**
- * Mints or burns tokens to target a total supply. Due to Nounders' rewards tokens may be burned and tokenIds will not be sequential
+ * Mints or burns tokens to target a total supply. Due to TheWordders' rewards tokens may be burned and tokenIds will not be sequential
  */
 export const setTotalSupply = async (token: thewordToken, newTotalSupply: number): Promise<void> => {
   const totalSupply = (await token.totalSupply()).toNumber();
@@ -125,7 +125,7 @@ export const setTotalSupply = async (token: thewordToken, newTotalSupply: number
     for (let i = 0; i < newTotalSupply - totalSupply; i++) {
       await token.mint();
     }
-    // If Nounder's reward tokens were minted totalSupply will be more than expected, so run setTotalSupply again to burn extra tokens
+    // If TheWordder's reward tokens were minted totalSupply will be more than expected, so run setTotalSupply again to burn extra tokens
     await setTotalSupply(token, newTotalSupply);
   }
 

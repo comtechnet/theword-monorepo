@@ -1,18 +1,18 @@
 import React from 'react';
 import { Image } from 'react-bootstrap';
-import classes from './NounInfoRowButton.module.css';
+import classes from './TheWordInfoRowButton.module.css';
 
-interface NounInfoRowButtonProps {
+interface TheWordInfoRowButtonProps {
   iconImgSource: string;
   btnText: string;
   onClickHandler: () => void;
 }
 
-const NounInfoRowButton: React.FC<NounInfoRowButtonProps> = props => {
+const TheWordInfoRowButton: React.FC<TheWordInfoRowButtonProps> = props => {
   const { iconImgSource, btnText, onClickHandler } = props;
   return (
-    <div className={classes.nounButton} onClick={onClickHandler}>
-      <div className={classes.nounButtonContents}>
+    <div className={classes.thewordButton} onClick={onClickHandler}>
+      <div className={classes.thewordButtonContents}>
         <Image src={iconImgSource} className={classes.buttonIcon} />
         {btnText}
       </div>
@@ -20,4 +20,4 @@ const NounInfoRowButton: React.FC<NounInfoRowButtonProps> = props => {
   );
 };
 
-export default NounInfoRowButton;
+export default TheWordInfoRowButton;

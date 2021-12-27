@@ -3,18 +3,18 @@ import { thewordQuery, Seed } from '../theGraph';
 import * as R from 'ramda';
 import { sharedResponseHeaders } from '../utils';
 
-interface SeededNoun {
+interface SeededTheWord {
   id: number;
   seed: Seed;
 }
 
-const buildSeededNoun = R.pick(['id', 'seed']);
+const buildSeededTheWord = R.pick(['id', 'seed']);
 
-const buildSeededtheword = R.map(buildSeededNoun);
+const buildSeededtheword = R.map(buildSeededTheWord);
 
 const handler: Handler = async (event, context) => {
   const theword = await thewordQuery();
-  const seededtheword: SeededNoun[] = buildSeededtheword(theword);
+  const seededtheword: SeededTheWord[] = buildSeededtheword(theword);
   return {
     statusCode: 200,
     headers: {

@@ -12,12 +12,12 @@ const { expect } = chai;
 describe('thewordToken', () => {
   let thewordToken: thewordToken;
   let deployer: SignerWithAddress;
-  let noundersDAO: SignerWithAddress;
+  let theworddersDAO: SignerWithAddress;
   let snapshotId: number;
 
   before(async () => {
-    [deployer, noundersDAO] = await ethers.getSigners();
-    thewordToken = await deploythewordToken(deployer, noundersDAO.address, deployer.address);
+    [deployer, theworddersDAO] = await ethers.getSigners();
+    thewordToken = await deploythewordToken(deployer, theworddersDAO.address, deployer.address);
 
     const descriptor = await thewordToken.descriptor();
 
@@ -32,52 +32,52 @@ describe('thewordToken', () => {
     await ethers.provider.send('evm_revert', [snapshotId]);
   });
 
-  it('should allow the minter to mint a noun to itself and a reward noun to the noundersDAO', async () => {
+  it('should allow the minter to mint a theword to itself and a reward theword to the theworddersDAO', async () => {
     const receipt = await (await thewordToken.mint()).wait();
 
-    const [, , , noundersNounCreated, , , , ownersNounCreated] = receipt.events || [];
+    const [, , , theworddersTheWordCreated, , , , ownersTheWordCreated] = receipt.events || [];
 
-    expect(await thewordToken.ownerOf(0)).to.eq(noundersDAO.address);
-    expect(noundersNounCreated?.event).to.eq('NounCreated');
-    expect(noundersNounCreated?.args?.tokenId).to.eq(0);
-    expect(noundersNounCreated?.args?.seed.length).to.equal(5);
+    expect(await thewordToken.ownerOf(0)).to.eq(theworddersDAO.address);
+    expect(theworddersTheWordCreated?.event).to.eq('TheWordCreated');
+    expect(theworddersTheWordCreated?.args?.tokenId).to.eq(0);
+    expect(theworddersTheWordCreated?.args?.seed.length).to.equal(5);
 
     expect(await thewordToken.ownerOf(1)).to.eq(deployer.address);
-    expect(ownersNounCreated?.event).to.eq('NounCreated');
-    expect(ownersNounCreated?.args?.tokenId).to.eq(1);
-    expect(ownersNounCreated?.args?.seed.length).to.equal(5);
+    expect(ownersTheWordCreated?.event).to.eq('TheWordCreated');
+    expect(ownersTheWordCreated?.args?.tokenId).to.eq(1);
+    expect(ownersTheWordCreated?.args?.seed.length).to.equal(5);
 
-    noundersNounCreated?.args?.seed.forEach((item: EthersBN | number) => {
+    theworddersTheWordCreated?.args?.seed.forEach((item: EthersBN | number) => {
       const value = typeof item !== 'number' ? item?.toNumber() : item;
       expect(value).to.be.a('number');
     });
 
-    ownersNounCreated?.args?.seed.forEach((item: EthersBN | number) => {
+    ownersTheWordCreated?.args?.seed.forEach((item: EthersBN | number) => {
       const value = typeof item !== 'number' ? item?.toNumber() : item;
       expect(value).to.be.a('number');
     });
   });
 
   it('should set symbol', async () => {
-    expect(await thewordToken.symbol()).to.eq('NOUN');
+    expect(await thewordToken.symbol()).to.eq('THEWORD');
   });
 
   it('should set name', async () => {
     expect(await thewordToken.name()).to.eq('theword');
   });
 
-  it('should allow minter to mint a noun to itself', async () => {
+  it('should allow minter to mint a theword to itself', async () => {
     await (await thewordToken.mint()).wait();
 
     const receipt = await (await thewordToken.mint()).wait();
-    const nounCreated = receipt.events?.[3];
+    const thewordCreated = receipt.events?.[3];
 
     expect(await thewordToken.ownerOf(2)).to.eq(deployer.address);
-    expect(nounCreated?.event).to.eq('NounCreated');
-    expect(nounCreated?.args?.tokenId).to.eq(2);
-    expect(nounCreated?.args?.seed.length).to.equal(5);
+    expect(thewordCreated?.event).to.eq('TheWordCreated');
+    expect(thewordCreated?.args?.tokenId).to.eq(2);
+    expect(thewordCreated?.args?.seed.length).to.equal(5);
 
-    nounCreated?.args?.seed.forEach((item: EthersBN | number) => {
+    thewordCreated?.args?.seed.forEach((item: EthersBN | number) => {
       const value = typeof item !== 'number' ? item?.toNumber() : item;
       expect(value).to.be.a('number');
     });
@@ -99,16 +99,16 @@ describe('thewordToken', () => {
     await expect(tx).to.emit(thewordToken, 'Transfer').withArgs(creator.address, minter.address, 2);
   });
 
-  it('should allow minter to burn a noun', async () => {
+  it('should allow minter to burn a theword', async () => {
     await (await thewordToken.mint()).wait();
 
     const tx = thewordToken.burn(0);
-    await expect(tx).to.emit(thewordToken, 'NounBurned').withArgs(0);
+    await expect(tx).to.emit(thewordToken, 'TheWordBurned').withArgs(0);
   });
 
   it('should revert on non-minter mint', async () => {
-    const account0AsNounErc721Account = thewordToken.connect(noundersDAO);
-    await expect(account0AsNounErc721Account.mint()).to.be.reverted;
+    const account0AsTheWordErc721Account = thewordToken.connect(theworddersDAO);
+    await expect(account0AsTheWordErc721Account.mint()).to.be.reverted;
   });
 
   describe('contractURI', async () => {

@@ -2,17 +2,17 @@ import { log } from '@graphprotocol/graph-ts';
 import {
   DelegateChanged,
   DelegateVotesChanged,
-  NounCreated,
+  TheWordCreated,
   Transfer,
 } from './types/thewordToken/thewordToken';
-import { Noun, Seed } from './types/schema';
+import { TheWord, Seed } from './types/schema';
 import { BIGINT_ONE, BIGINT_ZERO, ZERO_ADDRESS } from './utils/constants';
 import { getGovernanceEntity, getOrCreateDelegate, getOrCreateAccount } from './utils/helpers';
 
-export function handleNounCreated(event: NounCreated): void {
-  const nounId = event.params.tokenId.toString();
+export function handleTheWordCreated(event: TheWordCreated): void {
+  const thewordId = event.params.tokenId.toString();
 
-  const seed = new Seed(nounId);
+  const seed = new Seed(thewordId);
   seed.background = event.params.seed.background;
   seed.body = event.params.seed.body;
   seed.accessory = event.params.seed.accessory;
@@ -20,17 +20,17 @@ export function handleNounCreated(event: NounCreated): void {
   seed.glasses = event.params.seed.glasses;
   seed.save();
 
-  const noun = Noun.load(nounId);
-  if (noun == null) {
-    log.error('[handleNounCreated] Noun #{} not found. Hash: {}', [
-      nounId,
+  const theword = TheWord.load(thewordId);
+  if (theword == null) {
+    log.error('[handleTheWordCreated] TheWord #{} not found. Hash: {}', [
+      thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
   }
 
-  noun.seed = seed.id;
-  noun.save();
+  theword.seed = seed.id;
+  theword.save();
 }
 
 let accounttheword: string[] = []; // Use WebAssembly global due to lack of closure support
@@ -79,12 +79,12 @@ export function handleDelegateVotesChanged(event: DelegateVotesChanged): void {
   governance.save();
 }
 
-let transferredNounId: string; // Use WebAssembly global due to lack of closure support
+let transferredTheWordId: string; // Use WebAssembly global due to lack of closure support
 export function handleTransfer(event: Transfer): void {
   const fromHolder = getOrCreateAccount(event.params.from.toHexString());
   const toHolder = getOrCreateAccount(event.params.to.toHexString());
   const governance = getGovernanceEntity();
-  transferredNounId = event.params.tokenId.toString();
+  transferredTheWordId = event.params.tokenId.toString();
 
   // fromHolder
   if (event.params.from.toHexString() == ZERO_ADDRESS) {
@@ -95,13 +95,13 @@ export function handleTransfer(event: Transfer): void {
     fromHolder.tokenBalanceRaw = fromHolder.tokenBalanceRaw - BIGINT_ONE;
     fromHolder.tokenBalance = fromHolder.tokenBalanceRaw;
     const fromHoldertheword = fromHolder.theword; // Re-assignment required to update array
-    fromHolder.theword = fromHoldertheword.filter(n => n !== transferredNounId);
+    fromHolder.theword = fromHoldertheword.filter(n => n !== transferredTheWordId);
 
     if (fromHolder.delegate != null) {
       const fromHolderDelegate = getOrCreateDelegate(fromHolder.delegate);
       const fromHolderthewordRepresented = fromHolderDelegate.thewordRepresented; // Re-assignment required to update array
       fromHolderDelegate.thewordRepresented = fromHolderthewordRepresented.filter(
-        n => n !== transferredNounId,
+        n => n !== transferredTheWordId,
       );
       fromHolderDelegate.save();
     }
@@ -137,7 +137,7 @@ export function handleTransfer(event: Transfer): void {
 
   const toHolderDelegate = getOrCreateDelegate(toHolder.id);
   const toHolderthewordRepresented = toHolderDelegate.thewordRepresented; // Re-assignment required to update array
-  toHolderthewordRepresented.push(transferredNounId);
+  toHolderthewordRepresented.push(transferredTheWordId);
   toHolderDelegate.thewordRepresented = toHolderthewordRepresented;
   toHolderDelegate.save();
 
@@ -160,13 +160,13 @@ export function handleTransfer(event: Transfer): void {
     toHolder.delegate = toHolder.id;
   }
 
-  let noun = Noun.load(transferredNounId);
-  if (noun == null) {
-    noun = new Noun(transferredNounId);
+  let theword = TheWord.load(transferredTheWordId);
+  if (theword == null) {
+    theword = new TheWord(transferredTheWordId);
   }
 
-  noun.owner = toHolder.id;
-  noun.save();
+  theword.owner = toHolder.id;
+  theword.save();
 
   toHolder.save();
 }

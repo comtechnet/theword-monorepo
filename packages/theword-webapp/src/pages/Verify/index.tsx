@@ -20,17 +20,17 @@ const VerifyPage: React.FC<VerifyPageProp> = props => {
   const [signedMessage, setSignedMessage] = useState<undefined | object>(undefined);
   const { library } = useEthers();
 
-  const extractOwnedNounIdsFromthewordIndex = (owner: string | undefined, thewordIndex: any) =>
+  const extractOwnedTheWordIdsFromthewordIndex = (owner: string | undefined, thewordIndex: any) =>
     R.pipe(
       (theword: any) =>
-        theword.filter((noun: any) =>
+        theword.filter((theword: any) =>
           !owner
             ? false
-            : (noun.owner.id as string)
+            : (theword.owner.id as string)
                 .toLocaleLowerCase()
                 .localeCompare(owner.toLocaleLowerCase()) === 0,
         ),
-      R.map((noun: any) => Number(noun.id)),
+      R.map((theword: any) => Number(theword.id)),
       R.sort((a: number, b: number) => a - b),
     )(thewordIndex.theword);
 
@@ -42,12 +42,12 @@ const VerifyPage: React.FC<VerifyPageProp> = props => {
       [
         activeAccount ? `I am ${activeAccount}` : undefined,
         theword.length > 0
-          ? ` and I own Noun${theword.length > 1 ? 's' : ''} ${theword.join(', ')}`
+          ? ` and I own TheWord${theword.length > 1 ? 's' : ''} ${theword.join(', ')}`
           : undefined,
       ]
         .filter((part: string | undefined) => part)
         .join(' ');
-    setMessageToSign(initialMessage(extractOwnedNounIdsFromthewordIndex(activeAccount, data)));
+    setMessageToSign(initialMessage(extractOwnedTheWordIdsFromthewordIndex(activeAccount, data)));
   }, [data, activeAccount]);
 
   return (

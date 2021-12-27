@@ -2,19 +2,19 @@ import { Col, Row } from 'react-bootstrap';
 import { BigNumber } from 'ethers';
 import AuctionActivityWrapper from '../AuctionActivityWrapper';
 import AuctionNavigation from '../AuctionNavigation';
-import AuctionActivityNounTitle from '../AuctionActivityNounTitle';
+import AuctionActivityTheWordTitle from '../AuctionActivityTheWordTitle';
 import AuctionActivityDateHeadline from '../AuctionActivityDateHeadline';
 import AuctionTitleAndNavWrapper from '../AuctionTitleAndNavWrapper';
 import { Link } from 'react-router-dom';
-import nounContentClasses from './NounderNounContent.module.css';
+import thewordContentClasses from './TheWordderTheWordContent.module.css';
 import auctionBidClasses from '../AuctionActivity/BidHistory.module.css';
 import bidBtnClasses from '../BidHistoryBtn//BidHistoryBtn.module.css';
 import auctionActivityClasses from '../AuctionActivity/AuctionActivity.module.css';
 import CurrentBid, { BID_N_A } from '../CurrentBid';
 
-const NounderNounContent: React.FC<{
+const TheWordderTheWordContent: React.FC<{
   mintTimestamp: BigNumber;
-  nounId: BigNumber;
+  thewordId: BigNumber;
   isFirstAuction: boolean;
   isLastAuction: boolean;
   onPrevAuctionClick: () => void;
@@ -22,7 +22,7 @@ const NounderNounContent: React.FC<{
 }> = props => {
   const {
     mintTimestamp,
-    nounId,
+    thewordId,
     isFirstAuction,
     isLastAuction,
     onPrevAuctionClick,
@@ -37,7 +37,7 @@ const NounderNounContent: React.FC<{
             <AuctionActivityDateHeadline startTime={mintTimestamp} />
           </Col>
           <AuctionTitleAndNavWrapper>
-            <AuctionActivityNounTitle nounId={nounId} />
+            <AuctionActivityTheWordTitle thewordId={thewordId} />
             <AuctionNavigation
               isFirstAuction={isFirstAuction}
               isLastAuction={isLastAuction}
@@ -52,11 +52,11 @@ const NounderNounContent: React.FC<{
           </Col>
           <Col
             lg={5}
-            className={`${auctionActivityClasses.currentBidCol} ${nounContentClasses.currentBidCol}`}
+            className={`${auctionActivityClasses.currentBidCol} ${thewordContentClasses.currentBidCol}`}
           >
             <div className={auctionActivityClasses.section}>
               <h4>Winner</h4>
-              <h2>nounders.eth</h2>
+              <h2>thewordders.eth</h2>
             </div>
           </Col>
         </Row>
@@ -64,19 +64,19 @@ const NounderNounContent: React.FC<{
       <Row className={auctionActivityClasses.activityRow}>
         <Col lg={12}>
           <ul className={auctionBidClasses.bidCollection}>
-            <li className={`${auctionBidClasses.bidRow} ${nounContentClasses.bidRow}`}>
-              All Noun auction proceeds are sent to the{' '}
-              <Link to="/vote" className={nounContentClasses.link}>
+            <li className={`${auctionBidClasses.bidRow} ${thewordContentClasses.bidRow}`}>
+              All TheWord auction proceeds are sent to the{' '}
+              <Link to="/vote" className={thewordContentClasses.link}>
                 TheWord DAO
               </Link>
-              . For this reason, we, the project's founders (‘Nounders’) have chosen to compensate
-              ourselves with theword. Every 10th Noun for the first 5 years of the project will be
+              . For this reason, we, the project's founders (‘TheWordders’) have chosen to compensate
+              ourselves with theword. Every 10th TheWord for the first 5 years of the project will be
               sent to our multisig (5/10), where it will be vested and distributed to individual
-              Nounders.
+              TheWordders.
             </li>
           </ul>
           <div className={bidBtnClasses.bidHistoryWrapper}>
-            <Link to="/nounders" className={bidBtnClasses.bidHistory}>
+            <Link to="/thewordders" className={bidBtnClasses.bidHistory}>
               Learn More →
             </Link>
           </div>
@@ -85,4 +85,4 @@ const NounderNounContent: React.FC<{
     </AuctionActivityWrapper>
   );
 };
-export default NounderNounContent;
+export default TheWordderTheWordContent;

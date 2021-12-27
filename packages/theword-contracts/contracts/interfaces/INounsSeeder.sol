@@ -28,5 +28,5 @@ interface IthewordSeeder {
         uint48 glasses;
     }
 
-    function generateSeed(uint256 nounId, IthewordDescriptor descriptor) external view returns (Seed memory);
+    function generateSeed(uint256 thewordId, IthewordDescriptor descriptor) external view returns (Seed memory);
 }

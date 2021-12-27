@@ -20,7 +20,7 @@ dataSources:
         - Account
         - Auction
         - Bid
-        - Noun
+        - TheWord
       abis:
         - name: thewordAuctionHouse
           file: ../theword-contracts/abi/contracts/thewordAuctionHouse.sol/thewordAuctionHouse.json
@@ -46,7 +46,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/theword-erc-721.ts
       entities:
-        - Noun
+        - TheWord
         - Seed
         - Account
         - Delegate
@@ -55,8 +55,8 @@ dataSources:
         - name: thewordToken
           file: ../theword-contracts/abi/contracts/thewordToken.sol/thewordToken.json
       eventHandlers:
-        - event: NounCreated(indexed uint256,(uint48,uint48,uint48,uint48,uint48))
-          handler: handleNounCreated
+        - event: TheWordCreated(indexed uint256,(uint48,uint48,uint48,uint48,uint48))
+          handler: handleTheWordCreated
         - event: DelegateChanged(indexed address,indexed address,indexed address)
           handler: handleDelegateChanged
         - event: DelegateVotesChanged(indexed address,uint256,uint256)
