@@ -2,6 +2,15 @@
 
 TheWord DAO is collective bringing NFT innovations using the Christian Bible text.
 
+TheWord incorporates several major NFT innovations and brings them to the marketplace
+    1)  DeCre (Decentralized Creativeism)
+    2)  "Then Current" metadata attribution/association
+    3)  Guaranteed unique art metadata even for 1 thru N qty/volume of an NFT Instance
+
+TheWord builds on the NFT innovations of:
+    1)  Nouns
+    2)  Loot
+
 ## Contributing
 
 If you're interested in contributing to TheWord DAO repos we're excited to have you. Please discuss any changes in `#developers` in [discord.gg/theword](https://discord.gg/theword) prior to contributing to reduce duplication of effort and in case there is any prior art that may be useful to you.
