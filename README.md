@@ -1,40 +1,40 @@
-# nouns-monorepo
+# theword-monorepo
 
-Nouns DAO is a generative avatar art collective run by a group of crypto misfits.
+TheWord DAO is collective bringing NFT innovations using the Christian Bible text.
 
 ## Contributing
 
-If you're interested in contributing to Nouns DAO repos we're excited to have you. Please discuss any changes in `#developers` in [discord.gg/nouns](https://discord.gg/nouns) prior to contributing to reduce duplication of effort and in case there is any prior art that may be useful to you.
+If you're interested in contributing to TheWord DAO repos we're excited to have you. Please discuss any changes in `#developers` in [discord.gg/theword](https://discord.gg/theword) prior to contributing to reduce duplication of effort and in case there is any prior art that may be useful to you.
 
 ## Packages
 
-### nouns-api
+### theword-api
 
-The [nouns api](packages/nouns-api) is an HTTP webserver that hosts token metadata. This is currently unused because on-chain, data URIs are enabled.
+The [theword api](packages/theword-api) is an HTTP webserver that hosts token metadata. This is currently unused because on-chain, data URIs are enabled.
 
-### nouns-assets
+### theword-assets
 
-The [nouns assets](packages/nouns-assets) package holds the Noun PNG and run-length encoded image data.
+The [theword assets](packages/theword-assets) package holds any/all TheWord PNG and run-length encoded image data.
 
-### nouns-bots
+### theword-bots
 
-The [nouns bots](packages/nouns-bots) package contains a bot that monitors for changes in Noun auction state and notifies everyone via Twitter and Discord.
+The [theword bots](packages/theword-bots) package contains a bot that monitors for changes in Noun auction state and notifies everyone via Twitter and Discord.
 
-### nouns-contracts
+### theword-contracts
 
-The [nouns contracts](packages/nouns-contracts) is the suite of Solidity contracts powering Nouns DAO.
+The [theword contracts](packages/theword-contracts) is the suite of Solidity contracts powering TheWord DAO.
 
-### nouns-sdk
+### theword-sdk
 
-The [nouns sdk](packages/nouns-sdk) exposes the Nouns contract addresses, ABIs, and instances as well as image encoding and SVG building utilities.
+The [theword sdk](packages/theword-sdk) exposes the theword contract addresses, ABIs, and instances as well as image encoding and SVG building utilities.
 
-### nouns-subgraph
+### theword-subgraph
 
-In order to make retrieving more complex data from the auction history, [nouns subgraph](packages/nouns-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
+In order to make retrieving more complex data from the auction history, [theword subgraph](packages/theword-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
 
-### nouns-webapp
+### theword-webapp
 
-The [nouns webapp](packages/nouns-webapp) is the frontend for interacting with Noun auctions as hosted at [nouns.wtf](https://nouns.wtf).
+The [theword webapp](packages/theword-webapp) is the frontend for interacting with TheWord offerings as hosted at [theword.wtf](https://theword.wtf).
 
 ## Quickstart
 
@@ -53,7 +53,7 @@ yarn build
 ### Run Linter
 
 ```sh
-yarn lint
+yaryarn lint
 ```
 
 ### Run Prettier

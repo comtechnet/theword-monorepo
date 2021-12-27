@@ -1,0 +1,10 @@
+export { default as thewordTokenABI } from '../abi/contracts/thewordToken.sol/thewordToken.json';
+export { default as thewordAuctionHouseABI } from '../abi/contracts/thewordAuctionHouse.sol/thewordAuctionHouse.json';
+export { default as thewordDescriptorABI } from '../abi/contracts/thewordDescriptor.sol/thewordDescriptor.json';
+export { default as thewordSeederABI } from '../abi/contracts/thewordSeeder.sol/thewordSeeder.json';
+export { default as thewordDAOABI } from '../abi/contracts/governance/thewordDAOLogicV1.sol/thewordDAOLogicV1.json';
+export { thewordToken__factory as thewordTokenFactory } from '../typechain/factories/thewordToken__factory';
+export { thewordAuctionHouse__factory as thewordAuctionHouseFactory } from '../typechain/factories/thewordAuctionHouse__factory';
+export { thewordDescriptor__factory as thewordDescriptorFactory } from '../typechain/factories/thewordDescriptor__factory';
+export { thewordSeeder__factory as thewordSeederFactory } from '../typechain/factories/thewordSeeder__factory';
+export { thewordDaoLogicV1__factory as thewordDaoLogicV1Factory } from '../typechain/factories/thewordDaoLogicV1__factory';
