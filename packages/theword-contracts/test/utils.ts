@@ -1,17 +1,17 @@
 import { ethers, network } from 'hardhat';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { Block } from '@ethersproject/abstract-provider';
 import {
-  thewordDescriptor,
-  thewordDescriptor__factory as thewordDescriptorFactory,
-  thewordToken,
-  thewordToken__factory as thewordTokenFactory,
-  thewordSeeder,
-  thewordSeeder__factory as thewordSeederFactory,
+  TheWordDescriptor,
+  TheWordDescriptor__factory as TheWordDescriptorFactory,
+  TheWordToken,
+  TheWordToken__factory as TheWordTokenFactory,
+  TheWordSeeder,
+  TheWordSeeder__factory as TheWordSeederFactory,
   Weth,
   Weth__factory as WethFactory,
 } from '../typechain';
 import ImageData from '../files/image-data.json';
-import { Block } from '@ethersproject/abstract-provider';
 import { chunkArray } from '../utils';
 
 export type TestSigners = {
@@ -31,13 +31,13 @@ export const getSigners = async (): Promise<TestSigners> => {
   };
 };
 
-export const deploythewordDescriptor = async (
+export const deployTheWordDescriptor = async (
   deployer?: SignerWithAddress,
-): Promise<thewordDescriptor> => {
+): Promise<TheWordDescriptor> => {
   const signer = deployer || (await getSigners()).deployer;
   const nftDescriptorLibraryFactory = await ethers.getContractFactory('NFTDescriptor', signer);
   const nftDescriptorLibrary = await nftDescriptorLibraryFactory.deploy();
-  const thewordDescriptorFactory = new thewordDescriptorFactory(
+  const thewordDescriptorFactory = new TheWordDescriptorFactory(
     {
       __$e1d8844a0810dc0e87a665b1f2b5fa7c69$__: nftDescriptorLibrary.address,
     },
@@ -47,27 +47,27 @@ export const deploythewordDescriptor = async (
   return thewordDescriptorFactory.deploy();
 };
 
-export const deploythewordSeeder = async (deployer?: SignerWithAddress): Promise<thewordSeeder> => {
-  const factory = new thewordSeederFactory(deployer || (await getSigners()).deployer);
+export const deploythewordSeeder = async (deployer?: SignerWithAddress): Promise<TheWordSeeder> => {
+  const factory = new TheWordSeederFactory(deployer || (await getSigners()).deployer);
 
   return factory.deploy();
 };
 
-export const deploythewordToken = async (
+export const deployTheWordToken = async (
   deployer?: SignerWithAddress,
   theworddersDAO?: string,
   minter?: string,
   descriptor?: string,
   seeder?: string,
   proxyRegistryAddress?: string,
-): Promise<thewordToken> => {
+): Promise<TheWordToken> => {
   const signer = deployer || (await getSigners()).deployer;
-  const factory = new thewordTokenFactory(signer);
+  const factory = new TheWordTokenFactory(signer);
 
   return factory.deploy(
     theworddersDAO || signer.address,
     minter || signer.address,
-    descriptor || (await deploythewordDescriptor(signer)).address,
+    descriptor || (await deployTheWordDescriptor(signer)).address,
     seeder || (await deploythewordSeeder(signer)).address,
     proxyRegistryAddress || address(0),
   );
@@ -79,19 +79,19 @@ export const deployWeth = async (deployer?: SignerWithAddress): Promise<Weth> =>
   return factory.deploy();
 };
 
-export const populateDescriptor = async (thewordDescriptor: thewordDescriptor): Promise<void> => {
+export const populateDescriptor = async (thewordDescriptor: TheWordDescriptor): Promise<void> => {
   const { bgcolors, palette, images } = ImageData;
-  const { bodies, accessories, heads, glasses } = images;
+  const {
+    bodies, accessories, heads, glasses,
+  } = images;
 
   // Split up head and accessory population due to high gas usage
   await Promise.all([
     thewordDescriptor.addManyBackgrounds(bgcolors),
     thewordDescriptor.addManyColorsToPalette(0, palette),
     thewordDescriptor.addManyBodies(bodies.map(({ data }) => data)),
-    chunkArray(accessories, 10).map(chunk =>
-      thewordDescriptor.addManyAccessories(chunk.map(({ data }) => data)),
-    ),
-    chunkArray(heads, 10).map(chunk => thewordDescriptor.addManyHeads(chunk.map(({ data }) => data))),
+    chunkArray(accessories, 10).map((chunk) => thewordDescriptor.addManyAccessories(chunk.map(({ data }) => data))),
+    chunkArray(heads, 10).map((chunk) => thewordDescriptor.addManyHeads(chunk.map(({ data }) => data))),
     thewordDescriptor.addManyGlasses(glasses.map(({ data }) => data)),
   ]);
 };
@@ -101,24 +101,23 @@ export const populateDescriptor = async (thewordDescriptor: thewordDescriptor): 
  * @param token The theword ERC721 token
  * @param amount The number of theword to mint
  */
-export const Minttheword = (
-  token: thewordToken,
+export const MintTheWord = (
+  token: TheWordToken,
   burnTheWorddersTokens = true,
-): ((amount: number) => Promise<void>) => {
-  return async (amount: number): Promise<void> => {
-    for (let i = 0; i < amount; i++) {
-      await token.mint();
-    }
-    if (!burnTheWorddersTokens) return;
+): ((amount: number) => Promise<void>
+) => async (amount: number): Promise<void> => {
+  for (let i = 0; i < amount; i++) {
+    await token.mint();
+  }
+  if (!burnTheWorddersTokens) return;
 
-    await setTotalSupply(token, amount);
-  };
+  await setTotalSupply(token, amount);
 };
 
 /**
  * Mints or burns tokens to target a total supply. Due to TheWordders' rewards tokens may be burned and tokenIds will not be sequential
  */
-export const setTotalSupply = async (token: thewordToken, newTotalSupply: number): Promise<void> => {
+export const setTotalSupply = async (token: TheWordToken, newTotalSupply: number): Promise<void> => {
   const totalSupply = (await token.totalSupply()).toNumber();
 
   if (totalSupply < newTotalSupply) {
@@ -144,18 +143,14 @@ const rpc = <T = unknown>({
 }: {
   method: string;
   params?: unknown[];
-}): Promise<T> => {
-  return network.provider.send(method, params);
-};
+}): Promise<T> => network.provider.send(method, params);
 
 export const encodeParameters = (types: string[], values: unknown[]): string => {
   const abi = new ethers.utils.AbiCoder();
   return abi.encode(types, values);
 };
 
-export const blockByNumber = async (n: number | string): Promise<Block> => {
-  return rpc({ method: 'eth_getBlockByNumber', params: [n, false] });
-};
+export const blockByNumber = async (n: number | string): Promise<Block> => rpc({ method: 'eth_getBlockByNumber', params: [n, false] });
 
 export const increaseTime = async (seconds: number): Promise<unknown> => {
   await rpc({ method: 'evm_increaseTime', params: [seconds] });
@@ -204,10 +199,6 @@ export const mineBlock = async (): Promise<void> => {
   await network.provider.send('evm_mine');
 };
 
-export const chainId = async (): Promise<number> => {
-  return parseInt(await network.provider.send('eth_chainId'), 16);
-};
+export const chainId = async (): Promise<number> => parseInt(await network.provider.send('eth_chainId'), 16);
 
-export const address = (n: number): string => {
-  return `0x${n.toString(16).padStart(40, '0')}`;
-};
+export const address = (n: number): string => `0x${n.toString(16).padStart(40, '0')}`;

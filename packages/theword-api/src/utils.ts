@@ -1,7 +1,7 @@
-import { thewordTokenContract, redis, storage } from './clients';
-import { TokenMetadata } from './types';
 import { tryF, isError } from 'ts-try';
 import sharp from 'sharp';
+import { thewordTokenContract, redis, storage } from './clients';
+import { TokenMetadata } from './types';
 
 /**
  * Get the token metadata cache key

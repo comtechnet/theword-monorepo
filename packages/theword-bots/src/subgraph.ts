@@ -1,17 +1,17 @@
 import { request, gql } from 'graphql-request';
 import { config } from './config';
-import { AuctionBids } from './types';
+import { OfferingBids } from './types';
 
 /**
- * Query the subgraph and return the last auction id and bid created.
- * @returns The last auction id and bid from the subgraph.
+ * Query the subgraph and return the last offering id and bid created.
+ * @returns The last offering id and bid from the subgraph.
  */
-export async function getLastAuctionBids(): Promise<AuctionBids> {
-  const res = await request<{ auctions: AuctionBids[] }>(
+export async function getLastOfferingBids(): Promise<OfferingBids> {
+  const res = await request<{ offerings: OfferingBids[] }>(
     config.thewordSubgraph,
     gql`
       query {
-        auctions(orderBy: startTime, orderDirection: desc, first: 1) {
+        offerings(orderBy: startTime, orderDirection: desc, first: 1) {
           id
           endTime
           bids(orderBy: blockNumber, orderDirection: desc, first: 1) {
@@ -25,5 +25,5 @@ export async function getLastAuctionBids(): Promise<AuctionBids> {
       }
     `,
   );
-  return res.auctions[0];
+  return res.offerings[0];
 }

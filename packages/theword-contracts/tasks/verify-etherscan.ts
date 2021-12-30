@@ -5,12 +5,12 @@ type ContractName =
   | 'thewordDescriptor'
   | 'thewordSeeder'
   | 'thewordToken'
-  | 'thewordAuctionHouse'
-  | 'thewordAuctionHouseProxyAdmin'
+  | 'thewordOfferingHouse'
+  | 'thewordOfferingHouseProxyAdmin'
   | 'thewordDAOExecutor'
   | 'thewordDAOLogicV1'
   | 'thewordDAOProxy'
-  | 'thewordAuctionHouseProxy';
+  | 'thewordOfferingHouseProxy';
 
 interface VerifyArgs {
   address: string;
@@ -41,13 +41,13 @@ const contracts: Record<ContractName, VerifyArgs> = {
       '0xa5409ec958c83c3f309868babaca7c86dcb077c1',
     ],
   },
-  thewordAuctionHouse: {
+  thewordOfferingHouse: {
     address: '0xF15a943787014461d94da08aD4040f79Cd7c124e',
   },
-  thewordAuctionHouseProxyAdmin: {
+  thewordOfferingHouseProxyAdmin: {
     address: '0xC1C119932d78aB9080862C5fcb964029f086401e',
   },
-  thewordAuctionHouseProxy: {
+  thewordOfferingHouseProxy: {
     address: '0x830BD73E4184ceF73443C15111a1DF14e495C706',
     constructorArguments: [
       '0x2C128FF70de543A3d20f56a8241a6a1E6541C7BA',

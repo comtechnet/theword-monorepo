@@ -51,14 +51,14 @@ type Bid @entity {
   "Index of transaction within block"
   txIndex: BigInt!
 
-  "The auction being bid in"
-  auction: Auction!
+  "The offering being bid in"
+  offering: Offering!
 
   "The timestamp of the block the bid is in"
   blockTimestamp: BigInt!
 }
 
-type Auction @entity {
+type Offering @entity {
   "The TheWord's ERC721 token id"
   id: ID!
 
@@ -68,20 +68,20 @@ type Auction @entity {
   "The current highest bid amount"
   amount: BigInt!
 
-  "The time that the auction started"
+  "The time that the offering started"
   startTime: BigInt!
 
-  "The time that the auction is scheduled to end"
+  "The time that the offering is scheduled to end"
   endTime: BigInt!
 
   "The account with the current highest bid"
   bidder: Account
 
-  "Whether or not the auction has been settled"
+  "Whether or not the offering has been settled"
   settled: Boolean!
 
-  "The auction bids"
-  bids: [Bid!]! @derivedFrom(field: "auction")
+  "The offering bids"
+  bids: [Bid!]! @derivedFrom(field: "offering")
 }
 
 enum ProposalStatus {

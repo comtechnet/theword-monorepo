@@ -5,7 +5,7 @@ import { constants } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import {
   MaliciousBidder__factory as MaliciousBidderFactory,
-  thewordAuctionHouse,
+  thewordOfferingHouse,
   thewordDescriptor__factory as thewordDescriptorFactory,
   thewordToken,
   Weth,
@@ -15,8 +15,8 @@ import { deploythewordToken, deployWeth, populateDescriptor } from './utils';
 chai.use(solidity);
 const { expect } = chai;
 
-describe('thewordAuctionHouse', () => {
-  let thewordAuctionHouse: thewordAuctionHouse;
+describe('thewordOfferingHouse', () => {
+  let thewordOfferingHouse: thewordOfferingHouse;
   let thewordToken: thewordToken;
   let weth: Weth;
   let deployer: SignerWithAddress;
@@ -31,15 +31,15 @@ describe('thewordAuctionHouse', () => {
   const DURATION = 60 * 60 * 24;
 
   async function deploy(deployer?: SignerWithAddress) {
-    const auctionHouseFactory = await ethers.getContractFactory('thewordAuctionHouse', deployer);
-    return upgrades.deployProxy(auctionHouseFactory, [
+    const offeringHouseFactory = await ethers.getContractFactory('thewordOfferingHouse', deployer);
+    return upgrades.deployProxy(offeringHouseFactory, [
       thewordToken.address,
       weth.address,
       TIME_BUFFER,
       RESERVE_PRICE,
       MIN_INCREMENT_BID_PERCENTAGE,
       DURATION,
-    ]) as Promise<thewordAuctionHouse>;
+    ]) as Promise<thewordOfferingHouse>;
   }
 
   before(async () => {
@@ -47,13 +47,13 @@ describe('thewordAuctionHouse', () => {
 
     thewordToken = await deploythewordToken(deployer, theworddersDAO.address, deployer.address);
     weth = await deployWeth(deployer);
-    thewordAuctionHouse = await deploy(deployer);
+    thewordOfferingHouse = await deploy(deployer);
 
     const descriptor = await thewordToken.descriptor();
 
     await populateDescriptor(thewordDescriptorFactory.connect(descriptor, deployer));
 
-    await thewordToken.setMinter(thewordAuctionHouse.address);
+    await thewordToken.setMinter(thewordOfferingHouse.address);
   });
 
   beforeEach(async () => {
@@ -65,7 +65,7 @@ describe('thewordAuctionHouse', () => {
   });
 
   it('should revert if a second initialization is attempted', async () => {
-    const tx = thewordAuctionHouse.initialize(
+    const tx = thewordOfferingHouse.initialize(
       thewordToken.address,
       weth.address,
       TIME_BUFFER,
@@ -76,43 +76,43 @@ describe('thewordAuctionHouse', () => {
     await expect(tx).to.be.revertedWith('Initializable: contract is already initialized');
   });
 
-  it('should allow the theworddersDAO to unpause the contract and create the first auction', async () => {
-    const tx = await thewordAuctionHouse.unpause();
+  it('should allow the theworddersDAO to unpause the contract and create the first offering', async () => {
+    const tx = await thewordOfferingHouse.unpause();
     await tx.wait();
 
-    const auction = await thewordAuctionHouse.auction();
-    expect(auction.startTime.toNumber()).to.be.greaterThan(0);
+    const offering = await thewordOfferingHouse.offering();
+    expect(offering.startTime.toNumber()).to.be.greaterThan(0);
   });
 
-  it('should revert if a user creates a bid for an inactive auction', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should revert if a user creates a bid for an inactive offering', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId.add(1), {
+    const { thewordId } = await thewordOfferingHouse.offering();
+    const tx = thewordOfferingHouse.connect(bidderA).createBid(thewordId.add(1), {
       value: RESERVE_PRICE,
     });
 
-    await expect(tx).to.be.revertedWith('TheWord not up for auction');
+    await expect(tx).to.be.revertedWith('TheWord not up for offering');
   });
 
-  it('should revert if a user creates a bid for an expired auction', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should revert if a user creates a bid for an expired offering', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
-    const { thewordId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    const { thewordId } = await thewordOfferingHouse.offering();
+    const tx = thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
-    await expect(tx).to.be.revertedWith('Auction expired');
+    await expect(tx).to.be.revertedWith('Offering expired');
   });
 
   it('should revert if a user creates a bid with an amount below the reserve price', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    const { thewordId } = await thewordOfferingHouse.offering();
+    const tx = thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE - 1,
     });
 
@@ -120,13 +120,13 @@ describe('thewordAuctionHouse', () => {
   });
 
   it('should revert if a user creates a bid less than the min bid increment percentage', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
-    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    const { thewordId } = await thewordOfferingHouse.offering();
+    await thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE * 50,
     });
-    const tx = thewordAuctionHouse.connect(bidderB).createBid(thewordId, {
+    const tx = thewordOfferingHouse.connect(bidderB).createBid(thewordId, {
       value: RESERVE_PRICE * 51,
     });
 
@@ -136,15 +136,15 @@ describe('thewordAuctionHouse', () => {
   });
 
   it('should refund the previous bidder when the following user creates a bid', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
-    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    const { thewordId } = await thewordOfferingHouse.offering();
+    await thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     const bidderAPostBidBalance = await bidderA.getBalance();
-    await thewordAuctionHouse.connect(bidderB).createBid(thewordId, {
+    await thewordOfferingHouse.connect(bidderB).createBid(thewordId, {
       value: RESERVE_PRICE * 2,
     });
     const bidderAPostRefundBalance = await bidderA.getBalance();
@@ -153,21 +153,21 @@ describe('thewordAuctionHouse', () => {
   });
 
   it('should cap the maximum bid griefing cost at 30K gas + the cost to wrap and transfer WETH', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordOfferingHouse.offering();
 
     const maliciousBidderFactory = new MaliciousBidderFactory(bidderA);
     const maliciousBidder = await maliciousBidderFactory.deploy();
 
     const maliciousBid = await maliciousBidder
       .connect(bidderA)
-      .bid(thewordAuctionHouse.address, thewordId, {
+      .bid(thewordOfferingHouse.address, thewordId, {
         value: RESERVE_PRICE,
       });
     await maliciousBid.wait();
 
-    const tx = await thewordAuctionHouse.connect(bidderB).createBid(thewordId, {
+    const tx = await thewordOfferingHouse.connect(bidderB).createBid(thewordId, {
       value: RESERVE_PRICE * 2,
       gasLimit: 1_000_000,
     });
@@ -177,65 +177,65 @@ describe('thewordAuctionHouse', () => {
     expect(await weth.balanceOf(maliciousBidder.address)).to.equal(RESERVE_PRICE);
   });
 
-  it('should emit an `AuctionBid` event on a successful bid', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should emit an `OfferingBid` event on a successful bid', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    const { thewordId } = await thewordOfferingHouse.offering();
+    const tx = thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     await expect(tx)
-      .to.emit(thewordAuctionHouse, 'AuctionBid')
+      .to.emit(thewordOfferingHouse, 'OfferingBid')
       .withArgs(thewordId, bidderA.address, RESERVE_PRICE, false);
   });
 
-  it('should emit an `AuctionExtended` event if the auction end time is within the time buffer', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should emit an `OfferingExtended` event if the offering end time is within the time buffer', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId, endTime } = await thewordAuctionHouse.auction();
+    const { thewordId, endTime } = await thewordOfferingHouse.offering();
 
     await ethers.provider.send('evm_setNextBlockTimestamp', [endTime.sub(60 * 5).toNumber()]); // Subtract 5 mins from current end time
 
-    const tx = thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    const tx = thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     await expect(tx)
-      .to.emit(thewordAuctionHouse, 'AuctionExtended')
+      .to.emit(thewordOfferingHouse, 'OfferingExtended')
       .withArgs(thewordId, endTime.add(60 * 10));
   });
 
-  it('should revert if auction settlement is attempted while the auction is still active', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should revert if offering settlement is attempted while the offering is still active', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordOfferingHouse.offering();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    await thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
-    const tx = thewordAuctionHouse.connect(bidderA).settleCurrentAndCreateNewAuction();
+    const tx = thewordOfferingHouse.connect(bidderA).settleCurrentAndCreateNewOffering();
 
-    await expect(tx).to.be.revertedWith("Auction hasn't completed");
+    await expect(tx).to.be.revertedWith("Offering hasn't completed");
   });
 
-  it('should emit `AuctionSettled` and `AuctionCreated` events if all conditions are met', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should emit `OfferingSettled` and `OfferingCreated` events if all conditions are met', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordOfferingHouse.offering();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    await thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
-    const tx = await thewordAuctionHouse.connect(bidderA).settleCurrentAndCreateNewAuction();
+    const tx = await thewordOfferingHouse.connect(bidderA).settleCurrentAndCreateNewOffering();
 
     const receipt = await tx.wait();
     const { timestamp } = await ethers.provider.getBlock(receipt.blockHash);
 
-    const settledEvent = receipt.events?.find(e => e.event === 'AuctionSettled');
-    const createdEvent = receipt.events?.find(e => e.event === 'AuctionCreated');
+    const settledEvent = receipt.events?.find((e) => e.event === 'OfferingSettled');
+    const createdEvent = receipt.events?.find((e) => e.event === 'OfferingCreated');
 
     expect(settledEvent?.args?.thewordId).to.equal(thewordId);
     expect(settledEvent?.args?.winner).to.equal(bidderA.address);
@@ -246,54 +246,54 @@ describe('thewordAuctionHouse', () => {
     expect(createdEvent?.args?.endTime).to.equal(timestamp + DURATION);
   });
 
-  it('should not create a new auction if the auction house is paused and unpaused while an auction is ongoing', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should not create a new offering if the offering house is paused and unpaused while an offering is ongoing', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    await (await thewordAuctionHouse.pause()).wait();
+    await (await thewordOfferingHouse.pause()).wait();
 
-    await (await thewordAuctionHouse.unpause()).wait();
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordOfferingHouse.offering();
 
     expect(thewordId).to.equal(1);
   });
 
-  it('should create a new auction if the auction house is paused and unpaused after an auction is settled', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should create a new offering if the offering house is paused and unpaused after an offering is settled', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordOfferingHouse.offering();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    await thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
-    await (await thewordAuctionHouse.pause()).wait();
+    await (await thewordOfferingHouse.pause()).wait();
 
-    const settleTx = thewordAuctionHouse.connect(bidderA).settleAuction();
+    const settleTx = thewordOfferingHouse.connect(bidderA).settleOffering();
 
     await expect(settleTx)
-      .to.emit(thewordAuctionHouse, 'AuctionSettled')
+      .to.emit(thewordOfferingHouse, 'OfferingSettled')
       .withArgs(thewordId, bidderA.address, RESERVE_PRICE);
 
-    const unpauseTx = await thewordAuctionHouse.unpause();
+    const unpauseTx = await thewordOfferingHouse.unpause();
     const receipt = await unpauseTx.wait();
     const { timestamp } = await ethers.provider.getBlock(receipt.blockHash);
 
-    const createdEvent = receipt.events?.find(e => e.event === 'AuctionCreated');
+    const createdEvent = receipt.events?.find((e) => e.event === 'OfferingCreated');
 
     expect(createdEvent?.args?.thewordId).to.equal(thewordId.add(1));
     expect(createdEvent?.args?.startTime).to.equal(timestamp);
     expect(createdEvent?.args?.endTime).to.equal(timestamp + DURATION);
   });
 
-  it('should settle the current auction and pause the contract if the minter is updated while the auction house is unpaused', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should settle the current offering and pause the contract if the minter is updated while the offering house is unpaused', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordOfferingHouse.offering();
 
-    await thewordAuctionHouse.connect(bidderA).createBid(thewordId, {
+    await thewordOfferingHouse.connect(bidderA).createBid(thewordId, {
       value: RESERVE_PRICE,
     });
 
@@ -301,28 +301,28 @@ describe('thewordAuctionHouse', () => {
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
-    const settleTx = thewordAuctionHouse.connect(bidderA).settleCurrentAndCreateNewAuction();
+    const settleTx = thewordOfferingHouse.connect(bidderA).settleCurrentAndCreateNewOffering();
 
     await expect(settleTx)
-      .to.emit(thewordAuctionHouse, 'AuctionSettled')
+      .to.emit(thewordOfferingHouse, 'OfferingSettled')
       .withArgs(thewordId, bidderA.address, RESERVE_PRICE);
 
-    const paused = await thewordAuctionHouse.paused();
+    const paused = await thewordOfferingHouse.paused();
 
     expect(paused).to.equal(true);
   });
 
-  it('should burn a TheWord on auction settlement if no bids are received', async () => {
-    await (await thewordAuctionHouse.unpause()).wait();
+  it('should burn a TheWord on offering settlement if no bids are received', async () => {
+    await (await thewordOfferingHouse.unpause()).wait();
 
-    const { thewordId } = await thewordAuctionHouse.auction();
+    const { thewordId } = await thewordOfferingHouse.offering();
 
     await ethers.provider.send('evm_increaseTime', [60 * 60 * 25]); // Add 25 hours
 
-    const tx = thewordAuctionHouse.connect(bidderA).settleCurrentAndCreateNewAuction();
+    const tx = thewordOfferingHouse.connect(bidderA).settleCurrentAndCreateNewOffering();
 
     await expect(tx)
-      .to.emit(thewordAuctionHouse, 'AuctionSettled')
+      .to.emit(thewordOfferingHouse, 'OfferingSettled')
       .withArgs(thewordId, '0x0000000000000000000000000000000000000000', 0);
   });
 });

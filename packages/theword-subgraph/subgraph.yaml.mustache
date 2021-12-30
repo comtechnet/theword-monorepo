@@ -1,38 +1,38 @@
 specVersion: 0.0.3
 description: >-
-  Randomly generated avatar NFTs auctioned daily.
+  Randomly generated NFTs offering 3 daily.
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: thewordAuctionHouse
+    name: thewordOfferingHouse
     network: {{network}}
     source:
-      address: '{{thewordAuctionHouse.address}}'
-      abi: thewordAuctionHouse
-      startBlock: {{thewordAuctionHouse.startBlock}}
+      address: '{{thewordOfferingHouse.address}}'
+      abi: thewordOfferingHouse
+      startBlock: {{thewordOfferingHouse.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/theword-auction-house.ts
+      file: ./src/theword-offering-house.ts
       entities:
         - Account
-        - Auction
+        - Offering
         - Bid
         - TheWord
       abis:
-        - name: thewordAuctionHouse
-          file: ../theword-contracts/abi/contracts/thewordAuctionHouse.sol/thewordAuctionHouse.json
+        - name: thewordOfferingHouse
+          file: ../theword-contracts/abi/contracts/thewordOfferingHouse.sol/thewordOfferingHouse.json
       eventHandlers:
-        - event: AuctionCreated(indexed uint256,uint256,uint256)
-          handler: handleAuctionCreated
-        - event: AuctionBid(indexed uint256,address,uint256,bool)
-          handler: handleAuctionBid
-        - event: AuctionExtended(indexed uint256,uint256)
-          handler: handleAuctionExtended
-        - event: AuctionSettled(indexed uint256,address,uint256)
-          handler: handleAuctionSettled
+        - event: OfferingCreated(indexed uint256,uint256,uint256)
+          handler: handleOfferingCreated
+        - event: OfferingBid(indexed uint256,address,uint256,bool)
+          handler: handleOfferingBid
+        - event: OfferingExtended(indexed uint256,uint256)
+          handler: handleOfferingExtended
+        - event: OfferingSettled(indexed uint256,address,uint256)
+          handler: handleOfferingSettled
   - kind: ethereum/contract
     name: thewordToken
     network: {{network}}

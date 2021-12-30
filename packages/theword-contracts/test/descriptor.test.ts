@@ -1,17 +1,17 @@
 import chai from 'chai';
 import { solidity } from 'ethereum-waffle';
-import { thewordDescriptor } from '../typechain';
-import ImageData from '../files/image-data.json';
-import { LongestPart } from './types';
-import { deploythewordDescriptor, populateDescriptor } from './utils';
 import { ethers } from 'hardhat';
 import { appendFileSync } from 'fs';
+import { TheWordDescriptor } from '../typechain';
+import ImageData from '../files/image-data.json';
+import { LongestPart } from './types';
+import { deployTheWordDescriptor, populateDescriptor } from './utils';
 
 chai.use(solidity);
 const { expect } = chai;
 
 describe('thewordDescriptor', () => {
-  let thewordDescriptor: thewordDescriptor;
+  let thewordDescriptor: TheWordDescriptor;
   let snapshotId: number;
 
   const part: LongestPart = {
@@ -26,7 +26,7 @@ describe('thewordDescriptor', () => {
   };
 
   before(async () => {
-    thewordDescriptor = await deploythewordDescriptor();
+    thewordDescriptor = await deployTheWordDescriptor();
 
     for (const [l, layer] of Object.entries(ImageData.images)) {
       for (const [i, item] of layer.entries()) {
@@ -51,7 +51,7 @@ describe('thewordDescriptor', () => {
   });
 
   it('should generate valid token uri metadata when data uris are disabled', async () => {
-    const BASE_URI = 'https://api.theword.wtf/metadata/';
+    const BASE_URI = 'https://api.theword.nft/metadata/';
 
     await thewordDescriptor.setBaseURI(BASE_URI);
     await thewordDescriptor.toggleDataURIEnabled();
@@ -91,7 +91,9 @@ describe('thewordDescriptor', () => {
     console.log('Running... this may take a little while...');
 
     const { bgcolors, images } = ImageData;
-    const { bodies, accessories, heads, glasses } = images;
+    const {
+      bodies, accessories, heads, glasses,
+    } = images;
     const max = Math.max(bodies.length, accessories.length, heads.length, glasses.length);
     for (let i = 0; i < max; i++) {
       const tokenUri = await thewordDescriptor.tokenURI(i, {

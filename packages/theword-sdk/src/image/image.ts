@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ImageBounds, ImageRow, ImageRows, Rect, RGBAColor } from './types';
+import {
+  ImageBounds, ImageRow, ImageRows, Rect, RGBAColor,
+} from './types';
 import { rgbToHex, toPaddedHex } from './utils';
 
 /**
@@ -8,9 +10,15 @@ import { rgbToHex, toPaddedHex } from './utils';
  */
 export class Image {
   private _width: number;
+
   private _height: number;
+
   private _rows: ImageRows = {};
-  private _bounds: ImageBounds = { top: 0, bottom: 0, left: 0, right: 0 };
+
+  private _bounds: ImageBounds = {
+    top: 0, bottom: 0, left: 0, right: 0,
+  };
+
   private _rle: string | undefined;
 
   /**
@@ -73,7 +81,9 @@ export class Image {
   ): string {
     for (let y = 0; y < this._height; y++) {
       for (let x = 0; x < this._width; x++) {
-        const { r, g, b, a } = getRgbaAt(x, y);
+        const {
+          r, g, b, a,
+        } = getRgbaAt(x, y);
         const hexColor = rgbToHex(r, g, b);
 
         // Insert the color if it does not yet exist
@@ -94,8 +104,8 @@ export class Image {
     // Set the left and right bounds. Return early if empty
     const rowCount = Object.keys(this._rows).length;
     if (rowCount) {
-      this._bounds.left = Math.min(...Object.values(this._rows).map(r => r.bounds.left));
-      this._bounds.right = Math.max(...Object.values(this._rows).map(r => r.bounds.right));
+      this._bounds.left = Math.min(...Object.values(this._rows).map((r) => r.bounds.left));
+      this._bounds.right = Math.max(...Object.values(this._rows).map((r) => r.bounds.right));
 
       // Exit early if image is empty
       const [rect] = this._rows[0]?.rects || [];
@@ -212,7 +222,7 @@ export class Image {
         if (i === 0) {
           if (length > bounds.left) {
             return [length - bounds.left, colorIndex];
-          } else if (length === bounds.left) {
+          } if (length === bounds.left) {
             return [];
           }
         }
@@ -221,7 +231,7 @@ export class Image {
         if (i === row.rects.length - 1) {
           if (length > this._width - bounds.right) {
             return [length - (this._width - bounds.right), colorIndex];
-          } else if (length === this._width - bounds.right) {
+          } if (length === this._width - bounds.right) {
             return [];
           }
         }

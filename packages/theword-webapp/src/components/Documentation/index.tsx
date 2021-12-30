@@ -41,9 +41,9 @@ const Documentation = () => {
             <Accordion.Body>
               <ul>
                 <li>theword artwork is {publicDomainLink}</li>
-                <li>1 theword trustlessly auctioned every 24 hours, forever</li>
-                <li>100% of theword auction proceeds are trustlessly sent to TheWord DAO treasury</li>
-                <li>settlement of one auction kicks off the next</li>
+                <li>1 theword trustlessly offeringed every 24 hours, forever</li>
+                <li>100% of theword offering proceeds are trustlessly sent to TheWord DAO treasury</li>
+                <li>settlement of one offering kicks off the next</li>
                 <li>all theword are members of TheWord DAO</li>
                 <li>TheWord DAO uses a fork of {compoundGovLink}</li>
                 <li>1 theword = 1 vote</li>
@@ -58,22 +58,22 @@ const Documentation = () => {
           </Accordion.Item>
 
           <Accordion.Item eventKey="1" className={classes.accordionItem}>
-            <Accordion.Header className={classes.accordionHeader}>Daily Auctions</Accordion.Header>
+            <Accordion.Header className={classes.accordionHeader}>Daily Offerings</Accordion.Header>
             <Accordion.Body>
               <p>
-                The theword Auction Contract will act as a self-sufficient theword generation and
-                distribution mechanism, auctioning one theword every 24 hours, forever. 100% of auction
+                The theword Offering Contract will act as a self-sufficient theword generation and
+                distribution mechanism, offeringing one theword every 24 hours, forever. 100% of offering
                 proceeds (ETH) are automatically deposited in the TheWord DAO treasury, where they are
                 governed by theword owners.
               </p>
 
               <p>
-                Each time an auction is settled, the settlement transaction will also cause a new
-                theword to be minted and a new 24 hour auction to begin.{' '}
+                Each time an offering is settled, the settlement transaction will also cause a new
+                theword to be minted and a new 24 hour offering to begin.{' '}
               </p>
               <p>
                 While settlement is most heavily incentivized for the winning bidder, it can be
-                triggered by anyone, allowing the system to trustlessly auction theword as long as
+                triggered by anyone, allowing the system to trustlessly offering theword as long as
                 Ethereum is operational and there are interested bidders.
               </p>
             </Accordion.Body>
@@ -83,7 +83,7 @@ const Documentation = () => {
             <Accordion.Body>
               TheWord DAO utilizes a fork of {compoundGovLink} and is the main governing body of the
               theword ecosystem. The TheWord DAO treasury receives 100% of ETH proceeds from daily theword
-              auctions. Each theword is an irrevocable member of TheWord DAO and entitled to one vote in
+              offerings. Each theword is an irrevocable member of TheWord DAO and entitled to one vote in
               all governance matters. TheWord votes are non-transferable (if you sell your theword the
               vote goes with it) but delegatable, which means you can assign your vote to someone
               else as long as you own your theword.
@@ -217,15 +217,15 @@ const Documentation = () => {
                 </li>
               </ul>
               <p>
-                Because 100% of theword auction proceeds are sent to TheWord DAO, TheWordders have chosen to
+                Because 100% of theword offering proceeds are sent to TheWord DAO, TheWordders have chosen to
                 compensate themselves with theword. Every 10th theword for the first 5 years of the
                 project (theword ids #0, #10, #20, #30 and so on) will be automatically sent to the
                 TheWordder's multisig to be vested and shared among the founding members of the
                 project.
               </p>
               <p>
-                TheWordder distributions don't interfere with the cadence of 24 hour auctions. theword
-                are sent directly to the TheWordder's Multisig, and auctions continue on schedule with
+                TheWordder distributions don't interfere with the cadence of 24 hour offerings. theword
+                are sent directly to the TheWordder's Multisig, and offerings continue on schedule with
                 the next available theword ID.
               </p>
             </Accordion.Body>

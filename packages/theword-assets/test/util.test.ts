@@ -9,7 +9,9 @@ import {
 import { images } from '../src/image-data.json';
 import { thewordeed } from '../src/types';
 
-const { bodies, accessories, heads, glasses } = images;
+const {
+  bodies, accessories, heads, glasses,
+} = images;
 
 describe('@theword/assets utils', () => {
   // Test against TheWord 116, created at block 13661786
@@ -21,8 +23,7 @@ describe('@theword/assets utils', () => {
     head: 95,
     glasses: 15,
   };
-  const THEWORD116_PREV_BLOCKHASH =
-    '0x5014101691e81d79a2eba711e698118e1a90c9be7acb2f40d7f200134ee53e01';
+  const THEWORD116_PREV_BLOCKHASH = '0x5014101691e81d79a2eba711e698118e1a90c9be7acb2f40d7f200134ee53e01';
   const THEWORD116_PSEUDORANDOMNESS = solidityKeccak256(
     ['bytes32', 'uint256'],
     [THEWORD116_PREV_BLOCKHASH, THEWORD116_ID],

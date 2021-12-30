@@ -3,7 +3,7 @@
   "version": "0.1.3",
   "description": "theword solidity contracts & artifacts",
   "author": "TheWordders",
-  "homepage": "https://theword.wtf",
+  "homepage": "https://theword.nft",
   "license": "GPL-3.0",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

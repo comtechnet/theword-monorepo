@@ -32,7 +32,7 @@ const NetworkAlert = () => {
         </Modal.Header>
         <Modal.Body>
           <p>
-            TheWord DAO auctions require you to switch over {networkName()} to be able to participate.
+            TheWord DAO offerings require you to switch over {networkName()} to be able to participate.
           </p>
           <p>
             <b>To get started, please switch your network by following the instructions below:</b>

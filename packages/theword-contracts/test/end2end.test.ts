@@ -3,11 +3,12 @@ import { ethers, upgrades } from 'hardhat';
 import { BigNumber as EthersBN } from 'ethers';
 import { solidity } from 'ethereum-waffle';
 
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
   Weth,
   thewordToken,
-  thewordAuctionHouse,
-  thewordAuctionHouse__factory as thewordAuctionHouseFactory,
+  thewordOfferingHouse,
+  thewordOfferingHouse__factory as thewordOfferingHouseFactory,
   thewordDescriptor,
   thewordDescriptor__factory as thewordDescriptorFactory,
   thewordDaoProxy__factory as thewordDaoProxyFactory,
@@ -28,13 +29,11 @@ import {
   setNextBlockTimestamp,
 } from './utils';
 
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-
 chai.use(solidity);
 const { expect } = chai;
 
 let thewordToken: thewordToken;
-let thewordAuctionHouse: thewordAuctionHouse;
+let thewordOfferingHouse: thewordOfferingHouse;
 let descriptor: thewordDescriptor;
 let weth: Weth;
 let gov: thewordDaoLogicV1;
@@ -60,7 +59,7 @@ const callDatas: string[] = [];
 
 let proposalId: EthersBN;
 
-// Auction House Config
+// Offering House Config
 const TIME_BUFFER = 15 * 60;
 const RESERVE_PRICE = 2;
 const MIN_INCREMENT_BID_PERCENTAGE = 5;
@@ -73,7 +72,7 @@ async function deploy() {
 
   weth = await deployWeth(wethDeployer);
 
-  // nonce 2: Deploy AuctionHouse
+  // nonce 2: Deploy OfferingHouse
   // nonce 3: Deploy nftDescriptorLibraryFactory
   // nonce 4: Deploy thewordDescriptor
   // nonce 5: Deploy thewordSeeder
@@ -88,12 +87,12 @@ async function deploy() {
   thewordToken = await deploythewordToken(
     deployer,
     theworddersDAO.address,
-    deployer.address, // do not know minter/auction house yet
+    deployer.address, // do not know minter/offering house yet
   );
 
-  // 2a. DEPLOY AuctionHouse
-  const auctionHouseFactory = await ethers.getContractFactory('thewordAuctionHouse', deployer);
-  const thewordAuctionHouseProxy = await upgrades.deployProxy(auctionHouseFactory, [
+  // 2a. DEPLOY OfferingHouse
+  const offeringHouseFactory = await ethers.getContractFactory('thewordOfferingHouse', deployer);
+  const thewordOfferingHouseProxy = await upgrades.deployProxy(offeringHouseFactory, [
     thewordToken.address,
     weth.address,
     TIME_BUFFER,
@@ -102,11 +101,11 @@ async function deploy() {
     DURATION,
   ]);
 
-  // 2b. CAST proxy as AuctionHouse
-  thewordAuctionHouse = thewordAuctionHouseFactory.connect(thewordAuctionHouseProxy.address, deployer);
+  // 2b. CAST proxy as OfferingHouse
+  thewordOfferingHouse = thewordOfferingHouseFactory.connect(thewordOfferingHouseProxy.address, deployer);
 
   // 3. SET MINTER
-  await thewordToken.setMinter(thewordAuctionHouse.address);
+  await thewordToken.setMinter(thewordOfferingHouse.address);
 
   // 4. POPULATE body parts
   descriptor = thewordDescriptorFactory.connect(await thewordToken.descriptor(), deployer);
@@ -151,22 +150,22 @@ async function deploy() {
   // 9. SET Descriptor owner to thewordDAOExecutor
   await descriptor.transferOwnership(timelock.address);
 
-  // 10. UNPAUSE auction and kick off first mint
-  await thewordAuctionHouse.unpause();
+  // 10. UNPAUSE offering and kick off first mint
+  await thewordOfferingHouse.unpause();
 
-  // 11. SET Auction House owner to thewordDAOExecutor
-  await thewordAuctionHouse.transferOwnership(timelock.address);
+  // 11. SET Offering House owner to thewordDAOExecutor
+  await thewordOfferingHouse.transferOwnership(timelock.address);
 }
 
-describe('End to End test with deployment, auction, proposing, voting, executing', async () => {
+describe('End to End test with deployment, offering, proposing, voting, executing', async () => {
   before(deploy);
 
   it('sets all starting params correctly', async () => {
     expect(await thewordToken.owner()).to.equal(timelock.address);
     expect(await descriptor.owner()).to.equal(timelock.address);
-    expect(await thewordAuctionHouse.owner()).to.equal(timelock.address);
+    expect(await thewordOfferingHouse.owner()).to.equal(timelock.address);
 
-    expect(await thewordToken.minter()).to.equal(thewordAuctionHouse.address);
+    expect(await thewordToken.minter()).to.equal(thewordOfferingHouse.address);
     expect(await thewordToken.theworddersDAO()).to.equal(theworddersDAO.address);
 
     expect(await gov.admin()).to.equal(timelock.address);
@@ -178,15 +177,15 @@ describe('End to End test with deployment, auction, proposing, voting, executing
     expect(await thewordToken.totalSupply()).to.equal(EthersBN.from('2'));
 
     expect(await thewordToken.ownerOf(0)).to.equal(theworddersDAO.address);
-    expect(await thewordToken.ownerOf(1)).to.equal(thewordAuctionHouse.address);
+    expect(await thewordToken.ownerOf(1)).to.equal(thewordOfferingHouse.address);
 
-    expect((await thewordAuctionHouse.auction()).thewordId).to.equal(EthersBN.from('1'));
+    expect((await thewordOfferingHouse.offering()).thewordId).to.equal(EthersBN.from('1'));
   });
 
   it('allows bidding, settling, and transferring ETH correctly', async () => {
-    await thewordAuctionHouse.connect(bidderA).createBid(1, { value: RESERVE_PRICE });
+    await thewordOfferingHouse.connect(bidderA).createBid(1, { value: RESERVE_PRICE });
     await setNextBlockTimestamp(Number(await blockTimestamp('latest')) + DURATION);
-    await thewordAuctionHouse.settleCurrentAndCreateNewAuction();
+    await thewordOfferingHouse.settleCurrentAndCreateNewOffering();
 
     expect(await thewordToken.ownerOf(1)).to.equal(bidderA.address);
     expect(await ethers.provider.getBalance(timelock.address)).to.equal(RESERVE_PRICE);

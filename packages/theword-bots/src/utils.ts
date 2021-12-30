@@ -12,27 +12,27 @@ import { Bid, TokenMetadata } from './types';
  */
 export async function resolveEnsOrFormatAddress(address: string) {
   return (
-    (await ethers.getDefaultProvider().lookupAddress(address)) ||
-    `${address.substr(0, 4)}...${address.substr(address.length - 4)}`
+    (await ethers.getDefaultProvider().lookupAddress(address))
+    || `${address.substr(0, 4)}...${address.substr(address.length - 4)}`
   );
 }
 
 /**
- * Get tweet text for auction started.
- * @param auctionId The started auction id.
- * @param durationSeconds The duration of the auction in seconds.
- * @returns Text to be used in tweet when auction starts.
+ * Get tweet text for offering started.
+ * @param offeringId The started offering id.
+ * @param durationSeconds The duration of the offering in seconds.
+ * @returns Text to be used in tweet when offering starts.
  */
-export function formatAuctionStartedTweetText(auctionId: number) {
+export function formatOfferingStartedTweetText(offeringId: number) {
   return `＊Bleep Bloop Blop＊
         
- An auction has started for TheWord #${auctionId}
+ An offering has started for TheWord #${offeringId}
  Learn more at https://theword.wtf`;
 }
 
 /**
  * Get the formatted text for a new bid.
- * @param id The auction/theword id
+ * @param id The offering/theword id
  * @param bid The amount of the current bid
  * @returns The bid update tweet text
  */
@@ -42,11 +42,11 @@ export async function formatBidMessageText(id: number, bid: Bid) {
 }
 
 /**
- * Get the tweet text for an auction ending soon.
- * @returns The auction ending soon text
+ * Get the tweet text for an offering ending soon.
+ * @returns The offering ending soon text
  */
-export function getAuctionEndingSoonTweetText() {
-  return `This auction is ending soon! Bid now at https://theword.wtf`;
+export function getOfferingEndingSoonTweetText() {
+  return `This offering is ending soon! Bid now at https://theword.wtf`;
 }
 
 /**

@@ -8,8 +8,8 @@ export const config = {
   redisDb: Number(process.env.REDIS_DB ?? 0),
   redisPassword: process.env.REDIS_PASSWORD,
   thewordSubgraph:
-    process.env.theword_SUBGRAPH_URL ??
-    'https://api.thegraph.com/subgraphs/name/theworddao/theword-subgraph',
+    process.env.theword_SUBGRAPH_URL
+    ?? 'https://api.thegraph.com/subgraphs/name/theworddao/theword-subgraph',
   twitterEnabled: process.env.TWITTER_ENABLED === 'true',
   twitterAppKey: process.env.TWITTER_APP_KEY ?? '',
   twitterAppSecret: process.env.TWITTER_APP_SECRET ?? '',

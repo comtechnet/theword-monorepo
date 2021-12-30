@@ -9,20 +9,20 @@ export interface BidEvent {
   timestamp: BigNumberish;
 }
 
-export interface AuctionCreateEvent {
+export interface OfferingCreateEvent {
   thewordId: BigNumberish;
   startTime: BigNumberish;
   endTime: BigNumberish;
   settled: boolean;
 }
 
-export interface AuctionSettledEvent {
+export interface OfferingSettledEvent {
   thewordId: BigNumberish;
   winner: string;
   amount: BigNumberish;
 }
 
-export interface AuctionExtendedEvent {
+export interface OfferingExtendedEvent {
   thewordId: BigNumberish;
   endTime: BigNumberish;
 }

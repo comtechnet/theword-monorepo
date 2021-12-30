@@ -1,4 +1,4 @@
-import { Auction, AuctionHouseContractFunction } from '../../wrappers/thewordAuction';
+import { Offering, OfferingHouseContractFunction } from '../../wrappers/thewordOffering';
 import { connectContractToSigner, useEthers, useContractFunction } from '@usedapp/core';
 import { useAppSelector } from '../../hooks';
 import React, { useEffect, useState, useRef, ChangeEvent, useCallback } from 'react';
@@ -6,10 +6,10 @@ import { utils, BigNumber as EthersBN } from 'ethers';
 import BigNumber from 'bignumber.js';
 import classes from './Bid.module.css';
 import { Spinner, InputGroup, FormControl, Button } from 'react-bootstrap';
-import { useAuctionMinBidIncPercentage } from '../../wrappers/thewordAuction';
+import { useOfferingMinBidIncPercentage } from '../../wrappers/thewordOffering';
 import { useAppDispatch } from '../../hooks';
 import { AlertModal, setAlertModal } from '../../state/slices/application';
-import { thewordAuctionHouseFactory } from '@theword/sdk';
+import { TheWordOfferingHouseFactory } from '@theword/sdk';
 import config from '../../config';
 
 const computeMinimumNextBid = (
@@ -40,14 +40,14 @@ const currentBid = (bidInputRef: React.RefObject<HTMLInputElement>) => {
 };
 
 const Bid: React.FC<{
-  auction: Auction;
-  auctionEnded: boolean;
+  offering: Offering;
+  offeringEnded: boolean;
 }> = props => {
   const activeAccount = useAppSelector(state => state.account.activeAccount);
   const { library } = useEthers();
-  const { auction, auctionEnded } = props;
-  const thewordAuctionHouseContract = new thewordAuctionHouseFactory().attach(
-    config.addresses.thewordAuctionHouseProxy,
+  const { offering, offeringEnded } = props;
+  const thewordOfferingHouseContract = new TheWordOfferingHouseFactory().attach(
+    config.addresses.thewordOfferingHouseProxy,
   );
 
   const account = useAppSelector(state => state.account.activeAccount);
@@ -57,25 +57,25 @@ const Bid: React.FC<{
   const [bidInput, setBidInput] = useState('');
   const [bidButtonContent, setBidButtonContent] = useState({
     loading: false,
-    content: auctionEnded ? 'Settle' : 'Bid',
+    content: offeringEnded ? 'Settle' : 'Bid',
   });
 
   const dispatch = useAppDispatch();
   const setModal = useCallback((modal: AlertModal) => dispatch(setAlertModal(modal)), [dispatch]);
 
-  const minBidIncPercentage = useAuctionMinBidIncPercentage();
+  const minBidIncPercentage = useOfferingMinBidIncPercentage();
   const minBid = computeMinimumNextBid(
-    auction && new BigNumber(auction.amount.toString()),
+    offering && new BigNumber(offering.amount.toString()),
     minBidIncPercentage,
   );
 
   const { send: placeBid, state: placeBidState } = useContractFunction(
-    thewordAuctionHouseContract,
-    AuctionHouseContractFunction.createBid,
+    thewordOfferingHouseContract,
+    OfferingHouseContractFunction.createBid,
   );
-  const { send: settleAuction, state: settleAuctionState } = useContractFunction(
-    thewordAuctionHouseContract,
-    AuctionHouseContractFunction.settleCurrentAndCreateNewAuction,
+  const { send: settleOffering, state: settleOfferingState } = useContractFunction(
+    thewordOfferingHouseContract,
+    OfferingHouseContractFunction.settleCurrentAndCreateNewOffering,
   );
 
   const bidInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +90,7 @@ const Bid: React.FC<{
   };
 
   const placeBidHandler = async () => {
-    if (!auction || !bidInputRef.current || !bidInputRef.current.value) {
+    if (!offering || !bidInputRef.current || !bidInputRef.current.value) {
       return;
     }
 
@@ -107,18 +107,18 @@ const Bid: React.FC<{
     }
 
     const value = utils.parseEther(bidInputRef.current.value.toString());
-    const contract = connectContractToSigner(thewordAuctionHouseContract, undefined, library);
-    const gasLimit = await contract.estimateGas.createBid(auction.thewordId, {
+    const contract = connectContractToSigner(thewordOfferingHouseContract, undefined, library);
+    const gasLimit = await contract.estimateGas.createBid(offering.thewordId, {
       value,
     });
-    placeBid(auction.thewordId, {
+    placeBid(offering.thewordId, {
       value,
       gasLimit: gasLimit.add(10_000), // A 10,000 gas pad is used to avoid 'Out of gas' errors
     });
   };
 
-  const settleAuctionHandler = () => {
-    settleAuction();
+  const settleOfferingHandler = () => {
+    settleOffering();
   };
 
   const clearBidInput = () => {
@@ -134,8 +134,8 @@ const Bid: React.FC<{
     // tx state is mining
     const isMiningUserTx = placeBidState.status === 'Mining';
     // allows user to rebid against themselves so long as it is not the same tx
-    const isCorrectTx = currentBid(bidInputRef).isEqualTo(new BigNumber(auction.amount.toString()));
-    if (isMiningUserTx && auction.bidder === account && isCorrectTx) {
+    const isCorrectTx = currentBid(bidInputRef).isEqualTo(new BigNumber(offering.amount.toString()));
+    if (isMiningUserTx && offering.bidder === account && isCorrectTx) {
       placeBidState.status = 'Success';
       setModal({
         title: 'Success',
@@ -145,11 +145,11 @@ const Bid: React.FC<{
       setBidButtonContent({ loading: false, content: 'Bid' });
       clearBidInput();
     }
-  }, [auction, placeBidState, account, setModal]);
+  }, [offering, placeBidState, account, setModal]);
 
   // placing bid transaction state hook
   useEffect(() => {
-    switch (!auctionEnded && placeBidState.status) {
+    switch (!offeringEnded && placeBidState.status) {
       case 'None':
         setBidButtonContent({
           loading: false,
@@ -176,15 +176,15 @@ const Bid: React.FC<{
         setBidButtonContent({ loading: false, content: 'Bid' });
         break;
     }
-  }, [placeBidState, auctionEnded, setModal]);
+  }, [placeBidState, offeringEnded, setModal]);
 
-  // settle auction transaction state hook
+  // settle offering transaction state hook
   useEffect(() => {
-    switch (auctionEnded && settleAuctionState.status) {
+    switch (offeringEnded && settleOfferingState.status) {
       case 'None':
         setBidButtonContent({
           loading: false,
-          content: 'Settle Auction',
+          content: 'Settle Offering',
         });
         break;
       case 'Mining':
@@ -193,46 +193,46 @@ const Bid: React.FC<{
       case 'Success':
         setModal({
           title: 'Success',
-          message: `Settled auction successfully!`,
+          message: `Settled offering successfully!`,
           show: true,
         });
-        setBidButtonContent({ loading: false, content: 'Settle Auction' });
+        setBidButtonContent({ loading: false, content: 'Settle Offering' });
         break;
       case 'Fail':
         setModal({
           title: 'Transaction Failed',
-          message: settleAuctionState.errorMessage
-            ? settleAuctionState.errorMessage
+          message: settleOfferingState.errorMessage
+            ? settleOfferingState.errorMessage
             : 'Please try again.',
           show: true,
         });
-        setBidButtonContent({ loading: false, content: 'Settle Auction' });
+        setBidButtonContent({ loading: false, content: 'Settle Offering' });
         break;
       case 'Exception':
         setModal({
           title: 'Error',
-          message: settleAuctionState.errorMessage
-            ? settleAuctionState.errorMessage
+          message: settleOfferingState.errorMessage
+            ? settleOfferingState.errorMessage
             : 'Please try again.',
           show: true,
         });
-        setBidButtonContent({ loading: false, content: 'Settle Auction' });
+        setBidButtonContent({ loading: false, content: 'Settle Offering' });
         break;
     }
-  }, [settleAuctionState, auctionEnded, setModal]);
+  }, [settleOfferingState, offeringEnded, setModal]);
 
-  if (!auction) return null;
+  if (!offering) return null;
 
   const isDisabled =
-    placeBidState.status === 'Mining' || settleAuctionState.status === 'Mining' || !activeAccount;
+    placeBidState.status === 'Mining' || settleOfferingState.status === 'Mining' || !activeAccount;
 
   return (
     <>
-      {!auctionEnded && (
+      {!offeringEnded && (
         <p className={classes.minBidCopy}>{`Minimum bid: ${minBidEth(minBid)} ETH`}</p>
       )}
       <InputGroup>
-        {!auctionEnded && (
+        {!offeringEnded && (
           <>
             <FormControl
               aria-label="Example text with button addon"
@@ -248,8 +248,8 @@ const Bid: React.FC<{
           </>
         )}
         <Button
-          className={auctionEnded ? classes.bidBtnAuctionEnded : classes.bidBtn}
-          onClick={auctionEnded ? settleAuctionHandler : placeBidHandler}
+          className={offeringEnded ? classes.bidBtnOfferingEnded : classes.bidBtn}
+          onClick={offeringEnded ? settleOfferingHandler : placeBidHandler}
           disabled={isDisabled}
         >
           {bidButtonContent.loading ? <Spinner animation="border" /> : bidButtonContent.content}

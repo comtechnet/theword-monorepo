@@ -8,7 +8,7 @@ export interface Bid {
   bidder: Account;
 }
 
-export interface AuctionBids {
+export interface OfferingBids {
   id: number;
   endTime: number;
   bids: Bid[];
@@ -20,8 +20,8 @@ export interface TokenMetadata {
   image: string;
 }
 
-export interface IAuctionLifecycleHandler {
-  handleNewAuction(auctionId: number): Promise<void>;
-  handleNewBid(auctionId: number, bid: Bid): Promise<void>;
-  handleAuctionEndingSoon(auctionId: number): Promise<void>;
+export interface IOfferingLifecycleHandler {
+  handleNewOffering(offeringId: number): Promise<void>;
+  handleNewBid(offeringId: number, bid: Bid): Promise<void>;
+  handleOfferingEndingSoon(offeringId: number): Promise<void>;
 }

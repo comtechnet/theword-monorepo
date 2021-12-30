@@ -8,7 +8,7 @@ typechain/*.js
 typechain/*.ts
 typechain/factories/*
 !typechain/factories/thewordToken__factory.ts
-!typechain/factories/thewordAuctionHouse__factory.ts
+!typechain/factories/thewordOfferingHouse__factory.ts
 !typechain/factories/thewordDescriptor__factory.ts
 !typechain/factories/thewordSeeder__factory.ts
 !typechain/factories/thewordDaoLogicV1__factory.ts

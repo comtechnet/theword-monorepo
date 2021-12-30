@@ -1,4 +1,6 @@
-import { Account, Delegate, Proposal, Governance, Vote } from '../types/schema';
+import {
+  Account, Delegate, Proposal, Governance, Vote,
+} from '../types/schema';
 import { ZERO_ADDRESS, BIGINT_ZERO, BIGINT_ONE } from './constants';
 
 export function getOrCreateAccount(id: string, createIfNotFound = true, save = true): Account {
@@ -32,7 +34,7 @@ export function getOrCreateDelegate(id: string, createIfNotFound = true, save = 
 
     if (id != ZERO_ADDRESS) {
       const governance = getGovernanceEntity();
-      governance.totalDelegates = governance.totalDelegates + BIGINT_ONE;
+      governance.totalDelegates += BIGINT_ONE;
       governance.save();
     }
 
@@ -66,7 +68,7 @@ export function getOrCreateProposal(id: string, createIfNotFound = true, save = 
 
     const governance = getGovernanceEntity();
 
-    governance.proposals = governance.proposals + BIGINT_ONE;
+    governance.proposals += BIGINT_ONE;
     governance.save();
 
     if (save) {

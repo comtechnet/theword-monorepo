@@ -18,11 +18,11 @@
 pragma solidity ^0.8.6;
 
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
-import { IthewordDescriptor } from './IthewordDescriptor.sol';
-import { IthewordSeeder } from './IthewordSeeder.sol';
+import { ITheWordDescriptor } from './ITheWordDescriptor.sol';
+import { ITheWordSeeder } from './ITheWordSeeder.sol';
 
-interface IthewordToken is IERC721 {
-    event TheWordCreated(uint256 indexed tokenId, IthewordSeeder.Seed seed);
+interface ITheWordToken is IERC721 {
+    event TheWordCreated(uint256 indexed tokenId, ITheWordSeeder.Seed seed);
 
     event TheWordBurned(uint256 indexed tokenId);
 
@@ -32,11 +32,11 @@ interface IthewordToken is IERC721 {
 
     event MinterLocked();
 
-    event DescriptorUpdated(IthewordDescriptor descriptor);
+    event DescriptorUpdated(ITheWordDescriptor descriptor);
 
     event DescriptorLocked();
 
-    event SeederUpdated(IthewordSeeder seeder);
+    event SeederUpdated(ITheWordSeeder seeder);
 
     event SeederLocked();
 
@@ -52,11 +52,11 @@ interface IthewordToken is IERC721 {
 
     function lockMinter() external;
 
-    function setDescriptor(IthewordDescriptor descriptor) external;
+    function setDescriptor(ITheWordDescriptor descriptor) external;
 
     function lockDescriptor() external;
 
-    function setSeeder(IthewordSeeder seeder) external;
+    function setSeeder(ITheWordSeeder seeder) external;
 
     function lockSeeder() external;
 }

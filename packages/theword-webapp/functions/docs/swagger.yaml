@@ -19,7 +19,7 @@ tags:
 - name: "Cryptography"
   description: "Functions for verifying identity"
 servers:
-  - url: "https://theword.wtf/.netlify/functions/"
+  - url: "https://theword.nft/.netlify/functions/"
     description: Production Deployment
 paths:
   /v0-is-theword-owner:

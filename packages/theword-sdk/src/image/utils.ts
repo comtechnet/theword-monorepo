@@ -3,9 +3,7 @@
  * @param c
  * @param pad The desired number of chars in the hex string
  */
-export const toPaddedHex = (c: number, pad = 2): string => {
-  return c.toString(16).padStart(pad, '0');
-};
+export const toPaddedHex = (c: number, pad = 2): string => c.toString(16).padStart(pad, '0');
 
 /**
  * Convert an RGB color to hex (without `#` prefix)
@@ -13,6 +11,4 @@ export const toPaddedHex = (c: number, pad = 2): string => {
  * @param g The green value
  * @param b The blue value
  */
-export const rgbToHex = (r: number, g: number, b: number): string => {
-  return `${toPaddedHex(r)}${toPaddedHex(g)}${toPaddedHex(b)}`;
-};
+export const rgbToHex = (r: number, g: number, b: number): string => `${toPaddedHex(r)}${toPaddedHex(g)}${toPaddedHex(b)}`;

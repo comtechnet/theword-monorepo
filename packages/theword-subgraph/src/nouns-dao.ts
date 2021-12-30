@@ -79,7 +79,7 @@ export function handleProposalQueued(event: ProposalQueued): void {
   proposal.executionETA = event.params.eta;
   proposal.save();
 
-  governance.proposalsQueued = governance.proposalsQueued + BIGINT_ONE;
+  governance.proposalsQueued += BIGINT_ONE;
   governance.save();
 }
 
@@ -91,7 +91,7 @@ export function handleProposalExecuted(event: ProposalExecuted): void {
   proposal.executionETA = null;
   proposal.save();
 
-  governance.proposalsQueued = governance.proposalsQueued - BIGINT_ONE;
+  governance.proposalsQueued -= BIGINT_ONE;
   governance.save();
 }
 

@@ -11,7 +11,7 @@ import AlertModal from './components/Modal';
 import NavBar from './components/NavBar';
 import NetworkAlert from './components/NetworkAlert';
 import Footer from './components/Footer';
-import AuctionPage from './pages/Auction';
+import OfferingPage from './pages/Offering';
 import GovernancePage from './pages/Governance';
 import CreateProposalPage from './pages/CreateProposal';
 import VotePage from './pages/Vote';
@@ -49,11 +49,11 @@ function App() {
       <BrowserRouter>
         <NavBar />
         <Switch>
-          <Route exact path="/" component={AuctionPage} />
+          <Route exact path="/" component={OfferingPage} />
           <Route
             exact
-            path="/auction/:id"
-            render={props => <AuctionPage initialAuctionId={Number(props.match.params.id)} />}
+            path="/offering/:id"
+            render={props => <OfferingPage initialOfferingId={Number(props.match.params.id)} />}
           />
           <Route exact path="/thewordders" component={TheWorddersPage} />
           <Route exact path="/sign" component={VerifyPage} />

@@ -1,6 +1,6 @@
 # theword Serverless API
 
-`theword.wtf` provides a serverless API to make fetching data about the theword ecosystem easier. [An Insomnia manifest is provided for example.](./docs/insomnia.json)
+`theword.nft` provides a serverless API to make fetching data about the theword ecosystem easier. [An Insomnia manifest is provided for example.](./docs/insomnia.json)
 
 ## Keeping Up To Date
 
@@ -8,7 +8,7 @@ theword is a new project and these API endpoints may change, be sure to join [`#
 
 ## API Convention
 
-`https://theword.wtf/.netlify/functions/<version>/<function name>`
+`https://theword.nft/.netlify/functions/<version>/<function name>`
 
 ## `V0`
 

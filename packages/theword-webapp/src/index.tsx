@@ -9,31 +9,31 @@ import { Web3Provider } from '@ethersproject/providers';
 import account from './state/slices/account';
 import application from './state/slices/application';
 import logs from './state/slices/logs';
-import auction, {
-  reduxSafeAuction,
-  reduxSafeNewAuction,
+import offering, {
+  reduxSafeOffering,
+  reduxSafeNewOffering,
   reduxSafeBid,
-  setActiveAuction,
-  setAuctionExtended,
-  setAuctionSettled,
-  setFullAuction,
-} from './state/slices/auction';
-import onDisplayAuction, {
-  setLastAuctionTheWordId,
-  setOnDisplayAuctionTheWordId,
-} from './state/slices/onDisplayAuction';
+  setActiveOffering,
+  setOfferingExtended,
+  setOfferingSettled,
+  setFullOffering,
+} from './state/slices/offering';
+import onDisplayOffering, {
+  setLastOfferingTheWordId,
+  setOnDisplayOfferingTheWordId,
+} from './state/slices/onDisplayOffering';
 import { ApolloProvider, useQuery } from '@apollo/client';
-import { clientFactory, latestAuctionsQuery } from './wrappers/subgraph';
+import { clientFactory, latestOfferingsQuery } from './wrappers/subgraph';
 import { useEffect } from 'react';
-import pastAuctions, { addPastAuctions } from './state/slices/pastAuctions';
+import pastOfferings, { addPastOfferings } from './state/slices/pastOfferings';
 import LogsUpdater from './state/updaters/logs';
 import config, { CHAIN_ID, createNetworkHttpUrl } from './config';
 import { WebSocketProvider } from '@ethersproject/providers';
 import { BigNumber, BigNumberish } from 'ethers';
-import { thewordAuctionHouseFactory } from '@theword/sdk';
+import { TheWordOfferingHouseFactory } from '@theword/sdk';
 import dotenv from 'dotenv';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { appendBid } from './state/slices/auction';
+import { appendBid } from './state/slices/offering';
 import { ConnectedRouter, connectRouter } from 'connected-react-router';
 import { createBrowserHistory, History } from 'history';
 import { applyMiddleware, createStore, combineReducers, PreloadedState } from 'redux';
@@ -52,10 +52,10 @@ const createRootReducer = (history: History) =>
     router: connectRouter(history),
     account,
     application,
-    auction,
+    offering,
     logs,
-    pastAuctions,
-    onDisplayAuction,
+    pastOfferings,
+    onDisplayOffering,
   });
 
 export default function configureStore(preloadedState: PreloadedState<any>) {
@@ -105,15 +105,15 @@ const ChainSubscriber: React.FC = () => {
 
   const loadState = async () => {
     const wsProvider = new WebSocketProvider(config.app.wsRpcUri);
-    const thewordAuctionHouseContract = thewordAuctionHouseFactory.connect(
-      config.addresses.thewordAuctionHouseProxy,
+    const thewordOfferingHouseContract = TheWordOfferingHouseFactory.connect(
+      config.addresses.thewordOfferingHouseProxy,
       wsProvider,
     );
 
-    const bidFilter = thewordAuctionHouseContract.filters.AuctionBid(null, null, null, null);
-    const extendedFilter = thewordAuctionHouseContract.filters.AuctionExtended(null, null);
-    const createdFilter = thewordAuctionHouseContract.filters.AuctionCreated(null, null, null);
-    const settledFilter = thewordAuctionHouseContract.filters.AuctionSettled(null, null, null);
+    const bidFilter = thewordOfferingHouseContract.filters.OfferingBid(null, null, null, null);
+    const extendedFilter = thewordOfferingHouseContract.filters.OfferingExtended(null, null);
+    const createdFilter = thewordOfferingHouseContract.filters.OfferingCreated(null, null, null);
+    const settledFilter = thewordOfferingHouseContract.filters.OfferingSettled(null, null, null);
     const processBidFilter = async (
       thewordId: BigNumberish,
       sender: string,
@@ -127,49 +127,49 @@ const ChainSubscriber: React.FC = () => {
         appendBid(reduxSafeBid({ thewordId, sender, value, extended, transactionHash, timestamp })),
       );
     };
-    const processAuctionCreated = (
+    const processOfferingCreated = (
       thewordId: BigNumberish,
       startTime: BigNumberish,
       endTime: BigNumberish,
     ) => {
       dispatch(
-        setActiveAuction(reduxSafeNewAuction({ thewordId, startTime, endTime, settled: false })),
+        setActiveOffering(reduxSafeNewOffering({ thewordId, startTime, endTime, settled: false })),
       );
       const thewordIdNumber = BigNumber.from(thewordId).toNumber();
       dispatch(push(thewordPath(thewordIdNumber)));
-      dispatch(setOnDisplayAuctionTheWordId(thewordIdNumber));
-      dispatch(setLastAuctionTheWordId(thewordIdNumber));
+      dispatch(setOnDisplayOfferingTheWordId(thewordIdNumber));
+      dispatch(setLastOfferingTheWordId(thewordIdNumber));
     };
-    const processAuctionExtended = (thewordId: BigNumberish, endTime: BigNumberish) => {
-      dispatch(setAuctionExtended({ thewordId, endTime }));
+    const processOfferingExtended = (thewordId: BigNumberish, endTime: BigNumberish) => {
+      dispatch(setOfferingExtended({ thewordId, endTime }));
     };
-    const processAuctionSettled = (thewordId: BigNumberish, winner: string, amount: BigNumberish) => {
-      dispatch(setAuctionSettled({ thewordId, amount, winner }));
+    const processOfferingSettled = (thewordId: BigNumberish, winner: string, amount: BigNumberish) => {
+      dispatch(setOfferingSettled({ thewordId, amount, winner }));
     };
 
-    // Fetch the current auction
-    const currentAuction = await thewordAuctionHouseContract.auction();
-    dispatch(setFullAuction(reduxSafeAuction(currentAuction)));
-    dispatch(setLastAuctionTheWordId(currentAuction.thewordId.toNumber()));
+    // Fetch the current offering
+    const currentOffering = await thewordOfferingHouseContract.offering();
+    dispatch(setFullOffering(reduxSafeOffering(currentOffering)));
+    dispatch(setLastOfferingTheWordId(currentOffering.thewordId.toNumber()));
 
     // Fetch the previous 24hours of  bids
-    const previousBids = await thewordAuctionHouseContract.queryFilter(bidFilter, 0 - BLOCKS_PER_DAY);
+    const previousBids = await thewordOfferingHouseContract.queryFilter(bidFilter, 0 - BLOCKS_PER_DAY);
     for (let event of previousBids) {
       if (event.args === undefined) return;
       processBidFilter(...(event.args as [BigNumber, string, BigNumber, boolean]), event);
     }
 
-    thewordAuctionHouseContract.on(bidFilter, (thewordId, sender, value, extended, event) =>
+    thewordOfferingHouseContract.on(bidFilter, (thewordId, sender, value, extended, event) =>
       processBidFilter(thewordId, sender, value, extended, event),
     );
-    thewordAuctionHouseContract.on(createdFilter, (thewordId, startTime, endTime) =>
-      processAuctionCreated(thewordId, startTime, endTime),
+    thewordOfferingHouseContract.on(createdFilter, (thewordId, startTime, endTime) =>
+      processOfferingCreated(thewordId, startTime, endTime),
     );
-    thewordAuctionHouseContract.on(extendedFilter, (thewordId, endTime) =>
-      processAuctionExtended(thewordId, endTime),
+    thewordOfferingHouseContract.on(extendedFilter, (thewordId, endTime) =>
+      processOfferingExtended(thewordId, endTime),
     );
-    thewordAuctionHouseContract.on(settledFilter, (thewordId, winner, amount) =>
-      processAuctionSettled(thewordId, winner, amount),
+    thewordOfferingHouseContract.on(settledFilter, (thewordId, winner, amount) =>
+      processOfferingSettled(thewordId, winner, amount),
     );
   };
   loadState();
@@ -177,14 +177,14 @@ const ChainSubscriber: React.FC = () => {
   return <></>;
 };
 
-const PastAuctions: React.FC = () => {
-  const latestAuctionId = useAppSelector(state => state.onDisplayAuction.lastAuctionTheWordId);
-  const { data } = useQuery(latestAuctionsQuery());
+const PastOfferings: React.FC = () => {
+  const latestOfferingId = useAppSelector(state => state.onDisplayOffering.lastOfferingTheWordId);
+  const { data } = useQuery(latestOfferingsQuery());
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    data && dispatch(addPastAuctions({ data }));
-  }, [data, latestAuctionId, dispatch]);
+    data && dispatch(addPastOfferings({ data }));
+  }, [data, latestOfferingId, dispatch]);
 
   return <></>;
 };
@@ -200,7 +200,7 @@ ReactDOM.render(
           }
         >
           <ApolloProvider client={client}>
-            <PastAuctions />
+            <PastOfferings />
             <DAppProvider config={useDappConfig}>
               <App />
               <Updaters />

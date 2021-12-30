@@ -19,9 +19,9 @@ export interface IBid {
   };
 }
 
-export const auctionQuery = (auctionId: number) => gql`
+export const offeringQuery = (offeringId: number) => gql`
 {
-	auction(id: ${auctionId}) {
+	offering(id: ${offeringId}) {
 	  id
 	  amount
 	  settled
@@ -54,9 +54,9 @@ export const auctionQuery = (auctionId: number) => gql`
   }
   `;
 
-export const bidsByAuctionQuery = (auctionId: string) => gql`
+export const bidsByOfferingQuery = (offeringId: string) => gql`
  {
-	bids(where:{auction: "${auctionId}"}) {
+	bids(where:{offering: "${offeringId}"}) {
 	  id
 	  amount
 	  blockNumber
@@ -101,9 +101,9 @@ export const thewordIndex = () => gql`
   }
 `;
 
-export const latestAuctionsQuery = () => gql`
+export const latestOfferingsQuery = () => gql`
   {
-    auctions(orderBy: startTime, orderDirection: desc, first: 1000) {
+    offerings(orderBy: startTime, orderDirection: desc, first: 1000) {
       id
       amount
       settled
@@ -147,7 +147,7 @@ export const latestBidsQuery = (first: number = 10) => gql`
 	  blockTimestamp
 	  txIndex
 	  blockNumber
-	  auction {
+	  offering {
 		id
 		startTime
 		endTime
@@ -174,7 +174,7 @@ export const thewordVotingHistoryQuery = (thewordId: number) => gql`
 
 export const highestTheWordIdMintedAtProposalTime = (proposalStartBlock: number) => gql`
 {
-	auctions(orderBy: endTime orderDirection: desc first: 1 block: { number: ${proposalStartBlock} }) {
+	offerings(orderBy: endTime orderDirection: desc first: 1 block: { number: ${proposalStartBlock} }) {
 		id
 	}
 }`;

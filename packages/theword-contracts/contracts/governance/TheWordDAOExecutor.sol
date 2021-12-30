@@ -30,7 +30,7 @@
 
 pragma solidity ^0.8.6;
 
-contract thewordDAOExecutor {
+contract TheWordDAOExecutor {
     event NewAdmin(address indexed newAdmin);
     event NewPendingAdmin(address indexed newPendingAdmin);
     event NewDelay(uint256 indexed newDelay);

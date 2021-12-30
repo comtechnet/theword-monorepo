@@ -1,6 +1,6 @@
 # @theword/bots
 
-A bot that monitors for changes in TheWord auction state and notifies everyone via Twitter and Discord.
+A bot that monitors for changes in TheWord offering state and notifies everyone via Twitter and Discord.
 
 ## Install dependencies
 

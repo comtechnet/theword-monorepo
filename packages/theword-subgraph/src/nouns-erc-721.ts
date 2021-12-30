@@ -43,13 +43,12 @@ export function handleDelegateChanged(event: DelegateChanged): void {
   tokenHolder.delegate = newDelegate.id;
   tokenHolder.save();
 
-  previousDelegate.tokenHoldersRepresentedAmount =
-    previousDelegate.tokenHoldersRepresentedAmount - 1;
+  previousDelegate.tokenHoldersRepresentedAmount -= 1;
   const previousthewordRepresented = previousDelegate.thewordRepresented; // Re-assignment required to update array
   previousDelegate.thewordRepresented = previousthewordRepresented.filter(
-    n => !accounttheword.includes(n),
+    (n) => !accounttheword.includes(n),
   );
-  newDelegate.tokenHoldersRepresentedAmount = newDelegate.tokenHoldersRepresentedAmount + 1;
+  newDelegate.tokenHoldersRepresentedAmount += 1;
   const newthewordRepresented = newDelegate.thewordRepresented; // Re-assignment required to update array
   for (let i = 0; i < accounttheword.length; i++) {
     newthewordRepresented.push(accounttheword[i]);
@@ -69,12 +68,12 @@ export function handleDelegateVotesChanged(event: DelegateVotesChanged): void {
   delegate.save();
 
   if (event.params.previousBalance == BIGINT_ZERO && event.params.newBalance > BIGINT_ZERO) {
-    governance.currentDelegates = governance.currentDelegates + BIGINT_ONE;
+    governance.currentDelegates += BIGINT_ONE;
   }
   if (event.params.newBalance == BIGINT_ZERO) {
-    governance.currentDelegates = governance.currentDelegates - BIGINT_ONE;
+    governance.currentDelegates -= BIGINT_ONE;
   }
-  governance.delegatedVotesRaw = governance.delegatedVotesRaw + votesDifference;
+  governance.delegatedVotesRaw += votesDifference;
   governance.delegatedVotes = governance.delegatedVotesRaw;
   governance.save();
 }
@@ -88,20 +87,20 @@ export function handleTransfer(event: Transfer): void {
 
   // fromHolder
   if (event.params.from.toHexString() == ZERO_ADDRESS) {
-    governance.totalTokenHolders = governance.totalTokenHolders + BIGINT_ONE;
+    governance.totalTokenHolders += BIGINT_ONE;
     governance.save();
   } else {
     const fromHolderPreviousBalance = fromHolder.tokenBalanceRaw;
-    fromHolder.tokenBalanceRaw = fromHolder.tokenBalanceRaw - BIGINT_ONE;
+    fromHolder.tokenBalanceRaw -= BIGINT_ONE;
     fromHolder.tokenBalance = fromHolder.tokenBalanceRaw;
     const fromHoldertheword = fromHolder.theword; // Re-assignment required to update array
-    fromHolder.theword = fromHoldertheword.filter(n => n !== transferredTheWordId);
+    fromHolder.theword = fromHoldertheword.filter((n) => n !== transferredTheWordId);
 
     if (fromHolder.delegate != null) {
       const fromHolderDelegate = getOrCreateDelegate(fromHolder.delegate);
       const fromHolderthewordRepresented = fromHolderDelegate.thewordRepresented; // Re-assignment required to update array
       fromHolderDelegate.thewordRepresented = fromHolderthewordRepresented.filter(
-        n => n !== transferredTheWordId,
+        (n) => n !== transferredTheWordId,
       );
       fromHolderDelegate.save();
     }
@@ -114,15 +113,15 @@ export function handleTransfer(event: Transfer): void {
     }
 
     if (fromHolder.tokenBalanceRaw == BIGINT_ZERO && fromHolderPreviousBalance > BIGINT_ZERO) {
-      governance.currentTokenHolders = governance.currentTokenHolders - BIGINT_ONE;
+      governance.currentTokenHolders -= BIGINT_ONE;
       governance.save();
 
       fromHolder.delegate = null;
     } else if (
-      fromHolder.tokenBalanceRaw > BIGINT_ZERO &&
-      fromHolderPreviousBalance == BIGINT_ZERO
+      fromHolder.tokenBalanceRaw > BIGINT_ZERO
+      && fromHolderPreviousBalance == BIGINT_ZERO
     ) {
-      governance.currentTokenHolders = governance.currentTokenHolders + BIGINT_ONE;
+      governance.currentTokenHolders += BIGINT_ONE;
       governance.save();
     }
 
@@ -131,7 +130,7 @@ export function handleTransfer(event: Transfer): void {
 
   // toHolder
   if (event.params.to.toHexString() == ZERO_ADDRESS) {
-    governance.totalTokenHolders = governance.totalTokenHolders - BIGINT_ONE;
+    governance.totalTokenHolders -= BIGINT_ONE;
     governance.save();
   }
 
@@ -142,19 +141,19 @@ export function handleTransfer(event: Transfer): void {
   toHolderDelegate.save();
 
   const toHolderPreviousBalance = toHolder.tokenBalanceRaw;
-  toHolder.tokenBalanceRaw = toHolder.tokenBalanceRaw + BIGINT_ONE;
+  toHolder.tokenBalanceRaw += BIGINT_ONE;
   toHolder.tokenBalance = toHolder.tokenBalanceRaw;
-  toHolder.totalTokensHeldRaw = toHolder.totalTokensHeldRaw + BIGINT_ONE;
+  toHolder.totalTokensHeldRaw += BIGINT_ONE;
   toHolder.totalTokensHeld = toHolder.totalTokensHeldRaw;
   const toHoldertheword = toHolder.theword; // Re-assignment required to update array
   toHoldertheword.push(event.params.tokenId.toString());
   toHolder.theword = toHoldertheword;
 
   if (toHolder.tokenBalanceRaw == BIGINT_ZERO && toHolderPreviousBalance > BIGINT_ZERO) {
-    governance.currentTokenHolders = governance.currentTokenHolders - BIGINT_ONE;
+    governance.currentTokenHolders -= BIGINT_ONE;
     governance.save();
   } else if (toHolder.tokenBalanceRaw > BIGINT_ZERO && toHolderPreviousBalance == BIGINT_ZERO) {
-    governance.currentTokenHolders = governance.currentTokenHolders + BIGINT_ONE;
+    governance.currentTokenHolders += BIGINT_ONE;
     governance.save();
 
     toHolder.delegate = toHolder.id;

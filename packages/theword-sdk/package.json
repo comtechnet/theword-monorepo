@@ -3,7 +3,7 @@
   "version": "0.1.4",
   "description": "Useful tooling for interacting with the theword protocol",
   "author": "TheWordders",
-  "homepage": "https://theword.wtf",
+  "homepage": "https://theword.nft",
   "license": "GPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

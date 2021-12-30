@@ -17,9 +17,9 @@
 
 pragma solidity ^0.8.6;
 
-import { IthewordSeeder } from './IthewordSeeder.sol';
+import { ITheWordSeeder } from './ITheWordSeeder.sol';
 
-interface IthewordDescriptor {
+interface ITheWordDescriptor {
     event PartsLocked();
 
     event DataURIToggled(bool enabled);
@@ -84,15 +84,15 @@ interface IthewordDescriptor {
 
     function setBaseURI(string calldata baseURI) external;
 
-    function tokenURI(uint256 tokenId, IthewordSeeder.Seed memory seed) external view returns (string memory);
+    function tokenURI(uint256 tokenId, ITheWordSeeder.Seed memory seed) external view returns (string memory);
 
-    function dataURI(uint256 tokenId, IthewordSeeder.Seed memory seed) external view returns (string memory);
+    function dataURI(uint256 tokenId, ITheWordSeeder.Seed memory seed) external view returns (string memory);
 
     function genericDataURI(
         string calldata name,
         string calldata description,
-        IthewordSeeder.Seed memory seed
+        ITheWordSeeder.Seed memory seed
     ) external view returns (string memory);
 
-    function generateSVGImage(IthewordSeeder.Seed memory seed) external view returns (string memory);
+    function generateSVGImage(ITheWordSeeder.Seed memory seed) external view returns (string memory);
 }

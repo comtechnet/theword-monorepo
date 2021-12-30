@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A subgraph that indexes theword events",
   "author": "TheWordders",
-  "homepage": "https://theword.wtf",
+  "homepage": "https://theword.nft",
   "license": "GPL-3.0",
   "main": "build/index.js",
   "directories": {

@@ -1,7 +1,7 @@
 import { Express } from 'express';
-import { config } from './config';
 import { Server } from 'http';
 import { Socket } from 'net';
+import { config } from './config';
 
 /**
  * Create the HTTP server

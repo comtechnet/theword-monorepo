@@ -35,9 +35,9 @@
 
 pragma solidity ^0.8.6;
 
-import './thewordDAOInterfaces.sol';
+import './TheWordDAOInterfaces.sol';
 
-contract thewordDAOProxy is thewordDAOProxyStorage, thewordDAOEvents {
+contract TheWordDAOProxy is TheWordDAOProxyStorage, TheWordDAOEvents {
     constructor(
         address timelock_,
         address theword_,

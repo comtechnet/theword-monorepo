@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.6;
 
-import '../governance/thewordDAOLogicV1.sol';
+import '../governance/TheWordDAOLogicV1.sol';
 
-contract thewordDAOLogicV1Harness is thewordDAOLogicV1 {
+contract TheWordDAOLogicV1Harness is TheWordDAOLogicV1 {
     function initialize(
         address timelock_,
         address theword_,
@@ -17,8 +17,8 @@ contract thewordDAOLogicV1Harness is thewordDAOLogicV1 {
         require(msg.sender == admin, 'thewordDAO::initialize: admin only');
         require(address(timelock) == address(0), 'thewordDAO::initialize: can only initialize once');
 
-        timelock = IthewordDAOExecutor(timelock_);
-        theword = thewordTokenLike(theword_);
+        timelock = ITheWordDAOExecutor(timelock_);
+        theword = TheWordTokenLike(theword_);
         vetoer = vetoer_;
         votingPeriod = votingPeriod_;
         votingDelay = votingDelay_;

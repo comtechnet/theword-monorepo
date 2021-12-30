@@ -1,9 +1,9 @@
 import { redis } from './clients';
 
 /**
- * Key mapped to the current auction
+ * Key mapped to the current offering
  */
-export const getAuctionCacheKey = 'theword_AUCTION_CACHE';
+export const getOfferingCacheKey = 'theword_OFFERING_CACHE';
 
 /**
  * Key mapped to the last processed bid
@@ -16,16 +16,16 @@ export const getBidCacheKey = 'theword_BID_CACHE';
 export const getReplyTweetIdKey = 'theword_REPLY_TWEET_ID';
 
 /**
- * Key mapped to the latest auction id processed for auction ending soon
+ * Key mapped to the latest offering id processed for offering ending soon
  */
-export const getAuctionEndingSoonCacheKey = 'theword_AUCTION_ENDING_SOON_CACHE';
+export const getOfferingEndingSoonCacheKey = 'theword_OFFERING_ENDING_SOON_CACHE';
 
 /**
- * Update the auction cache with `id`
+ * Update the offering cache with `id`
  * @param id
  */
-export async function updateAuctionCache(id: number) {
-  await redis.set(getAuctionCacheKey, id);
+export async function updateOfferingCache(id: number) {
+  await redis.set(getOfferingCacheKey, id);
 }
 
 /**
@@ -48,7 +48,7 @@ export async function updateBidCache(id: string) {
  * Get the current tweet id to reply bids to or null
  * @returns The current tweet id to reply to or null
  */
-export async function getAuctionReplyTweetId(): Promise<string | null> {
+export async function getOfferingReplyTweetId(): Promise<string | null> {
   return redis.get(getReplyTweetIdKey);
 }
 
@@ -56,38 +56,38 @@ export async function getAuctionReplyTweetId(): Promise<string | null> {
  * Update the cache with the id_str of the tweet to reply to next
  * @param id The id_str of the tweet
  */
-export async function updateAuctionReplyTweetId(id: string) {
+export async function updateOfferingReplyTweetId(id: string) {
   await redis.set(getReplyTweetIdKey, id);
 }
 
 /**
- * Get the last auction id processed for ending soon
- * @returns The last auction to be processed for ending soon
+ * Get the last offering id processed for ending soon
+ * @returns The last offering to be processed for ending soon
  */
-export async function getAuctionEndingSoonCache(): Promise<number> {
-  const auctionId = await redis.get(getAuctionEndingSoonCacheKey);
-  if (auctionId) {
-    return Number(auctionId);
+export async function getOfferingEndingSoonCache(): Promise<number> {
+  const offeringId = await redis.get(getOfferingEndingSoonCacheKey);
+  if (offeringId) {
+    return Number(offeringId);
   }
   return 0;
 }
 
 /**
- * Update the auction ending soon cache with `id`
- * @param id The auction id
+ * Update the offering ending soon cache with `id`
+ * @param id The offering id
  */
-export async function updateAuctionEndingSoonCache(id: number) {
-  await redis.set(getAuctionEndingSoonCacheKey, id);
+export async function updateOfferingEndingSoonCache(id: number) {
+  await redis.set(getOfferingEndingSoonCacheKey, id);
 }
 
 /**
  * Get the current cache contents or 0 if empty
  * @returns The current cache contents as number or 0 if null
  */
-export async function getAuctionCache(): Promise<number> {
-  const auctionId = await redis.get(getAuctionCacheKey);
-  if (auctionId) {
-    return Number(auctionId);
+export async function getOfferingCache(): Promise<number> {
+  const offeringId = await redis.get(getOfferingCacheKey);
+  if (offeringId) {
+    return Number(offeringId);
   }
   return 0;
 }

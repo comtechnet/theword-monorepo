@@ -1,93 +1,93 @@
 import { BigInt, log } from '@graphprotocol/graph-ts';
 import {
-  AuctionBid,
-  AuctionCreated,
-  AuctionExtended,
-  AuctionSettled,
-} from './types/thewordAuctionHouse/thewordAuctionHouse';
-import { Auction, TheWord, Bid } from './types/schema';
+  OfferingBid,
+  OfferingCreated,
+  OfferingExtended,
+  OfferingSettled,
+} from './types/thewordOfferingHouse/thewordOfferingHouse';
+import { Offering, TheWord, Bid } from './types/schema';
 import { getOrCreateAccount } from './utils/helpers';
 
-export function handleAuctionCreated(event: AuctionCreated): void {
+export function handleOfferingCreated(event: OfferingCreated): void {
   const thewordId = event.params.thewordId.toString();
 
   const theword = TheWord.load(thewordId);
   if (theword == null) {
-    log.error('[handleAuctionCreated] TheWord #{} not found. Hash: {}', [
+    log.error('[handleOfferingCreated] TheWord #{} not found. Hash: {}', [
       thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
   }
 
-  const auction = new Auction(thewordId);
-  auction.theword = theword.id;
-  auction.amount = BigInt.fromI32(0);
-  auction.startTime = event.params.startTime;
-  auction.endTime = event.params.endTime;
-  auction.settled = false;
-  auction.save();
+  const offering = new Offering(thewordId);
+  offering.theword = theword.id;
+  offering.amount = BigInt.fromI32(0);
+  offering.startTime = event.params.startTime;
+  offering.endTime = event.params.endTime;
+  offering.settled = false;
+  offering.save();
 }
 
-export function handleAuctionBid(event: AuctionBid): void {
+export function handleOfferingBid(event: OfferingBid): void {
   const thewordId = event.params.thewordId.toString();
   const bidderAddress = event.params.sender.toHex();
 
   const bidder = getOrCreateAccount(bidderAddress);
 
-  const auction = Auction.load(thewordId);
-  if (auction == null) {
-    log.error('[handleAuctionBid] Auction not found for TheWord #{}. Hash: {}', [
+  const offering = Offering.load(thewordId);
+  if (offering == null) {
+    log.error('[handleOfferingBid] Offering not found for TheWord #{}. Hash: {}', [
       thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
   }
 
-  auction.amount = event.params.value;
-  auction.bidder = bidder.id;
-  auction.save();
+  offering.amount = event.params.value;
+  offering.bidder = bidder.id;
+  offering.save();
 
   // Save Bid
   const bid = new Bid(event.transaction.hash.toHex());
   bid.bidder = bidder.id;
-  bid.amount = auction.amount;
-  bid.theword = auction.theword;
+  bid.amount = offering.amount;
+  bid.theword = offering.theword;
   bid.txIndex = event.transaction.index;
   bid.blockNumber = event.block.number;
   bid.blockTimestamp = event.block.timestamp;
-  bid.auction = auction.id;
+  bid.offering = offering.id;
   bid.save();
 }
 
-export function handleAuctionExtended(event: AuctionExtended): void {
+export function handleOfferingExtended(event: OfferingExtended): void {
   const thewordId = event.params.thewordId.toString();
 
-  const auction = Auction.load(thewordId);
-  if (auction == null) {
-    log.error('[handleAuctionExtended] Auction not found for TheWord #{}. Hash: {}', [
+  const offering = Offering.load(thewordId);
+  if (offering == null) {
+    log.error('[handleOfferingExtended] Offering not found for TheWord #{}. Hash: {}', [
       thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
   }
 
-  auction.endTime = event.params.endTime;
-  auction.save();
+  offering.endTime = event.params.endTime;
+  offering.save();
 }
 
-export function handleAuctionSettled(event: AuctionSettled): void {
+export function handleOfferingSettled(event: OfferingSettled): void {
   const thewordId = event.params.thewordId.toString();
 
-  const auction = Auction.load(thewordId);
-  if (auction == null) {
-    log.error('[handleAuctionSettled] Auction not found for TheWord #{}. Hash: {}', [
+  const offering = Offering.load(thewordId);
+  if (offering == null) {
+    log.error('[handleOfferingSettled] Offering not found for TheWord #{}. Hash: {}', [
       thewordId,
       event.transaction.hash.toHex(),
     ]);
     return;
   }
 
-  auction.settled = true;
-  auction.save();
+  offering.settled = true;
+  offering.save();
 }

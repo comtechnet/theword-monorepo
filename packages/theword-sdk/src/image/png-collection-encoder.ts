@@ -1,5 +1,7 @@
 import { promises as fs } from 'fs';
-import { EncodedImage, IEncoder, ImageData, PngImage } from './types';
+import {
+  EncodedImage, IEncoder, ImageData, PngImage,
+} from './types';
 import { Image } from './image';
 
 /**
@@ -8,8 +10,11 @@ import { Image } from './image';
  */
 export class PNGCollectionEncoder implements IEncoder {
   private readonly _transparent: [string, number] = ['', 0];
+
   private _colors: Map<string, number> = new Map([this._transparent]);
+
   private _images: Map<string, string> = new Map();
+
   private _folders: { [name: string]: string[] } = {};
 
   /**
@@ -67,7 +72,7 @@ export class PNGCollectionEncoder implements IEncoder {
         result[folder] = [];
 
         // Write all files to the folder, delete from the Map once written.
-        filenames.forEach(filename => {
+        filenames.forEach((filename) => {
           result[folder].push({
             filename,
             data: images.get(filename) as string,

@@ -21,8 +21,8 @@ const decodeImage = (image: string): DecodedImage => {
     rects:
       rects
         ?.match(/.{1,4}/g)
-        ?.map(rect => [parseInt(rect.substring(0, 2), 16), parseInt(rect.substring(2, 4), 16)]) ??
-      [],
+        ?.map((rect) => [parseInt(rect.substring(0, 2), 16), parseInt(rect.substring(2, 4), 16)])
+      ?? [],
   };
 };
 
@@ -44,7 +44,7 @@ export const buildSVG = (
     let currentX = bounds.left;
     let currentY = bounds.top;
 
-    rects.forEach(rect => {
+    rects.forEach((rect) => {
       const [length, colorIndex] = rect;
       const hexColor = paletteColors[colorIndex];
 

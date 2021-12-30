@@ -1,7 +1,7 @@
-import { default as thewordAuctionHouseABI } from '../abi/contracts/thewordAuctionHouse.sol/thewordAuctionHouse.json';
 import { task, types } from 'hardhat/config';
 import { Interface } from 'ethers/lib/utils';
 import { Contract as EthersContract } from 'ethers';
+import { default as thewordOfferingHouseABI } from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
 
 type ContractName =
   | 'WETH'
@@ -9,9 +9,9 @@ type ContractName =
   | 'thewordDescriptor'
   | 'thewordSeeder'
   | 'thewordToken'
-  | 'thewordAuctionHouse'
-  | 'thewordAuctionHouseProxyAdmin'
-  | 'thewordAuctionHouseProxy'
+  | 'thewordOfferingHouse'
+  | 'thewordOfferingHouseProxyAdmin'
+  | 'thewordOfferingHouseProxy'
   | 'thewordDAOExecutor'
   | 'thewordDAOLogicV1'
   | 'thewordDAOProxy';
@@ -25,15 +25,15 @@ interface Contract {
 
 task('deploy-local', 'Deploy contracts to hardhat')
   .addOptionalParam('theworddersdao', 'The thewordders DAO contract address')
-  .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 30, types.int) // Default: 30 seconds
-  .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int) // Default: 1 wei
+  .addOptionalParam('offeringTimeBuffer', 'The offering time buffer (seconds)', 30, types.int) // Default: 30 seconds
+  .addOptionalParam('offeringReservePrice', 'The offering reserve price (wei)', 1, types.int) // Default: 1 wei
   .addOptionalParam(
-    'auctionMinIncrementBidPercentage',
-    'The auction min increment bid percentage (out of 100)', // Default: 5%
+    'offeringMinIncrementBidPercentage',
+    'The offering min increment bid percentage (out of 100)', // Default: 5%
     5,
     types.int,
   )
-  .addOptionalParam('auctionDuration', 'The auction duration (seconds)', 60 * 2, types.int) // Default: 2 minutes
+  .addOptionalParam('offeringDuration', 'The offering duration (seconds)', 60 * 2, types.int) // Default: 2 minutes
   .addOptionalParam('timelockDelay', 'The timelock delay (seconds)', 60 * 60 * 24 * 2, types.int) // Default: 2 days
   .addOptionalParam('votingPeriod', 'The voting period (blocks)', 4 * 60 * 24 * 3, types.int) // Default: 3 days
   .addOptionalParam('votingDelay', 'The voting delay (blocks)', 1, types.int) // Default: 1 block
@@ -48,7 +48,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
 
     const proxyRegistryAddress = '0xa5409ec958c83c3f309868babaca7c86dcb077c1';
 
-    const AUCTION_HOUSE_PROXY_NONCE_OFFSET = 7;
+    const OFFERING_HOUSE_PROXY_NONCE_OFFSET = 7;
     const GOVERNOR_N_DELEGATOR_NONCE_OFFSET = 10;
 
     const [deployer] = await ethers.getSigners();
@@ -57,45 +57,44 @@ task('deploy-local', 'Deploy contracts to hardhat')
       from: deployer.address,
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
     });
-    const expectedAuctionHouseProxyAddress = ethers.utils.getContractAddress({
+    const expectedOfferingHouseProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
-      nonce: nonce + AUCTION_HOUSE_PROXY_NONCE_OFFSET,
+      nonce: nonce + OFFERING_HOUSE_PROXY_NONCE_OFFSET,
     });
     const contracts: Record<ContractName, Contract> = {
       WETH: {},
       NFTDescriptor: {},
       thewordDescriptor: {
         libraries: () => ({
-          NFTDescriptor: contracts['NFTDescriptor'].instance?.address as string,
+          NFTDescriptor: contracts.NFTDescriptor.instance?.address as string,
         }),
       },
       thewordSeeder: {},
       thewordToken: {
         args: [
           args.theworddersdao || deployer.address,
-          expectedAuctionHouseProxyAddress,
-          () => contracts['thewordDescriptor'].instance?.address,
-          () => contracts['thewordSeeder'].instance?.address,
+          expectedOfferingHouseProxyAddress,
+          () => contracts.thewordDescriptor.instance?.address,
+          () => contracts.thewordSeeder.instance?.address,
           proxyRegistryAddress,
         ],
       },
-      thewordAuctionHouse: {
+      thewordOfferingHouse: {
         waitForConfirmation: true,
       },
-      thewordAuctionHouseProxyAdmin: {},
-      thewordAuctionHouseProxy: {
+      thewordOfferingHouseProxyAdmin: {},
+      thewordOfferingHouseProxy: {
         args: [
-          () => contracts['thewordAuctionHouse'].instance?.address,
-          () => contracts['thewordAuctionHouseProxyAdmin'].instance?.address,
-          () =>
-            new Interface(thewordAuctionHouseABI).encodeFunctionData('initialize', [
-              contracts['thewordToken'].instance?.address,
-              contracts['WETH'].instance?.address,
-              args.auctionTimeBuffer,
-              args.auctionReservePrice,
-              args.auctionMinIncrementBidPercentage,
-              args.auctionDuration,
-            ]),
+          () => contracts.thewordOfferingHouse.instance?.address,
+          () => contracts.thewordOfferingHouseProxyAdmin.instance?.address,
+          () => new Interface(thewordOfferingHouseABI).encodeFunctionData('initialize', [
+            contracts.thewordToken.instance?.address,
+            contracts.WETH.instance?.address,
+            args.offeringTimeBuffer,
+            args.offeringReservePrice,
+            args.offeringMinIncrementBidPercentage,
+            args.offeringDuration,
+          ]),
         ],
       },
       thewordDAOExecutor: {
@@ -106,11 +105,11 @@ task('deploy-local', 'Deploy contracts to hardhat')
       },
       thewordDAOProxy: {
         args: [
-          () => contracts['thewordDAOExecutor'].instance?.address,
-          () => contracts['thewordToken'].instance?.address,
+          () => contracts.thewordDAOExecutor.instance?.address,
+          () => contracts.thewordToken.instance?.address,
           args.theworddersdao || deployer.address,
-          () => contracts['thewordDAOExecutor'].instance?.address,
-          () => contracts['thewordDAOLogicV1'].instance?.address,
+          () => contracts.thewordDAOExecutor.instance?.address,
+          () => contracts.thewordDAOLogicV1.instance?.address,
           args.votingPeriod,
           args.votingDelay,
           args.proposalThresholdBps,
@@ -125,7 +124,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
       });
 
       const deployedContract = await factory.deploy(
-        ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
+        ...(contract.args?.map((a) => (typeof a === 'function' ? a() : a)) ?? []),
       );
 
       if (contract.waitForConfirmation) {

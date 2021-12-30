@@ -50,7 +50,7 @@
   color: #aaa;
   z-index: 3;
 }
-.bidBtnAuctionEnded {
+.bidBtnOfferingEnded {
   width: 100%;
   height: 3rem;
   color: white;
@@ -59,17 +59,17 @@
   font-weight: bold;
 }
 
-.bidBtnAuctionEnded:hover,
-.bidBtnAuctionEnded:active,
-.bidBtnAuctionEnded:focus,
-.bidBtnAuctionEnded:disabled {
+.bidBtnOfferingEnded:hover,
+.bidBtnOfferingEnded:active,
+.bidBtnOfferingEnded:focus,
+.bidBtnOfferingEnded:disabled {
   background-color: gray !important;
   color: rgb(209, 207, 207);
   outline: none !important;
   box-shadow: none;
 }
 
-.bidInputAuctionEnded {
+.bidInputOfferingEnded {
   display: none;
 }
 

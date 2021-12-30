@@ -1,10 +1,10 @@
-import { config } from './config';
 import Redis from 'ioredis';
 import TwitterApi from 'twitter-api-v2';
 import { Contract, providers } from 'ethers';
-import { thewordTokenABI } from '@theword/contracts';
+import { TheWordTokenABI } from '@theword/contracts';
 import Discord from 'discord.js';
 import axios from 'axios';
+import { config } from './config';
 
 /**
  * Redis Client
@@ -34,7 +34,7 @@ export const jsonRpcProvider = new providers.JsonRpcProvider(config.jsonRpcUrl);
  */
 export const thewordTokenContract = new Contract(
   config.thewordTokenAddress,
-  thewordTokenABI,
+  TheWordTokenABI,
   jsonRpcProvider,
 );
 
@@ -61,5 +61,4 @@ export const publicDiscordWebhook = new Discord.WebhookClient(
  * @param counterName counter name to increment
  * @returns
  */
-export const incrementCounter = (counterName: string) =>
-  axios.post(`https://simple-counter.theword.tools/count/inc/${counterName}`);
+export const incrementCounter = (counterName: string) => axios.post(`https://simple-counter.theword.tools/count/inc/${counterName}`);

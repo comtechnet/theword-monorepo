@@ -60,9 +60,9 @@
 
 pragma solidity ^0.8.6;
 
-import './thewordDAOInterfaces.sol';
+import './TheWordDAOInterfaces.sol';
 
-contract thewordDAOLogicV1 is thewordDAOStorageV1, thewordDAOEvents {
+contract TheWordDAOLogicV1 is TheWordDAOStorageV1, TheWordDAOEvents {
     /// @notice The name of this contract
     string public constant name = 'TheWord DAO';
 
@@ -145,8 +145,8 @@ contract thewordDAOLogicV1 is thewordDAOStorageV1, thewordDAOEvents {
         emit ProposalThresholdBPSSet(proposalThresholdBPS, proposalThresholdBPS_);
         emit QuorumVotesBPSSet(quorumVotesBPS, quorumVotesBPS_);
 
-        timelock = IthewordDAOExecutor(timelock_);
-        theword = thewordTokenLike(theword_);
+        timelock = ITheWordDAOExecutor(timelock_);
+        theword = TheWordTokenLike(theword_);
         vetoer = vetoer_;
         votingPeriod = votingPeriod_;
         votingDelay = votingDelay_;

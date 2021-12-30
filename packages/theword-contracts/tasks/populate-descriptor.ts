@@ -24,7 +24,9 @@ task('populate-descriptor', 'Populates the descriptor with color palettes and Th
     const descriptorContract = descriptorFactory.attach(thewordDescriptor);
 
     const { bgcolors, palette, images } = ImageData;
-    const { bodies, accessories, heads, glasses } = images;
+    const {
+      bodies, accessories, heads, glasses,
+    } = images;
 
     // Chunk head and accessory population due to high gas usage
     await descriptorContract.addManyBackgrounds(bgcolors);

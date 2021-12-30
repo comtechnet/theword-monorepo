@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.6;
 
-import '../governance/thewordDAOLogicV1.sol';
+import '../governance/TheWordDAOLogicV1.sol';
 
-contract thewordDAOImmutable is thewordDAOLogicV1 {
+contract TheWordDAOImmutable is TheWordDAOLogicV1 {
     constructor(
         address timelock_,
         address theword_,
@@ -33,8 +33,8 @@ contract thewordDAOImmutable is thewordDAOLogicV1 {
         require(msg.sender == admin, 'thewordDAO::initialize: admin only');
         require(address(timelock) == address(0), 'thewordDAO::initialize: can only initialize once');
 
-        timelock = IthewordDAOExecutor(timelock_);
-        theword = thewordTokenLike(theword_);
+        timelock = ITheWordDAOExecutor(timelock_);
+        theword = TheWordTokenLike(theword_);
         vetoer = vetoer_;
         votingPeriod = votingPeriod_;
         votingDelay = votingDelay_;

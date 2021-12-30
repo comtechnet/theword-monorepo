@@ -30,7 +30,7 @@
 
 pragma solidity ^0.8.6;
 
-contract thewordDAOEvents {
+contract TheWordDAOEvents {
     /// @notice An event emitted when a new proposal is created
     event ProposalCreated(
         uint256 id,
@@ -103,7 +103,7 @@ contract thewordDAOEvents {
     event NewVetoer(address oldVetoer, address newVetoer);
 }
 
-contract thewordDAOProxyStorage {
+contract TheWordDAOProxyStorage {
     /// @notice Administrator for this contract
     address public admin;
 
@@ -120,7 +120,7 @@ contract thewordDAOProxyStorage {
  * contract which implements thewordDAOStorageV1 and following the naming convention
  * thewordDAOStorageVX.
  */
-contract thewordDAOStorageV1 is thewordDAOProxyStorage {
+contract TheWordDAOStorageV1 is TheWordDAOProxyStorage {
     /// @notice Vetoer who has the ability to veto any proposal
     address public vetoer;
 
@@ -140,10 +140,10 @@ contract thewordDAOStorageV1 is thewordDAOProxyStorage {
     uint256 public proposalCount;
 
     /// @notice The address of the TheWord DAO Executor thewordDAOExecutor
-    IthewordDAOExecutor public timelock;
+    ITheWordDAOExecutor public timelock;
 
     /// @notice The address of the theword tokens
-    thewordTokenLike public theword;
+    TheWordTokenLike public theword;
 
     /// @notice The official record of all proposals ever proposed
     mapping(uint256 => Proposal) public proposals;
@@ -214,7 +214,7 @@ contract thewordDAOStorageV1 is thewordDAOProxyStorage {
     }
 }
 
-interface IthewordDAOExecutor {
+interface ITheWordDAOExecutor {
     function delay() external view returns (uint256);
 
     function GRACE_PERIOD() external view returns (uint256);
@@ -248,7 +248,7 @@ interface IthewordDAOExecutor {
     ) external payable returns (bytes memory);
 }
 
-interface thewordTokenLike {
+interface TheWordTokenLike {
     function getPriorVotes(address account, uint256 blockNumber) external view returns (uint96);
 
     function totalSupply() external view returns (uint96);

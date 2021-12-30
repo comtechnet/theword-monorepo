@@ -1,9 +1,9 @@
 import {
-  thewordTokenFactory,
-  thewordAuctionHouseFactory,
-  thewordDescriptorFactory,
-  thewordSeederFactory,
-  thewordDaoLogicV1Factory,
+  TheWordTokenFactory,
+  TheWordOfferingHouseFactory,
+  TheWordDescriptorFactory,
+  TheWordSeederFactory,
+  TheWordDaoLogicV1Factory,
 } from '@theword/contracts';
 import type { Signer } from 'ethers';
 import type { Provider } from '@ethersproject/providers';
@@ -24,23 +24,23 @@ export const getContractsForChainOrThrow = (
   const addresses = getContractAddressesForChainOrThrow(chainId);
 
   return {
-    thewordTokenContract: thewordTokenFactory.connect(
+    thewordTokenContract: TheWordTokenFactory.connect(
       addresses.thewordToken,
       signerOrProvider as Signer | Provider,
     ),
-    thewordAuctionHouseContract: thewordAuctionHouseFactory.connect(
-      addresses.thewordAuctionHouseProxy,
+    thewordOfferingHouseContract: TheWordOfferingHouseFactory.connect(
+      addresses.thewordOfferingHouseProxy,
       signerOrProvider as Signer | Provider,
     ),
-    thewordDescriptorContract: thewordDescriptorFactory.connect(
+    thewordDescriptorContract: TheWordDescriptorFactory.connect(
       addresses.thewordDescriptor,
       signerOrProvider as Signer | Provider,
     ),
-    thewordSeederContract: thewordSeederFactory.connect(
+    thewordSeederContract: TheWordSeederFactory.connect(
       addresses.thewordSeeder,
       signerOrProvider as Signer | Provider,
     ),
-    thewordDaoContract: thewordDaoLogicV1Factory.connect(
+    thewordDaoContract: TheWordDaoLogicV1Factory.connect(
       addresses.thewordDAOProxy,
       signerOrProvider as Signer | Provider,
     ),

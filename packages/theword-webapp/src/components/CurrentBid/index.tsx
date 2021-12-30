@@ -4,19 +4,19 @@ import TruncatedAmount from '../TruncatedAmount';
 
 /**
  * Passible to CurrentBid as `currentBid` prop to indicate that
- * the bid amount is not applicable to this auction. (TheWordder TheWord)
+ * the bid amount is not applicable to this offering. (TheWordder TheWord)
  */
 export const BID_N_A = 'n/a';
 
 /**
- * Special Bid type for not applicable auctions (TheWordder theword)
+ * Special Bid type for not applicable offerings (TheWordder theword)
  */
 type BidNa = typeof BID_N_A;
 
-const CurrentBid: React.FC<{ currentBid: BigNumber | BidNa; auctionEnded: boolean }> = props => {
-  const { currentBid, auctionEnded } = props;
+const CurrentBid: React.FC<{ currentBid: BigNumber | BidNa; offeringEnded: boolean }> = props => {
+  const { currentBid, offeringEnded } = props;
 
-  const titleContent = auctionEnded ? 'Winning bid' : 'Current bid';
+  const titleContent = offeringEnded ? 'Winning bid' : 'Current bid';
 
   return (
     <div className={classes.section}>

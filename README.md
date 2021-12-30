@@ -27,7 +27,7 @@ The [theword assets](packages/theword-assets) package holds any/all TheWord PNG 
 
 ### theword-bots
 
-The [theword bots](packages/theword-bots) package contains a bot that monitors for changes in TheWord auction state and notifies everyone via Twitter and Discord.
+The [theword bots](packages/theword-bots) package contains a bot that monitors for changes in TheWord offering state and notifies everyone via Twitter and Discord.
 
 ### theword-contracts
 
@@ -39,7 +39,7 @@ The [theword sdk](packages/theword-sdk) exposes the theword contract addresses, 
 
 ### theword-subgraph
 
-In order to make retrieving more complex data from the auction history, [theword subgraph](packages/theword-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
+In order to make retrieving more complex data from the offering history, [theword subgraph](packages/theword-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
 
 ### theword-webapp
 
@@ -62,7 +62,7 @@ yarn build
 ### Run Linter
 
 ```sh
-yaryarn lint
+yarn lint
 ```
 
 ### Run Prettier

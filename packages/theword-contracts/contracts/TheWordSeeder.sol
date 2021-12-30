@@ -17,15 +17,15 @@
 
 pragma solidity ^0.8.6;
 
-import { IthewordSeeder } from './interfaces/IthewordSeeder.sol';
-import { IthewordDescriptor } from './interfaces/IthewordDescriptor.sol';
+import { ITheWordSeeder } from './interfaces/ITheWordSeeder.sol';
+import { ITheWordDescriptor } from './interfaces/ITheWordDescriptor.sol';
 
-contract thewordSeeder is IthewordSeeder {
+contract TheWordSeeder is ITheWordSeeder {
     /**
      * @notice Generate a pseudo-random TheWord seed using the previous blockhash and theword ID.
      */
     // prettier-ignore
-    function generateSeed(uint256 thewordId, IthewordDescriptor descriptor) external view override returns (Seed memory) {
+    function generateSeed(uint256 thewordId, ITheWordDescriptor descriptor) external view override returns (Seed memory) {
         uint256 pseudorandomness = uint256(
             keccak256(abi.encodePacked(blockhash(block.number - 1), thewordId))
         );

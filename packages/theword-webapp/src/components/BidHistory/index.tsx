@@ -9,7 +9,7 @@ import TruncatedAmount from '../TruncatedAmount';
 import BigNumber from 'bignumber.js';
 import { Bid } from '../../utils/types';
 import { BigNumber as EthersBN } from '@ethersproject/bignumber';
-import { useAuctionBids } from '../../wrappers/onDisplayAuction';
+import { useOfferingBids } from '../../wrappers/onDisplayOffering';
 
 const bidItem = (bid: Bid, index: number, classes: any) => {
   const bidAmount = <TruncatedAmount amount={new BigNumber(EthersBN.from(bid.value).toString())} />;
@@ -43,10 +43,10 @@ const bidItem = (bid: Bid, index: number, classes: any) => {
   );
 };
 
-const BidHistory: React.FC<{ auctionId: string; max: number; classes?: any }> = props => {
-  const { auctionId, max, classes = _classes } = props;
+const BidHistory: React.FC<{ offeringId: string; max: number; classes?: any }> = props => {
+  const { offeringId, max, classes = _classes } = props;
 
-  const bids = useAuctionBids(EthersBN.from(auctionId));
+  const bids = useOfferingBids(EthersBN.from(offeringId));
   const bidContent =
     bids &&
     bids

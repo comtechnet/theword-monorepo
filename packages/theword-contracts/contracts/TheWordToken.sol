@@ -19,14 +19,14 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { ERC721Checkpointable } from './base/ERC721Checkpointable.sol';
-import { IthewordDescriptor } from './interfaces/IthewordDescriptor.sol';
-import { IthewordSeeder } from './interfaces/IthewordSeeder.sol';
-import { IthewordToken } from './interfaces/IthewordToken.sol';
+import { ITheWordDescriptor } from './interfaces/ITheWordDescriptor.sol';
+import { ITheWordSeeder } from './interfaces/ITheWordSeeder.sol';
+import { ITheWordToken } from './interfaces/ITheWordToken.sol';
 import { ERC721 } from './base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 
-contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
+contract TheWordToken is ITheWordToken, Ownable, ERC721Checkpointable {
     // The thewordders DAO address (creators org)
     address public theworddersDAO;
 
@@ -34,10 +34,10 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     address public minter;
 
     // The theword token URI descriptor
-    IthewordDescriptor public descriptor;
+    ITheWordDescriptor public descriptor;
 
     // The theword token seeder
-    IthewordSeeder public seeder;
+    ITheWordSeeder public seeder;
 
     // Whether the minter can be updated
     bool public isMinterLocked;
@@ -49,7 +49,7 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     bool public isSeederLocked;
 
     // The theword seeds
-    mapping(uint256 => IthewordSeeder.Seed) public seeds;
+    mapping(uint256 => ITheWordSeeder.Seed) public seeds;
 
     // The internal theword ID tracker
     uint256 private _currentTheWordId;
@@ -103,8 +103,8 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     constructor(
         address _theworddersDAO,
         address _minter,
-        IthewordDescriptor _descriptor,
-        IthewordSeeder _seeder,
+        ITheWordDescriptor _descriptor,
+        ITheWordSeeder _seeder,
         IProxyRegistry _proxyRegistry
     ) ERC721('theword', 'THEWORD') {
         theworddersDAO = _theworddersDAO;
@@ -143,7 +143,7 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
     /**
      * @notice Mint a TheWord to the minter, along with a possible thewordders reward
      * TheWord. TheWordders reward theword are minted every 10 theword, starting at 0,
-     * until 183 thewordder theword have been minted (5 years w/ 24 hour auctions).
+     * until 183 thewordder theword have been minted (5 years w/ 24 hour offerings).
      * @dev Call _mintTo with the to address(es).
      */
     function mint() public override onlyMinter returns (uint256) {
@@ -213,7 +213,7 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
      * @notice Set the token URI descriptor.
      * @dev Only callable by the owner when not locked.
      */
-    function setDescriptor(IthewordDescriptor _descriptor) external override onlyOwner whenDescriptorNotLocked {
+    function setDescriptor(ITheWordDescriptor _descriptor) external override onlyOwner whenDescriptorNotLocked {
         descriptor = _descriptor;
 
         emit DescriptorUpdated(_descriptor);
@@ -233,7 +233,7 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
      * @notice Set the token seeder.
      * @dev Only callable by the owner when not locked.
      */
-    function setSeeder(IthewordSeeder _seeder) external override onlyOwner whenSeederNotLocked {
+    function setSeeder(ITheWordSeeder _seeder) external override onlyOwner whenSeederNotLocked {
         seeder = _seeder;
 
         emit SeederUpdated(_seeder);
@@ -253,7 +253,7 @@ contract thewordToken is IthewordToken, Ownable, ERC721Checkpointable {
      * @notice Mint a TheWord with `thewordId` to the provided `to` address.
      */
     function _mintTo(address to, uint256 thewordId) internal returns (uint256) {
-        IthewordSeeder.Seed memory seed = seeds[thewordId] = seeder.generateSeed(thewordId, descriptor);
+        ITheWordSeeder.Seed memory seed = seeds[thewordId] = seeder.generateSeed(thewordId, descriptor);
 
         _mint(owner(), to, thewordId);
         emit TheWordCreated(thewordId, seed);

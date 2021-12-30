@@ -73,7 +73,7 @@ const NavBar = () => {
   const useStateBg =
     history.location.pathname === '/' ||
     history.location.pathname.includes('/theword') ||
-    history.location.pathname.includes('/auction');
+    history.location.pathname.includes('/offering');
 
   return (
     <>

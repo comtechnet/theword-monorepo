@@ -7,7 +7,7 @@ task(
 ).setAction(async (_, { ethers, run }) => {
   await run(TASK_COMPILE);
 
-  await Promise.race([run(TASK_NODE), new Promise(resolve => setTimeout(resolve, 2_000))]);
+  await Promise.race([run(TASK_NODE), new Promise((resolve) => setTimeout(resolve, 2_000))]);
 
   const contracts = await run('deploy-local');
 
@@ -16,8 +16,8 @@ task(
     thewordDescriptor: contracts.thewordDescriptor.instance.address,
   });
 
-  await contracts.thewordAuctionHouse.instance
-    .attach(contracts.thewordAuctionHouseProxy.instance.address)
+  await contracts.thewordOfferingHouse.instance
+    .attach(contracts.thewordOfferingHouseProxy.instance.address)
     .unpause({
       gasLimit: 1_000_000,
     });
@@ -43,7 +43,7 @@ task(
   console.log(
     `TheWord contracts deployed to local node at http://localhost:8545 (Chain ID: ${chainId})`,
   );
-  console.log(`Auction House Proxy address: ${contracts.thewordAuctionHouseProxy.instance.address}`);
+  console.log(`Offering House Proxy address: ${contracts.thewordOfferingHouseProxy.instance.address}`);
   console.log(`theword ERC721 address: ${contracts.thewordToken.instance.address}`);
   console.log(`TheWord DAO Executor address: ${contracts.thewordDAOExecutor.instance.address}`);
   console.log(`TheWord DAO Proxy address: ${contracts.thewordDAOProxy.instance.address}`);

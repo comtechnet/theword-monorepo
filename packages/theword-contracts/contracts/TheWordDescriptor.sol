@@ -19,12 +19,12 @@ pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
 import { Strings } from '@openzeppelin/contracts/utils/Strings.sol';
-import { IthewordDescriptor } from './interfaces/IthewordDescriptor.sol';
-import { IthewordSeeder } from './interfaces/IthewordSeeder.sol';
+import { ITheWordDescriptor } from './interfaces/ITheWordDescriptor.sol';
+import { ITheWordSeeder } from './interfaces/ITheWordSeeder.sol';
 import { NFTDescriptor } from './libs/NFTDescriptor.sol';
 import { MultiPartRLEToSVG } from './libs/MultiPartRLEToSVG.sol';
 
-contract thewordDescriptor is IthewordDescriptor, Ownable {
+contract TheWordDescriptor is ITheWordDescriptor, Ownable {
     using Strings for uint256;
 
     // prettier-ignore
@@ -249,7 +249,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
      * @notice Given a token ID and seed, construct a token URI for an official TheWord DAO theword.
      * @dev The returned value may be a base64 encoded data URI or an API URL.
      */
-    function tokenURI(uint256 tokenId, IthewordSeeder.Seed memory seed) external view override returns (string memory) {
+    function tokenURI(uint256 tokenId, ITheWordSeeder.Seed memory seed) external view override returns (string memory) {
         if (isDataURIEnabled) {
             return dataURI(tokenId, seed);
         }
@@ -259,7 +259,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     /**
      * @notice Given a token ID and seed, construct a base64 encoded data URI for an official TheWord DAO theword.
      */
-    function dataURI(uint256 tokenId, IthewordSeeder.Seed memory seed) public view override returns (string memory) {
+    function dataURI(uint256 tokenId, ITheWordSeeder.Seed memory seed) public view override returns (string memory) {
         string memory thewordId = tokenId.toString();
         string memory name = string(abi.encodePacked('TheWord ', thewordId));
         string memory description = string(abi.encodePacked('TheWord ', thewordId, ' is a member of the TheWord DAO'));
@@ -273,7 +273,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     function genericDataURI(
         string memory name,
         string memory description,
-        IthewordSeeder.Seed memory seed
+        ITheWordSeeder.Seed memory seed
     ) public view override returns (string memory) {
         NFTDescriptor.TokenURIParams memory params = NFTDescriptor.TokenURIParams({
             name: name,
@@ -287,7 +287,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     /**
      * @notice Given a seed, construct a base64 encoded SVG image.
      */
-    function generateSVGImage(IthewordSeeder.Seed memory seed) external view override returns (string memory) {
+    function generateSVGImage(ITheWordSeeder.Seed memory seed) external view override returns (string memory) {
         MultiPartRLEToSVG.SVGParams memory params = MultiPartRLEToSVG.SVGParams({
             parts: _getPartsForSeed(seed),
             background: backgrounds[seed.background]
@@ -340,7 +340,7 @@ contract thewordDescriptor is IthewordDescriptor, Ownable {
     /**
      * @notice Get all TheWord parts for the passed `seed`.
      */
-    function _getPartsForSeed(IthewordSeeder.Seed memory seed) internal view returns (bytes[] memory) {
+    function _getPartsForSeed(ITheWordSeeder.Seed memory seed) internal view returns (bytes[] memory) {
         bytes[] memory _parts = new bytes[](4);
         _parts[0] = bodies[seed.body];
         _parts[1] = accessories[seed.accessory];

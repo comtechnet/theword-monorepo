@@ -5,7 +5,7 @@ import { StandaloneTheWordWithSeed } from '../../components/StandaloneTheWord';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setStateBackgroundColor } from '../../state/slices/application';
 import { grey, beige } from '../../utils/thewordBgColors';
-import { Ithewordeed } from '../../wrappers/thewordToken';
+import { ITheWordSeed } from '../../wrappers/thewordToken';
 
 import classes from './Profile.module.css';
 
@@ -20,18 +20,18 @@ const ProfilePage: React.FC<ProfilePageProps> = props => {
   const { thewordId } = props;
 
   const dispatch = useAppDispatch();
-  const lastAuctionTheWordId = useAppSelector(state => state.onDisplayAuction.lastAuctionTheWordId);
+  const lastOfferingTheWordId = useAppSelector(state => state.onDisplayOffering.lastOfferingTheWordId);
   let stateBgColor = useAppSelector(state => state.application.stateBackgroundColor);
 
-  const loadedTheWordHandler = (seed: Ithewordeed) => {
+  const loadedTheWordHandler = (seed: ITheWordSeed) => {
     dispatch(setStateBackgroundColor(seed.background === 0 ? grey : beige));
   };
 
-  if (!lastAuctionTheWordId) {
+  if (!lastOfferingTheWordId) {
     return <></>;
   }
 
-  const thewordIdForDisplay = Math.min(thewordId, lastAuctionTheWordId);
+  const thewordIdForDisplay = Math.min(thewordId, lastOfferingTheWordId);
 
   const thewordContent = (
     <StandaloneTheWordWithSeed

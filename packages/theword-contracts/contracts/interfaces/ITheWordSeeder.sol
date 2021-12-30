@@ -17,9 +17,9 @@
 
 pragma solidity ^0.8.6;
 
-import { IthewordDescriptor } from './IthewordDescriptor.sol';
+import { ITheWordDescriptor } from './ITheWordDescriptor.sol';
 
-interface IthewordSeeder {
+interface ITheWordSeeder {
     struct Seed {
         uint48 background;
         uint48 body;
@@ -28,5 +28,5 @@ interface IthewordSeeder {
         uint48 glasses;
     }
 
-    function generateSeed(uint256 thewordId, IthewordDescriptor descriptor) external view returns (Seed memory);
+    function generateSeed(uint256 thewordId, ITheWordDescriptor descriptor) external view returns (Seed memory);
 }

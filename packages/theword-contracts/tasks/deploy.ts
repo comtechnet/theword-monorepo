@@ -1,7 +1,7 @@
-import { default as thewordAuctionHouseABI } from '../abi/contracts/thewordAuctionHouse.sol/thewordAuctionHouse.json';
 import { Interface } from 'ethers/lib/utils';
 import { task, types } from 'hardhat/config';
 import promptjs from 'prompt';
+import { default as thewordOfferingHouseABI } from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
 
 promptjs.colors = false;
 promptjs.message = '> ';
@@ -12,9 +12,9 @@ type ContractName =
   | 'thewordDescriptor'
   | 'thewordSeeder'
   | 'thewordToken'
-  | 'thewordAuctionHouse'
-  | 'thewordAuctionHouseProxyAdmin'
-  | 'thewordAuctionHouseProxy'
+  | 'thewordOfferingHouse'
+  | 'thewordOfferingHouseProxyAdmin'
+  | 'thewordOfferingHouseProxy'
   | 'thewordDAOExecutor'
   | 'thewordDAOLogicV1'
   | 'thewordDAOProxy';
@@ -29,15 +29,15 @@ interface Contract {
 task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and thewordToken')
   .addParam('theworddersdao', 'The thewordders DAO contract address', undefined, types.string)
   .addParam('weth', 'The WETH contract address', undefined, types.string)
-  .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 5 * 60, types.int)
-  .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int)
+  .addOptionalParam('offeringTimeBuffer', 'The offering time buffer (seconds)', 5 * 60, types.int)
+  .addOptionalParam('offeringReservePrice', 'The offering reserve price (wei)', 1, types.int)
   .addOptionalParam(
-    'auctionMinIncrementBidPercentage',
-    'The auction min increment bid percentage (out of 100)',
+    'offeringMinIncrementBidPercentage',
+    'The offering min increment bid percentage (out of 100)',
     5,
     types.int,
   )
-  .addOptionalParam('auctionDuration', 'The auction duration (seconds)', 60 * 60 * 24, types.int) // Default: 24 hours
+  .addOptionalParam('offeringDuration', 'The offering duration (seconds)', 60 * 60 * 24, types.int) // Default: 24 hours
   .addOptionalParam('timelockDelay', 'The timelock delay (seconds)', 60 * 60 * 24 * 2, types.int) // Default: 2 days
   .addOptionalParam('votingPeriod', 'The voting period (blocks)', 4 * 60 * 24 * 3, types.int) // Default: 3 days
   .addOptionalParam('votingDelay', 'The voting delay (blocks)', 1, types.int) // Default: 1 block
@@ -45,19 +45,18 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
   .addOptionalParam('quorumVotesBps', 'Votes required for quorum (basis points)', 1_000, types.int) // Default: 10%
   .setAction(async (args, { ethers }) => {
     const network = await ethers.provider.getNetwork();
-    const proxyRegistryAddress =
-      network.chainId === 1
-        ? '0xa5409ec958c83c3f309868babaca7c86dcb077c1'
-        : '0xf57b2c51ded3a29e6891aba85459d600256cf317';
+    const proxyRegistryAddress = network.chainId === 1
+      ? '0xa5409ec958c83c3f309868babaca7c86dcb077c1'
+      : '0xf57b2c51ded3a29e6891aba85459d600256cf317';
 
-    const AUCTION_HOUSE_PROXY_NONCE_OFFSET = 6;
+    const OFFERING_HOUSE_PROXY_NONCE_OFFSET = 6;
     const GOVERNOR_N_DELEGATOR_NONCE_OFFSET = 9;
 
     const [deployer] = await ethers.getSigners();
     const nonce = await deployer.getTransactionCount();
-    const expectedAuctionHouseProxyAddress = ethers.utils.getContractAddress({
+    const expectedOfferingHouseProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
-      nonce: nonce + AUCTION_HOUSE_PROXY_NONCE_OFFSET,
+      nonce: nonce + OFFERING_HOUSE_PROXY_NONCE_OFFSET,
     });
     const expectedthewordDAOProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
@@ -67,36 +66,35 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
       NFTDescriptor: {},
       thewordDescriptor: {
         libraries: () => ({
-          NFTDescriptor: contracts['NFTDescriptor'].address as string,
+          NFTDescriptor: contracts.NFTDescriptor.address as string,
         }),
       },
       thewordSeeder: {},
       thewordToken: {
         args: [
           args.theworddersdao,
-          expectedAuctionHouseProxyAddress,
-          () => contracts['thewordDescriptor'].address,
-          () => contracts['thewordSeeder'].address,
+          expectedOfferingHouseProxyAddress,
+          () => contracts.thewordDescriptor.address,
+          () => contracts.thewordSeeder.address,
           proxyRegistryAddress,
         ],
       },
-      thewordAuctionHouse: {
+      thewordOfferingHouse: {
         waitForConfirmation: true,
       },
-      thewordAuctionHouseProxyAdmin: {},
-      thewordAuctionHouseProxy: {
+      thewordOfferingHouseProxyAdmin: {},
+      thewordOfferingHouseProxy: {
         args: [
-          () => contracts['thewordAuctionHouse'].address,
-          () => contracts['thewordAuctionHouseProxyAdmin'].address,
-          () =>
-            new Interface(thewordAuctionHouseABI).encodeFunctionData('initialize', [
-              contracts['thewordToken'].address,
-              args.weth,
-              args.auctionTimeBuffer,
-              args.auctionReservePrice,
-              args.auctionMinIncrementBidPercentage,
-              args.auctionDuration,
-            ]),
+          () => contracts.thewordOfferingHouse.address,
+          () => contracts.thewordOfferingHouseProxyAdmin.address,
+          () => new Interface(thewordOfferingHouseABI).encodeFunctionData('initialize', [
+            contracts.thewordToken.address,
+            args.weth,
+            args.offeringTimeBuffer,
+            args.offeringReservePrice,
+            args.offeringMinIncrementBidPercentage,
+            args.offeringDuration,
+          ]),
         ],
       },
       thewordDAOExecutor: {
@@ -107,11 +105,11 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
       },
       thewordDAOProxy: {
         args: [
-          () => contracts['thewordDAOExecutor'].address,
-          () => contracts['thewordToken'].address,
+          () => contracts.thewordDAOExecutor.address,
+          () => contracts.thewordToken.address,
           args.theworddersdao,
-          () => contracts['thewordDAOExecutor'].address,
-          () => contracts['thewordDAOLogicV1'].address,
+          () => contracts.thewordDAOExecutor.address,
+          () => contracts.thewordDAOLogicV1.address,
           args.votingPeriod,
           args.votingDelay,
           args.proposalThresholdBps,
@@ -147,7 +145,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
 
       const deploymentGas = await factory.signer.estimateGas(
         factory.getDeployTransaction(
-          ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
+          ...(contract.args?.map((a) => (typeof a === 'function' ? a() : a)) ?? []),
           {
             gasPrice,
           },
@@ -181,7 +179,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
       console.log('Deploying...');
 
       const deployedContract = await factory.deploy(
-        ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
+        ...(contract.args?.map((a) => (typeof a === 'function' ? a() : a)) ?? []),
         {
           gasPrice,
         },

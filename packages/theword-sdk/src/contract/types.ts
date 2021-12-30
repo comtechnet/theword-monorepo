@@ -1,9 +1,9 @@
 import {
-  thewordTokenFactory,
-  thewordAuctionHouseFactory,
-  thewordDescriptorFactory,
-  thewordSeederFactory,
-  thewordDaoLogicV1Factory,
+  TheWordTokenFactory,
+  TheWordOfferingHouseFactory,
+  TheWordDescriptorFactory,
+  TheWordSeederFactory,
+  TheWordDaoLogicV1Factory,
 } from '@theword/contracts';
 
 export interface ContractAddresses {
@@ -11,20 +11,20 @@ export interface ContractAddresses {
   thewordSeeder: string;
   thewordDescriptor: string;
   nftDescriptor: string;
-  thewordAuctionHouse: string;
-  thewordAuctionHouseProxy: string;
-  thewordAuctionHouseProxyAdmin: string;
+  thewordOfferingHouse: string;
+  thewordOfferingHouseProxy: string;
+  thewordOfferingHouseProxyAdmin: string;
   thewordDaoExecutor: string;
   thewordDAOProxy: string;
   thewordDAOLogicV1: string;
 }
 
 export interface Contracts {
-  thewordTokenContract: ReturnType<typeof thewordTokenFactory.connect>;
-  thewordAuctionHouseContract: ReturnType<typeof thewordAuctionHouseFactory.connect>;
-  thewordDescriptorContract: ReturnType<typeof thewordDescriptorFactory.connect>;
-  thewordSeederContract: ReturnType<typeof thewordSeederFactory.connect>;
-  thewordDaoContract: ReturnType<typeof thewordDaoLogicV1Factory.connect>;
+  thewordTokenContract: ReturnType<typeof TheWordTokenFactory.connect>;
+  thewordOfferingHouseContract: ReturnType<typeof TheWordOfferingHouseFactory.connect>;
+  thewordDescriptorContract: ReturnType<typeof TheWordDescriptorFactory.connect>;
+  thewordSeederContract: ReturnType<typeof TheWordSeederFactory.connect>;
+  thewordDaoContract: ReturnType<typeof TheWordDaoLogicV1Factory.connect>;
 }
 
 export enum ChainId {

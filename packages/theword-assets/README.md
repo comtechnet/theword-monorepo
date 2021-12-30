@@ -63,7 +63,7 @@ Generate a TheWord using only a block hash, which saves calls to `thewordeeder` 
 /**
  * For you to implement:
    - hook up providers with ether/web3.js
-   - get currently auctioned TheWord Id from the thewordAuctionHouse contract
+   - get currently offeringed TheWord Id from the thewordOfferingHouse contract
    - add 1 to the current TheWord Id to get the next TheWord Id (named `nextTheWordId` below)
    - get the latest block hash from your provider (named `latestBlockHash` below)
 */

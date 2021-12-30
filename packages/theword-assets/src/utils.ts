@@ -3,37 +3,35 @@ import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { thewordeed, TheWordData } from './types';
 import { images, bgcolors } from './image-data.json';
 
-const { bodies, accessories, heads, glasses } = images;
+const {
+  bodies, accessories, heads, glasses,
+} = images;
 
 /**
  * Get encoded part and background information using a TheWord seed
  * @param seed The TheWord seed
  */
-export const getTheWordData = (seed: thewordeed): TheWordData => {
-  return {
-    parts: [
-      bodies[seed.body],
-      accessories[seed.accessory],
-      heads[seed.head],
-      glasses[seed.glasses],
-    ],
-    background: bgcolors[seed.background],
-  };
-};
+export const getTheWordData = (seed: thewordeed): TheWordData => ({
+  parts: [
+    bodies[seed.body],
+    accessories[seed.accessory],
+    heads[seed.head],
+    glasses[seed.glasses],
+  ],
+  background: bgcolors[seed.background],
+});
 
 /**
  * Generate a random TheWord seed
  * @param seed The TheWord seed
  */
-export const getRandomthewordeed = (): thewordeed => {
-  return {
-    background: Math.floor(Math.random() * bgcolors.length),
-    body: Math.floor(Math.random() * bodies.length),
-    accessory: Math.floor(Math.random() * accessories.length),
-    head: Math.floor(Math.random() * heads.length),
-    glasses: Math.floor(Math.random() * glasses.length),
-  };
-};
+export const getRandomthewordeed = (): thewordeed => ({
+  background: Math.floor(Math.random() * bgcolors.length),
+  body: Math.floor(Math.random() * bodies.length),
+  accessory: Math.floor(Math.random() * accessories.length),
+  head: Math.floor(Math.random() * heads.length),
+  glasses: Math.floor(Math.random() * glasses.length),
+});
 
 /**
  * Emulate bitwise right shift and uint cast
