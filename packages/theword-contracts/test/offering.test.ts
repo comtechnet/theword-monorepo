@@ -5,19 +5,19 @@ import { constants } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import {
   MaliciousBidder__factory as MaliciousBidderFactory,
-  thewordOfferingHouse,
-  thewordDescriptor__factory as thewordDescriptorFactory,
-  thewordToken,
+  TheWordOfferingHouse,
+  TheWordDescriptor__factory as thewordDescriptorFactory,
+  TheWordToken,
   Weth,
 } from '../typechain';
-import { deploythewordToken, deployWeth, populateDescriptor } from './utils';
+import { deployTheWordToken, deployWeth, populateDescriptor } from './utils';
 
 chai.use(solidity);
 const { expect } = chai;
 
 describe('thewordOfferingHouse', () => {
-  let thewordOfferingHouse: thewordOfferingHouse;
-  let thewordToken: thewordToken;
+  let thewordOfferingHouse: TheWordOfferingHouse;
+  let thewordToken: TheWordToken;
   let weth: Weth;
   let deployer: SignerWithAddress;
   let theworddersDAO: SignerWithAddress;
@@ -39,13 +39,13 @@ describe('thewordOfferingHouse', () => {
       RESERVE_PRICE,
       MIN_INCREMENT_BID_PERCENTAGE,
       DURATION,
-    ]) as Promise<thewordOfferingHouse>;
+    ]) as Promise<TheWordOfferingHouse>;
   }
 
   before(async () => {
     [deployer, theworddersDAO, bidderA, bidderB] = await ethers.getSigners();
 
-    thewordToken = await deploythewordToken(deployer, theworddersDAO.address, deployer.address);
+    thewordToken = await deployTheWordToken(deployer, theworddersDAO.address, deployer.address);
     weth = await deployWeth(deployer);
     thewordOfferingHouse = await deploy(deployer);
 

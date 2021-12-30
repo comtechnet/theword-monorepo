@@ -43,7 +43,7 @@ In order to make retrieving more complex data from the offering history, [thewor
 
 ### theword-webapp
 
-The [theword webapp](packages/theword-webapp) is the frontend for interacting with TheWord offerings as hosted at [theword.wtf](https://theword.wtf).
+The [theword webapp](packages/theword-webapp) is the frontend for interacting with TheWord offerings as hosted at [theword.nft](https://theword.nft).
 
 ## Quickstart
 

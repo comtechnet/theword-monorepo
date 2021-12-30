@@ -8,8 +8,8 @@
       "esnext"
     ],
     "allowJs": true,
-    "composite": false,
-    "declaration": false,
+    "composite": true,
+    //"declaration": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",

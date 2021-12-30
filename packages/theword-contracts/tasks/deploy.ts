@@ -1,7 +1,7 @@
 import { Interface } from 'ethers/lib/utils';
 import { task, types } from 'hardhat/config';
 import promptjs from 'prompt';
-import { default as thewordOfferingHouseABI } from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
+import { default as TheWordOfferingHouseABI } from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
 
 promptjs.colors = false;
 promptjs.message = '> ';
@@ -9,15 +9,15 @@ promptjs.delimiter = '';
 
 type ContractName =
   | 'NFTDescriptor'
-  | 'thewordDescriptor'
-  | 'thewordSeeder'
-  | 'thewordToken'
-  | 'thewordOfferingHouse'
-  | 'thewordOfferingHouseProxyAdmin'
-  | 'thewordOfferingHouseProxy'
-  | 'thewordDAOExecutor'
-  | 'thewordDAOLogicV1'
-  | 'thewordDAOProxy';
+  | 'TheWordDescriptor'
+  | 'TheWordSeeder'
+  | 'TheWordToken'
+  | 'TheWordOfferingHouse'
+  | 'TheWordOfferingHouseProxyAdmin'
+  | 'TheWordOfferingHouseProxy'
+  | 'TheWordDAOExecutor'
+  | 'TheWordDAOLogicV1'
+  | 'TheWordDAOProxy';
 
 interface Contract {
   args?: (string | number | (() => string | undefined))[];
