@@ -9,7 +9,7 @@
     ],
     "allowJs": true,
     "composite": true,
-    //"declaration": false,
+    "declaration": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",

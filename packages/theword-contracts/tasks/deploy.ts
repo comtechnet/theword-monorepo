@@ -64,31 +64,31 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
     });
     const contracts: Record<ContractName, Contract> = {
       NFTDescriptor: {},
-      thewordDescriptor: {
+      TheWordDescriptor: {
         libraries: () => ({
           NFTDescriptor: contracts.NFTDescriptor.address as string,
         }),
       },
-      thewordSeeder: {},
-      thewordToken: {
+      TheWordSeeder: {},
+      TheWordToken: {
         args: [
           args.theworddersdao,
           expectedOfferingHouseProxyAddress,
-          () => contracts.thewordDescriptor.address,
-          () => contracts.thewordSeeder.address,
+          () => contracts.TheWordDescriptor.address,
+          () => contracts.TheWordSeeder.address,
           proxyRegistryAddress,
         ],
       },
-      thewordOfferingHouse: {
+      TheWordOfferingHouse: {
         waitForConfirmation: true,
       },
-      thewordOfferingHouseProxyAdmin: {},
-      thewordOfferingHouseProxy: {
+      TheWordOfferingHouseProxyAdmin: {},
+      TheWordOfferingHouseProxy: {
         args: [
-          () => contracts.thewordOfferingHouse.address,
-          () => contracts.thewordOfferingHouseProxyAdmin.address,
-          () => new Interface(thewordOfferingHouseABI).encodeFunctionData('initialize', [
-            contracts.thewordToken.address,
+          () => contracts.TheWordOfferingHouse.address,
+          () => contracts.TheWordOfferingHouseProxyAdmin.address,
+          () => new Interface(TheWordOfferingHouseABI).encodeFunctionData('initialize', [
+            contracts.TheWordToken.address,
             args.weth,
             args.offeringTimeBuffer,
             args.offeringReservePrice,
@@ -97,19 +97,19 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
           ]),
         ],
       },
-      thewordDAOExecutor: {
+      TheWordDAOExecutor: {
         args: [expectedthewordDAOProxyAddress, args.timelockDelay],
       },
-      thewordDAOLogicV1: {
+      TheWordDAOLogicV1: {
         waitForConfirmation: true,
       },
-      thewordDAOProxy: {
+      TheWordDAOProxy: {
         args: [
-          () => contracts.thewordDAOExecutor.address,
-          () => contracts.thewordToken.address,
+          () => contracts.TheWordDAOExecutor.address,
+          () => contracts.TheWordToken.address,
           args.theworddersdao,
-          () => contracts.thewordDAOExecutor.address,
-          () => contracts.thewordDAOLogicV1.address,
+          () => contracts.TheWordDAOExecutor.address,
+          () => contracts.TheWordDAOLogicV1.address,
           args.votingPeriod,
           args.votingDelay,
           args.proposalThresholdBps,
