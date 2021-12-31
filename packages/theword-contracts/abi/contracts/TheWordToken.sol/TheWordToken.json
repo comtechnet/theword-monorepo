@@ -12,12 +12,12 @@
         "type": "address"
       },
       {
-        "internalType": "contract IthewordDescriptor",
+        "internalType": "contract ITheWordDescriptor",
         "name": "_descriptor",
         "type": "address"
       },
       {
-        "internalType": "contract IthewordSeeder",
+        "internalType": "contract ITheWordSeeder",
         "name": "_seeder",
         "type": "address"
       },
@@ -219,7 +219,7 @@
           }
         ],
         "indexed": false,
-        "internalType": "struct IthewordSeeder.Seed",
+        "internalType": "struct ITheWordSeeder.Seed",
         "name": "seed",
         "type": "tuple"
       }
@@ -270,7 +270,7 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "contract IthewordSeeder",
+        "internalType": "contract ITheWordSeeder",
         "name": "seeder",
         "type": "address"
       }
@@ -528,7 +528,7 @@
     "name": "descriptor",
     "outputs": [
       {
-        "internalType": "contract IthewordDescriptor",
+        "internalType": "contract ITheWordDescriptor",
         "name": "",
         "type": "address"
       }
@@ -880,7 +880,7 @@
     "name": "seeder",
     "outputs": [
       {
-        "internalType": "contract IthewordSeeder",
+        "internalType": "contract ITheWordSeeder",
         "name": "",
         "type": "address"
       }
@@ -961,7 +961,7 @@
   {
     "inputs": [
       {
-        "internalType": "contract IthewordDescriptor",
+        "internalType": "contract ITheWordDescriptor",
         "name": "_descriptor",
         "type": "address"
       }
@@ -1000,7 +1000,7 @@
   {
     "inputs": [
       {
-        "internalType": "contract IthewordSeeder",
+        "internalType": "contract ITheWordSeeder",
         "name": "_seeder",
         "type": "address"
       }

@@ -1,7 +1,11 @@
+import TheWordOfferingHouseABI from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
 import { Interface } from 'ethers/lib/utils';
 import { task, types } from 'hardhat/config';
 import promptjs from 'prompt';
-import { default as TheWordOfferingHouseABI } from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
+//import { default as TheWordOfferingHouseABI }
+//from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
+//import TheWordOfferingHouseABI 
+//from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
 
 promptjs.colors = false;
 promptjs.message = '> ';
@@ -58,7 +62,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
       from: deployer.address,
       nonce: nonce + OFFERING_HOUSE_PROXY_NONCE_OFFSET,
     });
-    const expectedthewordDAOProxyAddress = ethers.utils.getContractAddress({
+    const expectedTheWordDAOProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
     });
@@ -98,7 +102,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
         ],
       },
       TheWordDAOExecutor: {
-        args: [expectedthewordDAOProxyAddress, args.timelockDelay],
+        args: [expectedTheWordDAOProxyAddress, args.timelockDelay],
       },
       TheWordDAOLogicV1: {
         waitForConfirmation: true,

@@ -1,20 +1,21 @@
 import { task, types } from 'hardhat/config';
 import { Interface } from 'ethers/lib/utils';
 import { Contract as EthersContract } from 'ethers';
-import { default as thewordOfferingHouseABI } from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
+//import { default as TheWordOfferingHouseABI } from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
+import TheWordOfferingHouseABI from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
 
 type ContractName =
   | 'WETH'
   | 'NFTDescriptor'
-  | 'thewordDescriptor'
-  | 'thewordSeeder'
-  | 'thewordToken'
-  | 'thewordOfferingHouse'
-  | 'thewordOfferingHouseProxyAdmin'
-  | 'thewordOfferingHouseProxy'
-  | 'thewordDAOExecutor'
-  | 'thewordDAOLogicV1'
-  | 'thewordDAOProxy';
+  | 'TheWordDescriptor'
+  | 'TheWordSeeder'
+  | 'TheWordToken'
+  | 'TheWordOfferingHouse'
+  | 'TheWordOfferingHouseProxyAdmin'
+  | 'TheWordOfferingHouseProxy'
+  | 'TheWordDAOExecutor'
+  | 'TheWordDAOLogicV1'
+  | 'TheWordDAOProxy';
 
 interface Contract {
   args?: (string | number | (() => string | undefined))[];
@@ -53,7 +54,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
 
     const [deployer] = await ethers.getSigners();
     const nonce = await deployer.getTransactionCount();
-    const expectedthewordDAOProxyAddress = ethers.utils.getContractAddress({
+    const expectedTheWordDAOProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
     });
@@ -64,31 +65,31 @@ task('deploy-local', 'Deploy contracts to hardhat')
     const contracts: Record<ContractName, Contract> = {
       WETH: {},
       NFTDescriptor: {},
-      thewordDescriptor: {
+      TheWordDescriptor: {
         libraries: () => ({
           NFTDescriptor: contracts.NFTDescriptor.instance?.address as string,
         }),
       },
-      thewordSeeder: {},
-      thewordToken: {
+      TheWordSeeder: {},
+      TheWordToken: {
         args: [
           args.theworddersdao || deployer.address,
           expectedOfferingHouseProxyAddress,
-          () => contracts.thewordDescriptor.instance?.address,
-          () => contracts.thewordSeeder.instance?.address,
+          () => contracts.TheWordDescriptor.instance?.address,
+          () => contracts.TheWordSeeder.instance?.address,
           proxyRegistryAddress,
         ],
       },
-      thewordOfferingHouse: {
+      TheWordOfferingHouse: {
         waitForConfirmation: true,
       },
-      thewordOfferingHouseProxyAdmin: {},
-      thewordOfferingHouseProxy: {
+      TheWordOfferingHouseProxyAdmin: {},
+      TheWordOfferingHouseProxy: {
         args: [
-          () => contracts.thewordOfferingHouse.instance?.address,
-          () => contracts.thewordOfferingHouseProxyAdmin.instance?.address,
-          () => new Interface(thewordOfferingHouseABI).encodeFunctionData('initialize', [
-            contracts.thewordToken.instance?.address,
+          () => contracts.TheWordOfferingHouse.instance?.address,
+          () => contracts.TheWordOfferingHouseProxyAdmin.instance?.address,
+          () => new Interface(TheWordOfferingHouseABI).encodeFunctionData('initialize', [
+            contracts.TheWordToken.instance?.address,
             contracts.WETH.instance?.address,
             args.offeringTimeBuffer,
             args.offeringReservePrice,
@@ -97,19 +98,19 @@ task('deploy-local', 'Deploy contracts to hardhat')
           ]),
         ],
       },
-      thewordDAOExecutor: {
-        args: [expectedthewordDAOProxyAddress, args.timelockDelay],
+      TheWordDAOExecutor: {
+        args: [expectedTheWordDAOProxyAddress, args.timelockDelay],
       },
-      thewordDAOLogicV1: {
+      TheWordDAOLogicV1: {
         waitForConfirmation: true,
       },
-      thewordDAOProxy: {
+      TheWordDAOProxy: {
         args: [
-          () => contracts.thewordDAOExecutor.instance?.address,
-          () => contracts.thewordToken.instance?.address,
+          () => contracts.TheWordDAOExecutor.instance?.address,
+          () => contracts.TheWordToken.instance?.address,
           args.theworddersdao || deployer.address,
-          () => contracts.thewordDAOExecutor.instance?.address,
-          () => contracts.thewordDAOLogicV1.instance?.address,
+          () => contracts.TheWordDAOExecutor.instance?.address,
+          () => contracts.TheWordDAOLogicV1.instance?.address,
           args.votingPeriod,
           args.votingDelay,
           args.proposalThresholdBps,
