@@ -5,6 +5,7 @@
      * --watch mode 
      */
     // "assumeChangesOnlyAffectDirectDependencies": true,
+    "assumeChangesOnlyAffectDirectDependencies": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "declaration": true,

@@ -19,7 +19,7 @@ pragma solidity ^0.8.6;
 
 import { TransparentUpgradeableProxy } from '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol';
 
-contract ThewordOfferingHouseProxy is TransparentUpgradeableProxy {
+contract TheWordOfferingHouseProxy is TransparentUpgradeableProxy {
     constructor(
         address logic,
         address admin,
