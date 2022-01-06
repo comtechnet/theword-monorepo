@@ -32,7 +32,12 @@ import { ITheWordOfferingHouse } from './interfaces/ITheWordOfferingHouse.sol';
 import { ITheWordToken } from './interfaces/ITheWordToken.sol';
 import { IWETH } from './interfaces/IWETH.sol';
 
-contract TheWordOfferingHouse is ITheWordOfferingHouse, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable {
+contract TheWordOfferingHouse is
+    ITheWordOfferingHouse,
+    PausableUpgradeable,
+    ReentrancyGuardUpgradeable,
+    OwnableUpgradeable
+{
     // The theword ERC721 token contract
     ITheWordToken public theword;
 

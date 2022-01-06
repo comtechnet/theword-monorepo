@@ -134,7 +134,9 @@ const Bid: React.FC<{
     // tx state is mining
     const isMiningUserTx = placeBidState.status === 'Mining';
     // allows user to rebid against themselves so long as it is not the same tx
-    const isCorrectTx = currentBid(bidInputRef).isEqualTo(new BigNumber(offering.amount.toString()));
+    const isCorrectTx = currentBid(bidInputRef).isEqualTo(
+      new BigNumber(offering.amount.toString()),
+    );
     if (isMiningUserTx && offering.bidder === account && isCorrectTx) {
       placeBidState.status = 'Success';
       setModal({

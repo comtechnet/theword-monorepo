@@ -20,7 +20,9 @@ const ProfilePage: React.FC<ProfilePageProps> = props => {
   const { thewordId } = props;
 
   const dispatch = useAppDispatch();
-  const lastOfferingTheWordId = useAppSelector(state => state.onDisplayOffering.lastOfferingTheWordId);
+  const lastOfferingTheWordId = useAppSelector(
+    state => state.onDisplayOffering.lastOfferingTheWordId,
+  );
   let stateBgColor = useAppSelector(state => state.application.stateBackgroundColor);
 
   const loadedTheWordHandler = (seed: ITheWordSeed) => {

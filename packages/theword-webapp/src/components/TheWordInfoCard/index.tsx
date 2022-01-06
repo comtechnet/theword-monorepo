@@ -34,7 +34,9 @@ const TheWordInfoCard: React.FC<TheWordInfoCardProps> = props => {
   // eslint-disable-next-line no-restricted-globals
   const etherscanButtonClickHandler = () => (location.href = `${etherscanBaseURL}/${thewordId}`);
 
-  const lastOfferingTheWordId = useAppSelector(state => state.onDisplayOffering.lastOfferingTheWordId);
+  const lastOfferingTheWordId = useAppSelector(
+    state => state.onDisplayOffering.lastOfferingTheWordId,
+  );
 
   return (
     <>

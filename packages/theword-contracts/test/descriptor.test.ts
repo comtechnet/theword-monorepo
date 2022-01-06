@@ -91,9 +91,7 @@ describe('thewordDescriptor', () => {
     console.log('Running... this may take a little while...');
 
     const { bgcolors, images } = ImageData;
-    const {
-      bodies, accessories, heads, glasses,
-    } = images;
+    const { bodies, accessories, heads, glasses } = images;
     const max = Math.max(bodies.length, accessories.length, heads.length, glasses.length);
     for (let i = 0; i < max; i++) {
       const tokenUri = await thewordDescriptor.tokenURI(i, {

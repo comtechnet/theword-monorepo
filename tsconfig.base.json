@@ -11,6 +11,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    // changed the next value to false as TheWord is mixed case
     "forceConsistentCasingInFileNames": false,
     "incremental": true,
     "composite": true,

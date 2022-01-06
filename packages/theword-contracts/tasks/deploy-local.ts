@@ -88,14 +88,15 @@ task('deploy-local', 'Deploy contracts to hardhat')
         args: [
           () => contracts.TheWordOfferingHouse.instance?.address,
           () => contracts.TheWordOfferingHouseProxyAdmin.instance?.address,
-          () => new Interface(TheWordOfferingHouseABI).encodeFunctionData('initialize', [
-            contracts.TheWordToken.instance?.address,
-            contracts.WETH.instance?.address,
-            args.offeringTimeBuffer,
-            args.offeringReservePrice,
-            args.offeringMinIncrementBidPercentage,
-            args.offeringDuration,
-          ]),
+          () =>
+            new Interface(TheWordOfferingHouseABI).encodeFunctionData('initialize', [
+              contracts.TheWordToken.instance?.address,
+              contracts.WETH.instance?.address,
+              args.offeringTimeBuffer,
+              args.offeringReservePrice,
+              args.offeringMinIncrementBidPercentage,
+              args.offeringDuration,
+            ]),
         ],
       },
       TheWordDAOExecutor: {
@@ -125,7 +126,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
       });
 
       const deployedContract = await factory.deploy(
-        ...(contract.args?.map((a) => (typeof a === 'function' ? a() : a)) ?? []),
+        ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
       );
 
       if (contract.waitForConfirmation) {

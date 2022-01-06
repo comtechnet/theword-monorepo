@@ -111,7 +111,9 @@ const TheWordProfileVoteRow: React.FC<TheWordProfileVoteRowProps> = props => {
   const { proposal, vote, thewordId, latestProposalId } = props;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { loading, error, data } = useQuery(highestTheWordIdMintedAtProposalTime(proposal.startBlock));
+  const { loading, error, data } = useQuery(
+    highestTheWordIdMintedAtProposalTime(proposal.startBlock),
+  );
   const history = useHistory();
 
   if (loading) {
@@ -122,7 +124,9 @@ const TheWordProfileVoteRow: React.FC<TheWordProfileVoteRowProps> = props => {
   if (data && data.offerings.length > 0 && thewordId > data.offerings[0].id) {
     if (proposal.id === latestProposalId.toString()) {
       return (
-        <tr className={classes.nullStateCopy}>This TheWord has no activity yet. Check back soon!</tr>
+        <tr className={classes.nullStateCopy}>
+          This TheWord has no activity yet. Check back soon!
+        </tr>
       );
     }
     return <></>;

@@ -102,7 +102,10 @@ async function deploy() {
   ]);
 
   // 2b. CAST proxy as OfferingHouse
-  thewordOfferingHouse = thewordOfferingHouseFactory.connect(thewordOfferingHouseProxy.address, deployer);
+  thewordOfferingHouse = thewordOfferingHouseFactory.connect(
+    thewordOfferingHouseProxy.address,
+    deployer,
+  );
 
   // 3. SET MINTER
   await thewordToken.setMinter(thewordOfferingHouse.address);

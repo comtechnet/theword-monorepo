@@ -143,7 +143,11 @@ const ChainSubscriber: React.FC = () => {
     const processOfferingExtended = (thewordId: BigNumberish, endTime: BigNumberish) => {
       dispatch(setOfferingExtended({ thewordId, endTime }));
     };
-    const processOfferingSettled = (thewordId: BigNumberish, winner: string, amount: BigNumberish) => {
+    const processOfferingSettled = (
+      thewordId: BigNumberish,
+      winner: string,
+      amount: BigNumberish,
+    ) => {
       dispatch(setOfferingSettled({ thewordId, amount, winner }));
     };
 
@@ -153,7 +157,10 @@ const ChainSubscriber: React.FC = () => {
     dispatch(setLastOfferingTheWordId(currentOffering.thewordId.toNumber()));
 
     // Fetch the previous 24hours of  bids
-    const previousBids = await thewordOfferingHouseContract.queryFilter(bidFilter, 0 - BLOCKS_PER_DAY);
+    const previousBids = await thewordOfferingHouseContract.queryFilter(
+      bidFilter,
+      0 - BLOCKS_PER_DAY,
+    );
     for (let event of previousBids) {
       if (event.args === undefined) return;
       processBidFilter(...(event.args as [BigNumber, string, BigNumber, boolean]), event);

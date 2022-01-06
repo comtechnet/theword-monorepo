@@ -4,7 +4,7 @@ import { task, types } from 'hardhat/config';
 import promptjs from 'prompt';
 //import { default as TheWordOfferingHouseABI }
 //from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
-//import TheWordOfferingHouseABI 
+//import TheWordOfferingHouseABI
 //from '../abi/contracts/TheWordOfferingHouse.sol/TheWordOfferingHouse.json';
 
 promptjs.colors = false;
@@ -49,9 +49,10 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
   .addOptionalParam('quorumVotesBps', 'Votes required for quorum (basis points)', 1_000, types.int) // Default: 10%
   .setAction(async (args, { ethers }) => {
     const network = await ethers.provider.getNetwork();
-    const proxyRegistryAddress = network.chainId === 1
-      ? '0xa5409ec958c83c3f309868babaca7c86dcb077c1'
-      : '0xf57b2c51ded3a29e6891aba85459d600256cf317';
+    const proxyRegistryAddress =
+      network.chainId === 1
+        ? '0xa5409ec958c83c3f309868babaca7c86dcb077c1'
+        : '0xf57b2c51ded3a29e6891aba85459d600256cf317';
 
     const OFFERING_HOUSE_PROXY_NONCE_OFFSET = 6;
     const GOVERNOR_N_DELEGATOR_NONCE_OFFSET = 9;
@@ -91,14 +92,15 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
         args: [
           () => contracts.TheWordOfferingHouse.address,
           () => contracts.TheWordOfferingHouseProxyAdmin.address,
-          () => new Interface(TheWordOfferingHouseABI).encodeFunctionData('initialize', [
-            contracts.TheWordToken.address,
-            args.weth,
-            args.offeringTimeBuffer,
-            args.offeringReservePrice,
-            args.offeringMinIncrementBidPercentage,
-            args.offeringDuration,
-          ]),
+          () =>
+            new Interface(TheWordOfferingHouseABI).encodeFunctionData('initialize', [
+              contracts.TheWordToken.address,
+              args.weth,
+              args.offeringTimeBuffer,
+              args.offeringReservePrice,
+              args.offeringMinIncrementBidPercentage,
+              args.offeringDuration,
+            ]),
         ],
       },
       TheWordDAOExecutor: {
@@ -149,7 +151,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
 
       const deploymentGas = await factory.signer.estimateGas(
         factory.getDeployTransaction(
-          ...(contract.args?.map((a) => (typeof a === 'function' ? a() : a)) ?? []),
+          ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
           {
             gasPrice,
           },
@@ -183,7 +185,7 @@ task('deploy', 'Deploys NFTDescriptor, thewordDescriptor, thewordSeeder, and the
       console.log('Deploying...');
 
       const deployedContract = await factory.deploy(
-        ...(contract.args?.map((a) => (typeof a === 'function' ? a() : a)) ?? []),
+        ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
         {
           gasPrice,
         },

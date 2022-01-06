@@ -3,21 +3,14 @@ import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { thewordeed, TheWordData } from './types';
 import { images, bgcolors } from './image-data.json';
 
-const {
-  bodies, accessories, heads, glasses,
-} = images;
+const { bodies, accessories, heads, glasses } = images;
 
 /**
  * Get encoded part and background information using a TheWord seed
  * @param seed The TheWord seed
  */
 export const getTheWordData = (seed: thewordeed): TheWordData => ({
-  parts: [
-    bodies[seed.body],
-    accessories[seed.accessory],
-    heads[seed.head],
-    glasses[seed.glasses],
-  ],
+  parts: [bodies[seed.body], accessories[seed.accessory], heads[seed.head], glasses[seed.glasses]],
   background: bgcolors[seed.background],
 });
 
@@ -70,7 +63,10 @@ export const getPseudorandomPart = (
  * @param thewordId The TheWord tokenId used to create pseudorandomness
  * @param blockHash The block hash use to create pseudorandomness
  */
-export const getthewordeedFromBlockHash = (thewordId: BigNumberish, blockHash: string): thewordeed => {
+export const getthewordeedFromBlockHash = (
+  thewordId: BigNumberish,
+  blockHash: string,
+): thewordeed => {
   const pseudorandomness = solidityKeccak256(['bytes32', 'uint256'], [blockHash, thewordId]);
   return {
     background: getPseudorandomPart(pseudorandomness, bgcolors.length, 0),

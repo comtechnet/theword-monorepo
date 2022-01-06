@@ -46,7 +46,7 @@ export function handleDelegateChanged(event: DelegateChanged): void {
   previousDelegate.tokenHoldersRepresentedAmount -= 1;
   const previousthewordRepresented = previousDelegate.thewordRepresented; // Re-assignment required to update array
   previousDelegate.thewordRepresented = previousthewordRepresented.filter(
-    (n) => !accounttheword.includes(n),
+    n => !accounttheword.includes(n),
   );
   newDelegate.tokenHoldersRepresentedAmount += 1;
   const newthewordRepresented = newDelegate.thewordRepresented; // Re-assignment required to update array
@@ -94,13 +94,13 @@ export function handleTransfer(event: Transfer): void {
     fromHolder.tokenBalanceRaw -= BIGINT_ONE;
     fromHolder.tokenBalance = fromHolder.tokenBalanceRaw;
     const fromHoldertheword = fromHolder.theword; // Re-assignment required to update array
-    fromHolder.theword = fromHoldertheword.filter((n) => n !== transferredTheWordId);
+    fromHolder.theword = fromHoldertheword.filter(n => n !== transferredTheWordId);
 
     if (fromHolder.delegate != null) {
       const fromHolderDelegate = getOrCreateDelegate(fromHolder.delegate);
       const fromHolderthewordRepresented = fromHolderDelegate.thewordRepresented; // Re-assignment required to update array
       fromHolderDelegate.thewordRepresented = fromHolderthewordRepresented.filter(
-        (n) => n !== transferredTheWordId,
+        n => n !== transferredTheWordId,
       );
       fromHolderDelegate.save();
     }
@@ -118,8 +118,8 @@ export function handleTransfer(event: Transfer): void {
 
       fromHolder.delegate = null;
     } else if (
-      fromHolder.tokenBalanceRaw > BIGINT_ZERO
-      && fromHolderPreviousBalance == BIGINT_ZERO
+      fromHolder.tokenBalanceRaw > BIGINT_ZERO &&
+      fromHolderPreviousBalance == BIGINT_ZERO
     ) {
       governance.currentTokenHolders += BIGINT_ONE;
       governance.save();

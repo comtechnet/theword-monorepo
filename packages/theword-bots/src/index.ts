@@ -44,7 +44,7 @@ async function processOfferingTick() {
   if (cachedOfferingId < lastOfferingId) {
     await incrementCounter(buildCounterName('offerings_discovered'));
     await updateOfferingCache(lastOfferingId);
-    await Promise.all(offeringLifecycleHandlers.map((h) => h.handleNewOffering(lastOfferingId)));
+    await Promise.all(offeringLifecycleHandlers.map(h => h.handleNewOffering(lastOfferingId)));
     await incrementCounter(buildCounterName('offering_cache_updates'));
   }
   await incrementCounter(buildCounterName('offering_process_last_offering'));
@@ -53,7 +53,7 @@ async function processOfferingTick() {
   if (lastOfferingBids.bids.length > 0 && cachedBidId != lastOfferingBids.bids[0].id) {
     const bid = lastOfferingBids.bids[0];
     await updateBidCache(bid.id);
-    await Promise.all(offeringLifecycleHandlers.map((h) => h.handleNewBid(lastOfferingId, bid)));
+    await Promise.all(offeringLifecycleHandlers.map(h => h.handleNewBid(lastOfferingId, bid)));
   }
 
   // check if offering ending soon (within 20 min)
@@ -62,7 +62,9 @@ async function processOfferingTick() {
   const secondsUntilOfferingEnds = endTime - currentTimestamp;
   if (secondsUntilOfferingEnds < 20 * 60 && cachedOfferingEndingSoon < lastOfferingId) {
     await updateOfferingEndingSoonCache(lastOfferingId);
-    await Promise.all(offeringLifecycleHandlers.map((h) => h.handleOfferingEndingSoon(lastOfferingId)));
+    await Promise.all(
+      offeringLifecycleHandlers.map(h => h.handleOfferingEndingSoon(lastOfferingId)),
+    );
   }
 }
 

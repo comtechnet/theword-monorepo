@@ -81,17 +81,19 @@ export const deployWeth = async (deployer?: SignerWithAddress): Promise<Weth> =>
 
 export const populateDescriptor = async (thewordDescriptor: TheWordDescriptor): Promise<void> => {
   const { bgcolors, palette, images } = ImageData;
-  const {
-    bodies, accessories, heads, glasses,
-  } = images;
+  const { bodies, accessories, heads, glasses } = images;
 
   // Split up head and accessory population due to high gas usage
   await Promise.all([
     thewordDescriptor.addManyBackgrounds(bgcolors),
     thewordDescriptor.addManyColorsToPalette(0, palette),
     thewordDescriptor.addManyBodies(bodies.map(({ data }) => data)),
-    chunkArray(accessories, 10).map((chunk) => thewordDescriptor.addManyAccessories(chunk.map(({ data }) => data))),
-    chunkArray(heads, 10).map((chunk) => thewordDescriptor.addManyHeads(chunk.map(({ data }) => data))),
+    chunkArray(accessories, 10).map(chunk =>
+      thewordDescriptor.addManyAccessories(chunk.map(({ data }) => data)),
+    ),
+    chunkArray(heads, 10).map(chunk =>
+      thewordDescriptor.addManyHeads(chunk.map(({ data }) => data)),
+    ),
     thewordDescriptor.addManyGlasses(glasses.map(({ data }) => data)),
   ]);
 };
@@ -101,23 +103,24 @@ export const populateDescriptor = async (thewordDescriptor: TheWordDescriptor): 
  * @param token The theword ERC721 token
  * @param amount The number of theword to mint
  */
-export const MintTheWord = (
-  token: TheWordToken,
-  burnTheWorddersTokens = true,
-): ((amount: number) => Promise<void>
-) => async (amount: number): Promise<void> => {
-  for (let i = 0; i < amount; i++) {
-    await token.mint();
-  }
-  if (!burnTheWorddersTokens) return;
+export const MintTheWord =
+  (token: TheWordToken, burnTheWorddersTokens = true): ((amount: number) => Promise<void>) =>
+  async (amount: number): Promise<void> => {
+    for (let i = 0; i < amount; i++) {
+      await token.mint();
+    }
+    if (!burnTheWorddersTokens) return;
 
-  await setTotalSupply(token, amount);
-};
+    await setTotalSupply(token, amount);
+  };
 
 /**
  * Mints or burns tokens to target a total supply. Due to TheWordders' rewards tokens may be burned and tokenIds will not be sequential
  */
-export const setTotalSupply = async (token: TheWordToken, newTotalSupply: number): Promise<void> => {
+export const setTotalSupply = async (
+  token: TheWordToken,
+  newTotalSupply: number,
+): Promise<void> => {
   const totalSupply = (await token.totalSupply()).toNumber();
 
   if (totalSupply < newTotalSupply) {
@@ -137,20 +140,16 @@ export const setTotalSupply = async (token: TheWordToken, newTotalSupply: number
 
 // The following adapted from `https://github.com/compound-finance/compound-protocol/blob/master/tests/Utils/Ethereum.js`
 
-const rpc = <T = unknown>({
-  method,
-  params,
-}: {
-  method: string;
-  params?: unknown[];
-}): Promise<T> => network.provider.send(method, params);
+const rpc = <T = unknown>({ method, params }: { method: string; params?: unknown[] }): Promise<T> =>
+  network.provider.send(method, params);
 
 export const encodeParameters = (types: string[], values: unknown[]): string => {
   const abi = new ethers.utils.AbiCoder();
   return abi.encode(types, values);
 };
 
-export const blockByNumber = async (n: number | string): Promise<Block> => rpc({ method: 'eth_getBlockByNumber', params: [n, false] });
+export const blockByNumber = async (n: number | string): Promise<Block> =>
+  rpc({ method: 'eth_getBlockByNumber', params: [n, false] });
 
 export const increaseTime = async (seconds: number): Promise<unknown> => {
   await rpc({ method: 'evm_increaseTime', params: [seconds] });
@@ -199,6 +198,7 @@ export const mineBlock = async (): Promise<void> => {
   await network.provider.send('evm_mine');
 };
 
-export const chainId = async (): Promise<number> => parseInt(await network.provider.send('eth_chainId'), 16);
+export const chainId = async (): Promise<number> =>
+  parseInt(await network.provider.send('eth_chainId'), 16);
 
 export const address = (n: number): string => `0x${n.toString(16).padStart(40, '0')}`;

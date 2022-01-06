@@ -234,8 +234,8 @@ describe('thewordOfferingHouse', () => {
     const receipt = await tx.wait();
     const { timestamp } = await ethers.provider.getBlock(receipt.blockHash);
 
-    const settledEvent = receipt.events?.find((e) => e.event === 'OfferingSettled');
-    const createdEvent = receipt.events?.find((e) => e.event === 'OfferingCreated');
+    const settledEvent = receipt.events?.find(e => e.event === 'OfferingSettled');
+    const createdEvent = receipt.events?.find(e => e.event === 'OfferingCreated');
 
     expect(settledEvent?.args?.thewordId).to.equal(thewordId);
     expect(settledEvent?.args?.winner).to.equal(bidderA.address);
@@ -281,7 +281,7 @@ describe('thewordOfferingHouse', () => {
     const receipt = await unpauseTx.wait();
     const { timestamp } = await ethers.provider.getBlock(receipt.blockHash);
 
-    const createdEvent = receipt.events?.find((e) => e.event === 'OfferingCreated');
+    const createdEvent = receipt.events?.find(e => e.event === 'OfferingCreated');
 
     expect(createdEvent?.args?.thewordId).to.equal(thewordId.add(1));
     expect(createdEvent?.args?.startTime).to.equal(timestamp);

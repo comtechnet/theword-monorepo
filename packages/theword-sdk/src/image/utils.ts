@@ -11,4 +11,5 @@ export const toPaddedHex = (c: number, pad = 2): string => c.toString(16).padSta
  * @param g The green value
  * @param b The blue value
  */
-export const rgbToHex = (r: number, g: number, b: number): string => `${toPaddedHex(r)}${toPaddedHex(g)}${toPaddedHex(b)}`;
+export const rgbToHex = (r: number, g: number, b: number): string =>
+  `${toPaddedHex(r)}${toPaddedHex(g)}${toPaddedHex(b)}`;

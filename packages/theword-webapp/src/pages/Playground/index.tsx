@@ -125,9 +125,9 @@ const Playground: React.FC = () => {
             <span>Explore</span>
             <h1>Playground</h1>
             <p>
-              The playground was built using the {thewordProtocolLink}. TheWord's traits are determined
-              by the TheWord Seed. The seed was generated using {thewordAssetsLink} and rendered using
-              the {thewordSDKLink}.
+              The playground was built using the {thewordProtocolLink}. TheWord's traits are
+              determined by the TheWord Seed. The seed was generated using {thewordAssetsLink} and
+              rendered using the {thewordSDKLink}.
             </p>
           </Col>
         </Row>
@@ -166,8 +166,8 @@ const Playground: React.FC = () => {
                 );
               })}
             <p className={classes.thewordYearsFooter}>
-              You've generated {thewordvgs ? (thewordvgs.length / 365).toFixed(2) : '0'} years worth of
-              theword
+              You've generated {thewordvgs ? (thewordvgs.length / 365).toFixed(2) : '0'} years worth
+              of theword
             </p>
           </Col>
           <Col lg={9}>

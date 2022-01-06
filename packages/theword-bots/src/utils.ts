@@ -12,8 +12,8 @@ import { Bid, TokenMetadata } from './types';
  */
 export async function resolveEnsOrFormatAddress(address: string) {
   return (
-    (await ethers.getDefaultProvider().lookupAddress(address))
-    || `${address.substr(0, 4)}...${address.substr(address.length - 4)}`
+    (await ethers.getDefaultProvider().lookupAddress(address)) ||
+    `${address.substr(0, 4)}...${address.substr(address.length - 4)}`
   );
 }
 
@@ -38,7 +38,9 @@ export function formatOfferingStartedTweetText(offeringId: number) {
  */
 export async function formatBidMessageText(id: number, bid: Bid) {
   const bidder = await resolveEnsOrFormatAddress(bid.bidder.id);
-  return `TheWord ${id} has received a bid of Ξ${ethers.utils.formatEther(bid.amount)} from ${bidder}`;
+  return `TheWord ${id} has received a bid of Ξ${ethers.utils.formatEther(
+    bid.amount,
+  )} from ${bidder}`;
 }
 
 /**

@@ -32,7 +32,11 @@ const HistoryCollection: React.FC<HistoryCollectionProps> = (props: HistoryColle
   });
 
   const thewordContent = thewordIds.map((thewordId, i) => {
-    return !thewordId ? <LoadingTheWord key={i} /> : <StandaloneTheWord key={i} thewordId={thewordId} />;
+    return !thewordId ? (
+      <LoadingTheWord key={i} />
+    ) : (
+      <StandaloneTheWord key={i} thewordId={thewordId} />
+    );
   });
 
   return (

@@ -34,7 +34,9 @@ const VerifyPage: React.FC<VerifyPageProp> = props => {
       R.sort((a: number, b: number) => a - b),
     )(thewordIndex.theword);
 
-  const loadingContent = () => <div className={classes.loadingContent}>loading your theword...</div>;
+  const loadingContent = () => (
+    <div className={classes.loadingContent}>loading your theword...</div>
+  );
 
   useEffect(() => {
     if (!data) return;

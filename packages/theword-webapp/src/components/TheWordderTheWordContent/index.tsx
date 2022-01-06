@@ -69,10 +69,10 @@ const TheWordderTheWordContent: React.FC<{
               <Link to="/vote" className={thewordContentClasses.link}>
                 TheWord DAO
               </Link>
-              . For this reason, we, the project's founders (‘TheWordders’) have chosen to compensate
-              ourselves with theword. Every 10th TheWord for the first 5 years of the project will be
-              sent to our multisig (5/10), where it will be vested and distributed to individual
-              TheWordders.
+              . For this reason, we, the project's founders (‘TheWordders’) have chosen to
+              compensate ourselves with theword. Every 10th TheWord for the first 5 years of the
+              project will be sent to our multisig (5/10), where it will be vested and distributed
+              to individual TheWordders.
             </li>
           </ul>
           <div className={bidBtnClasses.bidHistoryWrapper}>

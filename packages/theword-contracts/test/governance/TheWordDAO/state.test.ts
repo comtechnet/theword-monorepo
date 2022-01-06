@@ -11,7 +11,6 @@ import {
   TestSigners,
   setTotalSupply,
   populateDescriptor,
-
   mineBlock,
   address,
   encodeParameters,

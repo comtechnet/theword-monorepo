@@ -17,7 +17,9 @@ interface OfferingPageProps {
 const OfferingPage: React.FC<OfferingPageProps> = props => {
   const { initialOfferingId } = props;
   const onDisplayOffering = useOnDisplayOffering();
-  const lastOfferingTheWordId = useAppSelector(state => state.onDisplayOffering.lastOfferingTheWordId);
+  const lastOfferingTheWordId = useAppSelector(
+    state => state.onDisplayOffering.lastOfferingTheWordId,
+  );
 
   const dispatch = useAppDispatch();
 
@@ -48,7 +50,10 @@ const OfferingPage: React.FC<OfferingPageProps> = props => {
       <Offering offering={onDisplayOffering} />
       <Banner />
       {lastOfferingTheWordId && (
-        <HistoryCollection latestTheWordId={BigNumber.from(lastOfferingTheWordId)} historyCount={10} />
+        <HistoryCollection
+          latestTheWordId={BigNumber.from(lastOfferingTheWordId)}
+          historyCount={10}
+        />
       )}
       <Documentation />
     </>

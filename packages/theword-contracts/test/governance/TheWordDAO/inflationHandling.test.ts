@@ -11,7 +11,10 @@ import {
   TestSigners,
   setTotalSupply,
   populateDescriptor,
-  mineBlock, address, encodeParameters, advanceBlocks,
+  mineBlock,
+  address,
+  encodeParameters,
+  advanceBlocks,
 } from '../../utils';
 
 import {

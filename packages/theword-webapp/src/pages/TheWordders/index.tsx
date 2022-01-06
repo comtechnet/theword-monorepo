@@ -137,16 +137,16 @@ const TheWorddersPage = () => {
         </Row>
         <h3>TheWordders' Reward</h3>
         <p style={{ textAlign: 'justify' }}>
-          All TheWord offering proceeds are sent to the TheWord DAO. For this reason, we, the project's
-          founders (‘TheWordders’) have chosen to compensate ourselves with theword. Every 10th theword for
-          the first 5 years of the project will be sent to our multisig (5/10), where it will be
-          vested and distributed to individual TheWordders.
+          All TheWord offering proceeds are sent to the TheWord DAO. For this reason, we, the
+          project's founders (‘TheWordders’) have chosen to compensate ourselves with theword. Every
+          10th theword for the first 5 years of the project will be sent to our multisig (5/10),
+          where it will be vested and distributed to individual TheWordders.
         </p>
         <p style={{ textAlign: 'justify' }}>
-          The TheWordders reward is intended as compensation for our pre and post-launch contributions
-          to the project, and to help us participate meaningfully in governance as the project
-          matures. Since there are 10 TheWordders, after 5 years each TheWordder could receive up to 1% of
-          the TheWord supply.
+          The TheWordders reward is intended as compensation for our pre and post-launch
+          contributions to the project, and to help us participate meaningfully in governance as the
+          project matures. Since there are 10 TheWordders, after 5 years each TheWordder could
+          receive up to 1% of the TheWord supply.
         </p>
       </Col>
     </Section>

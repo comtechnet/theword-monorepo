@@ -64,7 +64,8 @@ const useOnDisplayOffering = (): Offering | undefined => {
     } else {
       // past offering
       const reduxSafeOffering: Offering | undefined = pastOfferings.find(offering => {
-        const thewordId = offering.activeOffering && BigNumber.from(offering.activeOffering.thewordId);
+        const thewordId =
+          offering.activeOffering && BigNumber.from(offering.activeOffering.thewordId);
         return thewordId && thewordId.toNumber() === onDisplayOfferingTheWordId;
       })?.activeOffering;
 
@@ -74,7 +75,9 @@ const useOnDisplayOffering = (): Offering | undefined => {
 };
 
 export const useOfferingBids = (offeringTheWordId: BigNumber): Bid[] | undefined => {
-  const lastOfferingTheWordId = useAppSelector(state => state.onDisplayOffering.lastOfferingTheWordId);
+  const lastOfferingTheWordId = useAppSelector(
+    state => state.onDisplayOffering.lastOfferingTheWordId,
+  );
   const lastOfferingBids = useAppSelector(state => state.offering.bids);
   const pastOfferings = useAppSelector(state => state.pastOfferings.pastOfferings);
 
@@ -84,7 +87,8 @@ export const useOfferingBids = (offeringTheWordId: BigNumber): Bid[] | undefined
   } else {
     // find bids for past offering requested
     const bidEvents: BidEvent[] | undefined = pastOfferings.find(offering => {
-      const thewordId = offering.activeOffering && BigNumber.from(offering.activeOffering.thewordId);
+      const thewordId =
+        offering.activeOffering && BigNumber.from(offering.activeOffering.thewordId);
       return thewordId && thewordId.eq(offeringTheWordId);
     })?.bids;
 

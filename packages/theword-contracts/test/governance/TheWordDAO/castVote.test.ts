@@ -11,7 +11,9 @@ import {
   TestSigners,
   setTotalSupply,
   populateDescriptor,
-  mineBlock, address, encodeParameters,
+  mineBlock,
+  address,
+  encodeParameters,
 } from '../../utils';
 
 import {

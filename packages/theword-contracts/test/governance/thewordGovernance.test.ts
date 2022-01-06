@@ -2,7 +2,10 @@ import chai from 'chai';
 import { solidity } from 'ethereum-waffle';
 import { ethers } from 'hardhat';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { thewordToken, thewordDescriptor__factory as thewordDescriptorFactory } from '../../typechain';
+import {
+  thewordToken,
+  thewordDescriptor__factory as thewordDescriptorFactory,
+} from '../../typechain';
 import {
   deploythewordToken,
   getSigners,

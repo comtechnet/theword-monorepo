@@ -11,7 +11,6 @@ import {
   TestSigners,
   setTotalSupply,
   populateDescriptor,
-
   mineBlock,
   address,
   encodeParameters,
@@ -74,7 +73,10 @@ async function reset(): Promise<void> {
   });
 
   // Deploy thewordDAOExecutor with pre-computed Delegator address
-  timelock = await new thewordDaoExecutorFactory(deployer).deploy(govDelegatorAddress, timelockDelay);
+  timelock = await new thewordDaoExecutorFactory(deployer).deploy(
+    govDelegatorAddress,
+    timelockDelay,
+  );
   const timelockAddress = timelock.address;
 
   // Deploy Delegate

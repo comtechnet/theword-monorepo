@@ -19,7 +19,9 @@ const TheWordInfoRowBirthday: React.FC<TheWordInfoRowBirthdayProps> = props => {
   // If the theword is a thewordder theword, use the next theword to get the mint date.
   // We do this because we use the offering start time to get the mint date and
   // thewordder theword do not have an offering start time.
-  const thewordIdForQuery = isTheWordderTheWord(BigNumber.from(thewordId)) ? thewordId + 1 : thewordId;
+  const thewordIdForQuery = isTheWordderTheWord(BigNumber.from(thewordId))
+    ? thewordId + 1
+    : thewordId;
 
   const pastOfferings = useAppSelector(state => state.pastOfferings.pastOfferings);
   if (!pastOfferings || !pastOfferings.length) {
@@ -29,7 +31,9 @@ const TheWordInfoRowBirthday: React.FC<TheWordInfoRowBirthdayProps> = props => {
   const startTime = BigNumber.from(
     pastOfferings.find((offering: OfferingState, i: number) => {
       const maybeTheWordId = offering.activeOffering?.thewordId;
-      return maybeTheWordId ? BigNumber.from(maybeTheWordId).eq(BigNumber.from(thewordIdForQuery)) : false;
+      return maybeTheWordId
+        ? BigNumber.from(maybeTheWordId).eq(BigNumber.from(thewordIdForQuery))
+        : false;
     })?.activeOffering?.startTime,
   );
 

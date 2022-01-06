@@ -37,7 +37,10 @@ const StandaloneTheWord: React.FC<StandaloneTheWordProps> = (props: StandaloneTh
 
   return (
     <Link to={'/theword/' + thewordId.toString()} className={classes.clickableTheWord}>
-      <TheWord imgPath={theword ? theword.image : ''} alt={theword ? theword.description : 'TheWord'} />
+      <TheWord
+        imgPath={theword ? theword.image : ''}
+        alt={theword ? theword.description : 'TheWord'}
+      />
     </Link>
   );
 };

@@ -22,7 +22,7 @@ export class DiscordOfferingLifecycleHandler implements IOfferingLifecycleHandle
         .attachFiles([attachment])
         .setImage(`attachment://${attachmentName}`)
         .setTimestamp();
-      await Promise.all(this.discordClients.map((c) => c.send(message)));
+      await Promise.all(this.discordClients.map(c => c.send(message)));
     }
     console.log(`processed discord new offering ${offeringId}`);
   }
@@ -38,11 +38,9 @@ export class DiscordOfferingLifecycleHandler implements IOfferingLifecycleHandle
       .setURL('https://theword.wtf')
       .setDescription(await formatBidMessageText(offeringId, bid))
       .setTimestamp();
-    await Promise.all(this.discordClients.map((c) => c.send(message)));
+    await Promise.all(this.discordClients.map(c => c.send(message)));
     console.log(`processed discord new bid ${offeringId}:${bid.id}`);
   }
 
-  async handleOfferingEndingSoon(_offeringId: number) {
-
-  }
+  async handleOfferingEndingSoon(_offeringId: number) {}
 }

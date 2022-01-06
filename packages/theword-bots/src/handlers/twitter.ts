@@ -36,7 +36,9 @@ export class TwitterOfferingLifecycleHandler implements IOfferingLifecycleHandle
   async handleNewBid(offeringId: number, bid: Bid) {
     const tweetReplyId = await getOfferingReplyTweetId();
     if (!tweetReplyId) {
-      console.error(`handleNewBid no reply tweet id exists: offering(${offeringId}) bid(${bid.id})`);
+      console.error(
+        `handleNewBid no reply tweet id exists: offering(${offeringId}) bid(${bid.id})`,
+      );
       return;
     }
     const tweet = await twitter.v1.reply(await formatBidMessageText(offeringId, bid), tweetReplyId);

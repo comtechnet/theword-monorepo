@@ -8,7 +8,7 @@
       "esnext"
     ],
     "allowJs": true,
-    "composite": true,
+    "composite": false,
     "declaration": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
