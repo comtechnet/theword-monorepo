@@ -1,6 +1,6 @@
 # @theword/webapp
 
-This package contains the source for the theword webapp at [theword.wtf](https://theword.wtf).
+This package contains the source for the theword webapp at [theword.nft](https://theword.nft).
 
 ## Quickstart
 
